@@ -1,1 +1,8 @@
-Emerald Team's Smart Home Server Project
+Emerald Team
+
+Smart Home Server Project
+
+Team Members:
+  Akatakata
+  besszerf
+  katbtr
