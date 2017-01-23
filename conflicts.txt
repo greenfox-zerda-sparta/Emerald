@@ -1,5 +1,5 @@
 This is a conflict solving exercise.
-
+Ide beleírok valamit by Kata.
 Write something.
 
 
