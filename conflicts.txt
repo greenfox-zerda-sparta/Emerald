@@ -1,5 +1,6 @@
 This is a conflict solving exercise.
-Ide beleírok valamit by Kata.
+INKABB KICSERELEM EZT A SORT. HA VAN MAR IDE IRVA, AZ MENJEN LEJJEBB.
+Ide beleírok valamit by Kata. // es lejjebb tudtam rakni. Ezt a commentet conflict solving kozben irom.
 Write something.
 
 Kati: I've written something. :)
