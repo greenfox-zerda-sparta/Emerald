@@ -3,5 +3,6 @@ Ide beleírok valamit by Kata.
 Write something.
 
 Kati: I've written something. :)
+Mee to. /F/
 
 Please do something.
