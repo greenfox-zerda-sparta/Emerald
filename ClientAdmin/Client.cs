@@ -74,7 +74,6 @@ namespace Chatclient {
       try {
         while (sender.Available > 0) {
           int bytesRec = sender.Receive(bytes);
-          Send(Encoding.ASCII.GetString(bytes, 0, bytesRec));   // echoes back
           Console.Write(Encoding.ASCII.GetString(bytes, 0, bytesRec) + '\n');
         }
       } catch (ArgumentNullException ane) {
