@@ -43,19 +43,21 @@ void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
     QString line = (client->readAll()).trimmed();
-
-    if (users.contains(client)) {
-      QString user = users[client];
-      QString message = "Client " + user + ": " + line;
-      qDebug() << message;
-      mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
-
+    isAdmin(client, line);
+    QString message;
+    if (users[client] == adminID) {
       foreach(QTcpSocket* otherClient, clients) {
         if (otherClient != client) {
-          otherClient->write((message + '\n').toUtf8());
+          otherClient->write((line + '\n').toUtf8());
         }
       }
+      message = "Admin: " + line;
+    } else {
+      QString user = users[client];
+      message = "Client " + user + ": " + line;
+      qDebug() << message;
     }
+    mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
   }
 }
 
@@ -82,4 +84,14 @@ void Server::PrintUserList() {
   }
   qDebug() << "Users online: " + userList.join(", ");
   //client->write(QString("/users:" + userList.join(",") + "\n").toUtf8());
+}
+
+bool Server::isAdmin(QTcpSocket* socket, QString line) {
+  std::string linestr = line.toStdString();
+  std::transform(linestr.begin(), linestr.end(), linestr.begin(), ::tolower);
+  if (linestr == "admin") {
+    adminID = users[socket].toInt();
+    return true;
+  }
+  return false;
 }

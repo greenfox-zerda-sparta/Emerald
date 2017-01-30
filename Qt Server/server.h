@@ -15,6 +15,7 @@ public:
   Server(QObject* parent = Q_NULLPTR);
   ~Server();
   void StartServer();
+  bool isAdmin(QTcpSocket* socket, QString line);
 
   private slots:
   void readyRead();
@@ -28,6 +29,7 @@ private:
   QSet<QTcpSocket*> clients;
   QMap<QTcpSocket*, QString> users;
   int ID;
+  int adminID;
   Logfile* mylogfile;
   std::string logbuffer;
   MyTime* LocalTimer;
