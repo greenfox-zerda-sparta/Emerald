@@ -39,20 +39,21 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   PrintUserList();
 }
 
+// Dealing with incoming messages
 void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
-  if (client->canReadLine()) {
-    QString line = (client->readAll()).trimmed();
-    isAdmin(client, line);
-    QString message;
-    if (users[client] == adminID) {
+  if (client->canReadLine()) {                             // if we can read from the socket
+    QString line = (client->readAll()).trimmed();          // read message to Qstring
+    isAdmin(client, line);                                 // if it is the "admin" message, store adminID
+    QString message; 
+    if (users[client] == adminID) {                        // if the message is from admin, send it to all other connections
       foreach(QTcpSocket* otherClient, clients) {
         if (otherClient != client) {
           otherClient->write((line + '\n').toUtf8());
         }
       }
-      message = "Admin: " + line;
-    } else {
+      message = "Admin: " + line;                          // for logging
+    } else {                                               // if message is from a device, print it to console
       QString user = users[client];
       message = "Client " + user + ": " + line;
       qDebug() << message;
@@ -86,10 +87,11 @@ void Server::PrintUserList() {
   //client->write(QString("/users:" + userList.join(",") + "\n").toUtf8());
 }
 
-bool Server::isAdmin(QTcpSocket* socket, QString line) {
-  std::string linestr = line.toStdString();
+// check if message sender is admin  
+bool Server::isAdmin(QTcpSocket* socket, QString line) {    
+  std::string linestr = line.toStdString();                // changing to std::string
   std::transform(linestr.begin(), linestr.end(), linestr.begin(), ::tolower);
-  if (linestr == "admin") {
+  if (linestr == "admin") {                                // if first messaage is admin, store ID as adminID
     adminID = users[socket].toInt();
     return true;
   }
