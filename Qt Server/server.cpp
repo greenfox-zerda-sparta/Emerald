@@ -29,11 +29,11 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   QString user = QString::number(ID);
   ID++;
   users[client] = user;
-  foreach(QTcpSocket* client, clients) {
-    client->write(QString("Server: Client " + user + " has joined.\n").toUtf8());
-  }
+  //foreach(QTcpSocket* client, clients) {
+  //  client->write(QString("Server: Client " + user + " has joined.\n").toUtf8());
+  //}
 
-  QString ConnectMsg = "Client " + user + " from: " + client->peerAddress().toString() + " has joined.";
+  QString ConnectMsg = "Device " + user + " from: " + client->peerAddress().toString() + " has joined.";
   qDebug() << ConnectMsg;
   mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + ConnectMsg.toStdString());
   PrintUserList();
@@ -44,46 +44,53 @@ void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {                             // if we can read from the socket
     QString line = (client->readAll()).trimmed();          // read message to Qstring
-    isAdmin(client, line);                                 // if it is the "admin" message, store adminID
-    QString message; 
-    if (users[client] == adminID) {                        // if the message is from admin, send it to all other connections
+    isAdmin(client, line);                                 // if it is the "admin" message, store adminID 
+    if (users[client] == "admin") {                        // if the message is from admin, send it to all other connections
       foreach(QTcpSocket* otherClient, clients) {
         if (otherClient != client) {
           otherClient->write((line + '\n').toUtf8());
         }
       }
-      message = "Admin: " + line;                          // for logging
+      QString message = "Admin: " + line;                  // for logging
+      mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
+      qDebug() << message;
     } else {                                               // if message is from a device, print it to console
       QString user = users[client];
-      message = "Client " + user + ": " + line;
+      QString message = "Device " + user + ": " + line;
+      mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
       qDebug() << message;
     }
-    mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
   }
 }
 
 void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
   QString user = users[client];
-  QString DisconnectMsg = "Client " + user + " disconnected. ";
+  QString DisconnectMsg;
+  if (user != "admin") {
+    DisconnectMsg = "Device " + user + " disconnected. ";
+  } else {
+    DisconnectMsg = "Admin disconnected. ";
+  }
   qDebug() << DisconnectMsg;
   mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg.toStdString());
-
   clients.remove(client);
   users.remove(client);
 
-  foreach(QTcpSocket* client, clients) {
-    client->write((DisconnectMsg + '\n').toUtf8());
-  }
+  //foreach(QTcpSocket* client, clients) {
+  //  client->write((DisconnectMsg + '\n').toUtf8());
+  //}
   PrintUserList();
 }
 
 void Server::PrintUserList() {
   QStringList userList;
   foreach(QString user, users.values()) {
-    userList << "Client " + user;
+    if (user.toInt() != adminID) {
+      userList << "Device " + user;
+    }
   }
-  qDebug() << "Users online: " + userList.join(", ");
+  qDebug() << "Devices online: " + userList.join(", ");
   //client->write(QString("/users:" + userList.join(",") + "\n").toUtf8());
 }
 
@@ -92,7 +99,7 @@ bool Server::isAdmin(QTcpSocket* socket, QString line) {
   std::string linestr = line.toStdString();                // changing to std::string
   std::transform(linestr.begin(), linestr.end(), linestr.begin(), ::tolower);
   if (linestr == "admin") {                                // if first messaage is admin, store ID as adminID
-    adminID = users[socket].toInt();
+    users[socket] = "admin";
     return true;
   }
   return false;
