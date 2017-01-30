@@ -9,6 +9,10 @@
 *.sln
 *.vcxproj
 *.vcxproj.filters
+*.config
+AssemblyInfo.cs
+*.csproj
+*.txt
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
