@@ -1,11 +1,11 @@
 #include <QtCore/QCoreApplication>
-#include "chatterboxserver.h"
+#include "server.h"
 
 int main(int argc, char **argv) {
   
   QCoreApplication app(argc, argv);
 
-  ChatServer server;
+  Server server;
   server.StartServer();
 
   return app.exec();

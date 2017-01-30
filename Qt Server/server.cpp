@@ -1,16 +1,15 @@
-#include <QTcpSocket>
-#include "chatterboxserver.h"
+#include "server.h"
 
-ChatServer::ChatServer(QObject* parent) : QTcpServer(parent) {
+Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
   mylogfile = new Logfile;
 }
 
-ChatServer::~ChatServer() {
+Server::~Server() {
   delete mylogfile;
 }
 
-void ChatServer::StartServer() {
+void Server::StartServer() {
   if (!this->listen(QHostAddress::AnyIPv4, 1234)) {
     qDebug() << "Could not start server.";
   }
@@ -19,7 +18,7 @@ void ChatServer::StartServer() {
   }
 }
 
-void ChatServer::incomingConnection(qintptr SocketDescriptor) {
+void Server::incomingConnection(qintptr SocketDescriptor) {
   QTcpSocket* client = new QTcpSocket(this);
   client->setSocketDescriptor(SocketDescriptor);
   clients.insert(client);
@@ -40,7 +39,7 @@ void ChatServer::incomingConnection(qintptr SocketDescriptor) {
   PrintUserList();
 }
 
-void ChatServer::readyRead() {
+void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
     QString line = (client->readAll()).trimmed();
@@ -60,7 +59,7 @@ void ChatServer::readyRead() {
   }
 }
 
-void ChatServer::disconnected() {
+void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
   QString user = users[client];
   QString DisconnectMsg = "Client " + user + " disconnected. ";
@@ -76,7 +75,7 @@ void ChatServer::disconnected() {
   PrintUserList();
 }
 
-void ChatServer::PrintUserList() {
+void Server::PrintUserList() {
   QStringList userList;
   foreach(QString user, users.values()) {
     userList << "Client " + user;

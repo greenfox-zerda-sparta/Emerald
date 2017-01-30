@@ -1,5 +1,5 @@
-#ifndef CHATTERBOXSERVER_H
-#define CHATTERBOXSERVER_H
+#ifndef SERVER_H
+#define SERVER_H
 
 #include <QStringList>
 #include <QTcpServer>
@@ -8,12 +8,12 @@
 #include <QSet>
 #include "Logfile.h"
 
-class ChatServer : public QTcpServer {
+class Server : public QTcpServer {
   Q_OBJECT
 
 public:
-  ChatServer(QObject* parent = Q_NULLPTR);
-  ~ChatServer();
+  Server(QObject* parent = Q_NULLPTR);
+  ~Server();
   void StartServer();
 
   private slots:
@@ -33,4 +33,4 @@ private:
   MyTime* LocalTimer;
 };
 
-#endif // CHATTERBOXSERVER_H
+#endif // SERVER_H

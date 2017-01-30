@@ -1,11 +1,10 @@
-﻿#include <iostream>
-#include <ctime>
+﻿#ifndef LOGFILE_H
+#define LOGFILE_H
+
+#include <iostream>
 #include <fstream>
 #include <sstream>
 #include "MyTime.h"
-#ifndef LOGFILE_H
-#define LOGFILE_H
-
 
 class Logfile {
 private:
@@ -13,12 +12,13 @@ private:
   std::string logfilename;
   std::ofstream logfile;
   MyTime* LocalTimer;
+  bool logging;
 
 public:
   Logfile();
   ~Logfile();
   void log_buffer(std::string);
-  //    void print_and_log();
+  // void print_and_log();
 };
 
 template<class T>
