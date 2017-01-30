@@ -8,16 +8,13 @@ namespace Chatclient {
 
     private Socket sender;
     private byte[] bytes;
-    private string _nameOfUser;
     private bool connected;
     private string serverIP = "10.27.6.228";
 
     public Client() {
       bytes = new byte[1024];
-      _nameOfUser = "";
       connected = false;
       Connect();
-     
     }
 
     public void Connect() {
@@ -45,15 +42,6 @@ namespace Chatclient {
           Console.WriteLine(e.ToString());
         }
       }
-
-      //if (connected) {
-      //  if (sender.Available > 0) {
-      //    int bytesRec = sender.Receive(bytes);
-      //    Console.Write(Encoding.ASCII.GetString(bytes, 0, bytesRec));
-      //    _nameOfUser = Console.ReadLine();
-      //    Send(_nameOfUser);
-      //  }
-     // }
     }
 
     public void Run() {
@@ -64,33 +52,30 @@ namespace Chatclient {
         if (Console.KeyAvailable) {
           message = Console.ReadLine();
           Send(message);
-          if (message == "quit!") {
-            break;
-          }          
         }
       }
     }
 
     private void Send(string message) {
-        message += "\n";
-        try {
-          byte[] msg = Encoding.ASCII.GetBytes(message);
-          int bytesSent = sender.Send(msg);
-        } catch (ArgumentNullException ane) {
-          Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-        } catch (SocketException se) {
-          Console.WriteLine("SocketException : {0}", se.ToString());
-        } catch (Exception e) {
-          Console.WriteLine("Unexpected exception : {0}", e.ToString());
-        }
+      message += "\n";
+      try {      
+        byte[] msg = Encoding.GetEncoding("UTF-8").GetBytes(message);
+        int bytesSent = sender.Send(msg);
+      } catch (ArgumentNullException ane) {
+        Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+      } catch (SocketException se) {
+        Console.WriteLine("SocketException : {0}", se.ToString());
+      } catch (Exception e) {
+        Console.WriteLine("Unexpected exception : {0}", e.ToString());
       }
+    }
 
     private void Receive() {
       try {
         while (sender.Available > 0) {
           int bytesRec = sender.Receive(bytes);
-         // Send(Encoding.ASCII.GetString(bytes, 0, bytesRec));
-          Console.Write(Encoding.ASCII.GetString(bytes, 0, bytesRec));
+          // Send(Encoding.ASCII.GetString(bytes, 0, bytesRec));
+          Console.Write(Encoding.ASCII.GetString(bytes, 0, bytesRec) + '\n');
         }
       } catch (ArgumentNullException ane) {
         Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
