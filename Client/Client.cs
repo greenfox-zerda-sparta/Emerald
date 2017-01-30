@@ -57,16 +57,20 @@ namespace Chatclient {
     }
 
     private void Send(string message) {
-      message += "\n";
-      try {      
-        byte[] msg = Encoding.GetEncoding("UTF-8").GetBytes(message);
-        int bytesSent = sender.Send(msg);
-      } catch (ArgumentNullException ane) {
-        Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-      } catch (SocketException se) {
-        Console.WriteLine("SocketException : {0}", se.ToString());
-      } catch (Exception e) {
-        Console.WriteLine("Unexpected exception : {0}", e.ToString());
+      if (message != "00000000") {
+        message += "\n";
+        try {
+          byte[] msg = Encoding.GetEncoding("UTF-8").GetBytes(message);
+          int bytesSent = sender.Send(msg);
+        } catch (ArgumentNullException ane) {
+          Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+        } catch (SocketException se) {
+          Console.WriteLine("SocketException : {0}", se.ToString());
+        } catch (Exception e) {
+          Console.WriteLine("Unexpected exception : {0}", e.ToString());
+        }
+      } else {
+        Console.WriteLine("Admin message is not allowed for devices.");
       }
     }
 
