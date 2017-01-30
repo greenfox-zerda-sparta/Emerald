@@ -3,10 +3,12 @@
 Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
   mylogfile = new Logfile;
+  msgHandler = new MessageHandler;
 }
 
 Server::~Server() {
   delete mylogfile;
+  delete msgHandler;
 }
 
 void Server::StartServer() {
@@ -29,9 +31,6 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   QString user = QString::number(ID);
   ID++;
   users[client] = user;
-  //foreach(QTcpSocket* client, clients) {
-  //  client->write(QString("Server: Client " + user + " has joined.\n").toUtf8());
-  //}
 
   QString ConnectMsg = "Device " + user + " from: " + client->peerAddress().toString() + " has joined.";
   qDebug() << ConnectMsg;
@@ -39,24 +38,36 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   PrintUserList();
 }
 
-// Dealing with incoming messages
+// Dealing with incoming messages QBYTEARRAY VERSION
 void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {                             // if we can read from the socket
-    QString line = (client->readAll()).trimmed();          // read message to Qstring
-    isAdmin(client, line);                                 // if it is the "admin" message, store adminID 
+    QByteArray msgBytes = (client->readAll()).trimmed();   // read to QByteArray, remove \n
+    msgHandler->toFullCommand(msgBytes);                   // splitting message by byte (char)
+    isAdmin(client, msgBytes);                             // checking for admin
+
     if (users[client] == "admin") {                        // if the message is from admin, send it to all other connections
       foreach(QTcpSocket* otherClient, clients) {
         if (otherClient != client) {
-          otherClient->write((line + '\n').toUtf8());
+          otherClient->write(msgBytes);
         }
       }
-      QString message = "Admin: " + line;                  // for logging
+      QString message = "Admin: " + msgBytes;               // for logging
       mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
       qDebug() << message;
+      qDebug() << "Printing message by bytes:" << msgHandler->getFullCommand()[0] << msgHandler->getFullCommand()[1]
+        << msgHandler->getFullCommand()[2] << msgHandler->getFullCommand()[3]
+        << msgHandler->getFullCommand()[4] << msgHandler->getFullCommand()[5]
+        << msgHandler->getFullCommand()[6] << msgHandler->getFullCommand()[7];
+
     } else {                                               // if message is from a device, print it to console
       QString user = users[client];
-      QString message = "Device " + user + ": " + line;
+      QString message = "Device " + user + ": " + msgBytes;
+      foreach(QTcpSocket* otherClient, clients) {
+        if (otherClient != client) {
+          otherClient->write(message.toUtf8());
+        }
+      }
       mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
       qDebug() << message;
     }
@@ -76,10 +87,6 @@ void Server::disconnected() {
   mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg.toStdString());
   clients.remove(client);
   users.remove(client);
-
-  //foreach(QTcpSocket* client, clients) {
-  //  client->write((DisconnectMsg + '\n').toUtf8());
-  //}
   PrintUserList();
 }
 
@@ -91,14 +98,12 @@ void Server::PrintUserList() {
     }
   }
   qDebug() << "Devices online: " + userList.join(", ");
-  //client->write(QString("/users:" + userList.join(",") + "\n").toUtf8());
 }
 
-// check if message sender is admin  
-bool Server::isAdmin(QTcpSocket* socket, QString line) {    
-  std::string linestr = line.toStdString();                // changing to std::string
-  std::transform(linestr.begin(), linestr.end(), linestr.begin(), ::tolower);
-  if (linestr == "admin") {                                // if first messaage is admin, store ID as adminID
+// check if message sender is admin QBYTEARRAY VERSION
+bool Server::isAdmin(QTcpSocket* socket, QByteArray bytes) {
+  QString adminID = "00000000";
+  if (bytes.trimmed() == adminID) {
     users[socket] = "admin";
     return true;
   }

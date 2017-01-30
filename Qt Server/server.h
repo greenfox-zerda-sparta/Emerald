@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QSet>
 #include "Logfile.h"
+#include "MessageHandler.h"
 
 class Server : public QTcpServer {
   Q_OBJECT
@@ -15,7 +16,7 @@ public:
   Server(QObject* parent = Q_NULLPTR);
   ~Server();
   void StartServer();
-  bool isAdmin(QTcpSocket* socket, QString line);
+  bool Server::isAdmin(QTcpSocket* socket, QByteArray bytes); // QByteArray version
 
   private slots:
   void readyRead();
@@ -33,6 +34,7 @@ private:
   Logfile* mylogfile;
   std::string logbuffer;
   MyTime* LocalTimer;
+  MessageHandler* msgHandler;
 };
 
 #endif // SERVER_H
