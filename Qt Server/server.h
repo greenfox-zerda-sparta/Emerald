@@ -8,6 +8,7 @@
 #include <QSet>
 #include "Logfile.h"
 #include "MessageHandler.h"
+#include "udpsender.h"
 
 class Server : public QTcpServer {
   Q_OBJECT
@@ -35,6 +36,7 @@ private:
   std::string logbuffer;
   MyTime* LocalTimer;
   MessageHandler* msgHandler;
+  UdpSender* udpsender;
 };
 
 #endif // SERVER_H

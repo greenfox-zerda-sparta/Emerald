@@ -6,7 +6,7 @@ Logfile::Logfile() {
   logbuffer = "";
   std::ofstream logfile;
   logfilename = "Smart_Home_" + LocalTimer->GetTimeFileFormat() + ".txt";
-  logging = false;
+  logging = true;
 }
 
 Logfile::~Logfile() {
@@ -27,3 +27,7 @@ log_buffer();
 }
 */
 // logbuffer = LocalTimer->GetCurrentTime() + "Client connected. There are now " + toString(clientCount) + " client(s) connected.";
+
+bool Logfile::get_logging_status() {
+  return logging;
+}
