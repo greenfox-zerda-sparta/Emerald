@@ -15,6 +15,7 @@ signals:
 
 private slots:
      void processPendingDatagrams();
+	 void close();
 
  private:
      QUdpSocket *udpSocket;

@@ -7,7 +7,6 @@ BroadcastSocket::BroadcastSocket(QObject *parent) : QObject(parent)
 
     connect(udpSocket, SIGNAL(readyRead()),
          this, SLOT(processPendingDatagrams()));
-    //connect(quitButton, SIGNAL(clicked()), this, SLOT(close()));
 }
 
 void BroadcastSocket::processPendingDatagrams()
@@ -16,6 +15,11 @@ void BroadcastSocket::processPendingDatagrams()
          QByteArray datagram;
          datagram.resize(udpSocket->pendingDatagramSize());
          udpSocket->readDatagram(datagram.data(), datagram.size());
-         emit newDatagram(QString::fromUtf8(datagram));
+         emit newDatagram("c:connect");
      }
  }
+
+void BroadcastSocket::close()
+{
+	udpSocket->close();
+}

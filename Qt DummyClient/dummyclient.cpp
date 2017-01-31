@@ -31,8 +31,9 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     //    connect(cReader, SIGNAL(finished()), consoleThread, SLOT(quit()));
     connect(this, SIGNAL(quit()), consoleThread, SLOT(quit()), Qt::DirectConnection);
     // UDP socket control
-    connect(broadcastReceiver, SIGNAL(newDatagram(QString)), consoleThread, SLOT(writeToConsole(QString)), Qt::DirectConnection);
     connect(this, SIGNAL(closeUdpSocket()), broadcastReceiver, SLOT(close()), Qt::DirectConnection);
+    connect(broadcastReceiver, SIGNAL(newDatagram(QString)), cReader, SLOT(writeToConsole(QString)), Qt::DirectConnection);
+	connect(broadcastReceiver, SIGNAL(newDatagram(QString)), this, SLOT(parseInputFromCommandLine(QString)));
 }
 
 
