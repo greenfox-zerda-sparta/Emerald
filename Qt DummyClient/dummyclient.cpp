@@ -32,6 +32,7 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(quit()), consoleThread, SLOT(quit()), Qt::DirectConnection);
     // UDP socket control
     connect(this, SIGNAL(closeUdpSocket()), broadcastReceiver, SLOT(close()), Qt::DirectConnection);
+    connect(socket, SIGNAL(disconnected()), broadcastReceiver, SLOT(startUdp()));
     connect(broadcastReceiver, SIGNAL(newDatagram(QString)), cReader, SLOT(writeToConsole(QString)), Qt::DirectConnection);
 	connect(broadcastReceiver, SIGNAL(newDatagram(QString)), this, SLOT(parseInputFromCommandLine(QString)));
 }
@@ -78,6 +79,7 @@ void DummyClient::newDataAvailable()
 void DummyClient::sendFirstMessage()
 {
     emit write("Connected.");
+    StopTimer();
     sendMessage(gadgetId);
 }
 
@@ -157,11 +159,11 @@ void DummyClient::startCommand(QString text)
         gadgetId = text.mid(3);
         emit write("  Gadget ID: " + gadgetId);
     }
-    else if (text == "CLOSEUDP" || text == "closeudp")
-    {
-        emit closeUdpSocket();
-        emit write("  UDP Socket is closed.");
-    }
+    //else if (text == "CLOSEUDP" || text == "closeudp")
+    //{
+    //    emit closeUdpSocket();
+    //    emit write("  UDP Socket is closed.");
+    //}
     else
     {
         emit write("Invalid command.");

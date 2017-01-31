@@ -16,9 +16,11 @@ signals:
 private slots:
      void processPendingDatagrams();
 	 void close();
+     void startUDP();
 
  private:
      QUdpSocket *udpSocket;
+     bool isRunning;
 };
 
 #endif // BROADCASTSOCKET_H
