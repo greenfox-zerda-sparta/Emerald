@@ -157,7 +157,7 @@ void DummyClient::startCommand(QString text)
         gadgetId = text.mid(3);
         emit write("  Gadget ID: " + gadgetId);
     }
-    else if (text.left(3) == "CLOSEUDP " || text.left(3) == "closeudp ")
+    else if (text == "CLOSEUDP" || text == "closeudp")
     {
         emit closeUdpSocket();
         emit write("  UDP Socket is closed.");

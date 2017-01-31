@@ -7,8 +7,9 @@ ConsoleReader::ConsoleReader(QObject *parent) : QObject(parent)
 {
     connect(this, SIGNAL(run()), this, SLOT(onRun()));
     qDebug() << "Enter a command(c:COMMAND) or a message(s:message)";
-    qDebug() << "   Commands:  CONNECT";
+    qDebug() << "   Commands:   CONNECT";
     qDebug() << "               QUIT";
+    qDebug() << "               CLOSEUDP";
     qDebug() << "               IP 10.28.2.150";
     qDebug() << "               PORT 4321";
     qDebug() << "               ID 12121212";
