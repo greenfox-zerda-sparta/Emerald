@@ -25,14 +25,15 @@ namespace Devices
         private byte[] bytes;
         private string _nameOfUser;
         private bool connected;
-        private string serverIP = "10.27.6.228";
+        private string serverIP = "127.0.0.1";
         public Thread thread;
         ManualResetEvent pause = new ManualResetEvent(true);
         ManualResetEvent shutdown = new ManualResetEvent(false);
-        private int selectedShipLength = 0;
-        private bool isHorizontal = false;
+        //private int selectedShipLength = 0;
+        //private bool isHorizontal = false;
         Button[,] buttonArray;
-        Button[,] enemyButtonArray;
+        //Button[,] enemyButtonArray;
+        bool button;
 
         public MainWindow()
         {
@@ -44,7 +45,8 @@ namespace Devices
             thread = new Thread(OnMsgReceive);
             thread.IsBackground = true;
             thread.Start();
-            buttonArray = new Button[,] { 
+            button = false;
+            buttonArray = new Button[,] {
                             { a00, a01, a02, a03, a04, a05, a06, a07, a08, a09 },
                             { a10, a11, a12, a13, a14, a15, a16, a17, a18, a19 },
                             { a20, a21, a22, a23, a24, a25, a26, a27, a28, a29 },
@@ -56,46 +58,46 @@ namespace Devices
                             { a80, a81, a82, a83, a84, a85, a86, a87, a88, a89 },
                             { a90, a91, a92, a93, a94, a95, a96, a97, a98, a99 } };
 
-          
-        }
 
+        }
+        //button ID for ciklusban, ez egy listában, és akkor onnan kivéve lehet létrehozni a buttonokat
         public void Connect()
         {
             while (!connected)
             {
-                try
-                {
-                    IPHostEntry ipHostInfo = Dns.Resolve(serverIP);
-                    IPAddress ipAddress = ipHostInfo.AddressList[0];
-                    IPEndPoint remoteEP = new IPEndPoint(ipAddress, 1234);
+                //try
+                //{
+                IPHostEntry ipHostInfo = Dns.Resolve(serverIP);
+                IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, 1234);
 
-                    server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
-                    try
-                    {
-                        server.Connect(remoteEP);
+                //try
+                //{
+                server.Connect(remoteEP);
 
-                        textBlock.Text += $"Socket connected to {server.RemoteEndPoint.ToString()}";
-                        connected = true;
+                textBlock.Text += $"Socket connected to {server.RemoteEndPoint.ToString()}";
+                connected = true;
 
-                    }
-                    catch (ArgumentNullException ane)
-                    {
-                        //Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-                    }
-                    catch (SocketException se)
-                    {
-                        //Console.WriteLine("SocketException : {0}", se.ToString());
-                    }
-                    catch (Exception e)
-                    {
-                        //Console.WriteLine("Unexpected exception : {0}", e.ToString());
-                    }
-                }
-                catch (Exception e)
-                {
-                    //Console.WriteLine(e.ToString());
-                }
+                //}
+                //catch (ArgumentNullException ane)
+                //{
+                //Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+                //}
+                //catch (SocketException se)
+                //{
+                //Console.WriteLine("SocketException : {0}", se.ToString());
+                //}
+                //catch (Exception e)
+                //{
+                //Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                //    }
+                //}
+                //catch (Exception e)
+                //{
+                //Console.WriteLine(e.ToString());
+                //}
             }
 
             if (connected)
@@ -113,71 +115,72 @@ namespace Devices
         private void Send(string message)
         {
             message += "\n";
-            try
-            {
-                byte[] msg = Encoding.ASCII.GetBytes(message);
-                int bytesSent = server.Send(msg);
-            }
-            catch (ArgumentNullException ane)
-            {
-                //Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-            }
-            catch (SocketException se)
-            {
-                //Console.WriteLine("SocketException : {0}", se.ToString());
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine("Unexpected exception : {0}", e.ToString());
-            }
+            //try
+            //{
+            byte[] msg = Encoding.ASCII.GetBytes(message);
+            int bytesSent = server.Send(msg);
+            //}
+            //catch (ArgumentNullException ane)
+            //{
+            //Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+            //}
+            //catch (SocketException se)
+            //{
+            //Console.WriteLine("SocketException : {0}", se.ToString());
+            //}
+            //catch (Exception e)
+            //{
+            //Console.WriteLine("Unexpected exception : {0}", e.ToString());
+            //}
         }
 
         private void Receive()
         {
-            try
+            //try
+            //{
+            while (true)
             {
-                while (true)
-                {
-                    int bytesRec = server.Receive(bytes);
-                    textBlock.Text += Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                }
+                int bytesRec = server.Receive(bytes);
+                textBlock.Text += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+            }
 
-                //Console.Write(Encoding.ASCII.GetString(bytes, 0, bytesRec));
-            }
-            catch (ArgumentNullException ane)
-            {
-                //Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-            }
-            catch (SocketException se)
-            {
-                //Console.WriteLine("SocketException : {0}", se.ToString());
-            }
-            catch (Exception e)
-            {
-                //Console.WriteLine("Unexpected exception : {0}", e.ToString());
-            }
+            //Console.Write(Encoding.ASCII.GetString(bytes, 0, bytesRec));
+            //}
+            //catch (ArgumentNullException ane)
+            //{
+            //Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+            //}
+            //catch (SocketException se)
+            //{
+            //Console.WriteLine("SocketException : {0}", se.ToString());
+            //}
+            //catch (Exception e)
+            //{
+            //    //Console.WriteLine("Unexpected exception : {0}", e.ToString());
         }
+    
+
 
         ~MainWindow()
         {
-            try
-            {
+            //try
+            //{
                 server.Shutdown(SocketShutdown.Both);
                 server.Close();
                 shutdown.Set();
-            }
-            catch (ArgumentNullException ane)
-            {
+            //}
+            //catch (ArgumentNullException ane)
+            //{
                 //Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-            }
-            catch (SocketException se)
-            {
+            //}
+            //catch (SocketException se)
+            //{
                 //Console.WriteLine("SocketException : {0}", se.ToString());
-            }
-            catch (Exception e)
-            {
+            //}
+            //catch (Exception e)
+            //{
                 //Console.WriteLine("Unexpected exception : {0}", e.ToString());
-            }
+           // }
         }
 
 
@@ -190,20 +193,20 @@ namespace Devices
                 if (bytesRec > 0)
                 {
                     string data = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                    if (data[0] == '/' && data[1] == '&' && data[2] == '~')
+                    if (data[0] == '0' && data[1] == '1' && data[2] == '2')
                     {
                         Dispatcher.Invoke(() =>
                         {
                             setCoordinate(bytesRec, data);
                         });
                     }
-                    else if(data[0] == '#' && data[1] == '>' && data[2] == '<')
-                    {
-                        Dispatcher.Invoke(() =>
-                        {
-                            registerEnemyHit(bytesRec, data);
-                        });
-                    }
+                    //else if(data[0] == '#' && data[1] == '>' && data[2] == '<')
+                    //{
+                    //    Dispatcher.Invoke(() =>
+                    //    {
+                    //        registerEnemyHit(bytesRec, data);
+                    //    });
+                    //}
                     else
                     {
                         Dispatcher.Invoke(() =>
@@ -220,43 +223,54 @@ namespace Devices
             textBlock.Text += "\n" + Encoding.ASCII.GetString(bytes, 0, bytesRec);
         }
 
-        private void registerEnemyHit(int bytesRec, string dataIn)
-        {
-            int x = dataIn[4] - '0';
-            int y = dataIn[5] - '0';
-            if (!enemyButtonArray[x, y].IsEnabled)
-            {
-                if(dataIn[6] == 'h')
-                {
-                    enemyButtonArray[x, y].Foreground = Brushes.Red;
-                    enemyButtonArray[x, y].Content = "ON";
-                }
-                else if (dataIn[6] == 'm')
-                {
-                    enemyButtonArray[x, y].Foreground = Brushes.Black;
-                    enemyButtonArray[x, y].Content = "OFF";
-                }
-            }
-        }
+        //private void registerEnemyHit(int bytesRec, string dataIn)
+        //{
+        //    int x = dataIn[4] - '0';
+        //    int y = dataIn[5] - '0';
+        //    if (!enemyButtonArray[x, y].IsEnabled)
+        //    {
+        //        if(dataIn[6] == 'h')
+        //        {
+        //            enemyButtonArray[x, y].Foreground = Brushes.Red;
+        //            enemyButtonArray[x, y].Content = "OFF";
+        //        }
+        //        else if (dataIn[6] == 'm')
+        //        {
+        //            enemyButtonArray[x, y].Foreground = Brushes.Black;
+        //            enemyButtonArray[x, y].Content = "ON";
+        //        }
+        //    }
+        //}
         private void setCoordinate(int bytesRec, string dataIn)
         {
             int x = dataIn[4] - '0';
             int y = dataIn[5] - '0';
-            if(!buttonArray[x, y].IsEnabled)
+            if (!buttonArray[x, y].IsEnabled)
             {
-                buttonArray[x, y].Foreground = Brushes.Red;
-                buttonArray[x, y].Content = "ON";
-                string msg = "#><";
-                msg += buttonArray[x, y].Name.ToString() + "h";
-                Send(msg);
+                buttonArray[x, y].Foreground = Brushes.White;
+                buttonArray[x, y].Content = "OFF";
+                //                string msg = "#><";
+                //                msg += buttonArray[x, y].Name.ToString() + "h";
+                //                Send(msg);
             }
             else
             {
-                buttonArray[x, y].Foreground = Brushes.Black;
-                buttonArray[x, y].Content = "OFF";
-                string msg = "#><";
-                msg += buttonArray[x, y].Name.ToString() + "m";
-                Send(msg);
+                if (button)
+                {
+                    buttonArray[x, y].Content = "";
+                    buttonArray[x, y].Background = Brushes.LightGray;
+                    button = false;
+                }
+                else
+                {
+                    buttonArray[x, y].Foreground = Brushes.Black;
+                    buttonArray[x, y].Content = "ON";
+                    buttonArray[x, y].Background = Brushes.Yellow;
+                    button = true;
+                    //                string msg = "#><";
+                    //                msg += buttonArray[x, y].Name.ToString() + "m";
+                    //                Send(msg);
+                }
             }
         }
 
@@ -270,72 +284,72 @@ namespace Devices
             Send(message);
         }
 
-        private void OnFieldButtonClick(object sender, RoutedEventArgs e)
-        {
-            int x, y;
-            Button thisButton = (Button)sender;
-            x = thisButton.Name[1] - '0';
-            y = thisButton.Name[2] - '0';
-            ShipPlacementChecker checker = new ShipPlacementChecker(buttonArray);
-            if (isHorizontal && checker.IsSelectedHorizontalPlaceEmpty(x, y, selectedShipLength))
-            {
-                checker.HorizontalPlaceTheShip(x, y, selectedShipLength);
-                buttonArray = checker.Board;                
-            }
-            else if (!isHorizontal && checker.IsSelectedVerticalPlaceEmpty(x, y, selectedShipLength))
-            {
-                checker.VerticalPlaceTheShip(x, y, selectedShipLength);
-                buttonArray = checker.Board;
-            }
-            else
-            {
-                buttonArray = checker.Board;
-            }
-        }
+        //private void OnFieldButtonClick(object sender, RoutedEventArgs e)
+        //{
+        //    int x, y;
+        //    Button thisButton = (Button)sender;
+        //    x = thisButton.Name[1] - '0';
+        //    y = thisButton.Name[2] - '0';
+        //    ShipPlacementChecker checker = new ShipPlacementChecker(buttonArray);
+        //    if (isHorizontal && checker.IsSelectedHorizontalPlaceEmpty(x, y, selectedShipLength))
+        //    {
+        //        checker.HorizontalPlaceTheShip(x, y, selectedShipLength);
+        //        buttonArray = checker.Board;                
+        //    }
+        //    else if (!isHorizontal && checker.IsSelectedVerticalPlaceEmpty(x, y, selectedShipLength))
+        //    {
+        //        checker.VerticalPlaceTheShip(x, y, selectedShipLength);
+        //        buttonArray = checker.Board;
+        //    }
+        //    else
+        //    {
+        //        buttonArray = checker.Board;
+        //    }
+        //}
 
-        private void carrier_Click(object sender, RoutedEventArgs e)
-        {
-            selectedShipLength = 5;
-        }
+        //private void carrier_Click(object sender, RoutedEventArgs e)
+        //{
+        //    selectedShipLength = 5;
+        //}
 
-        private void battleship_Click(object sender, RoutedEventArgs e)
-        {
-            selectedShipLength = 4;
-        }
+        //private void battleship_Click(object sender, RoutedEventArgs e)
+        //{
+        //    selectedShipLength = 4;
+        //}
 
-        private void cruiser_Click(object sender, RoutedEventArgs e)
-        {
-            selectedShipLength = 3;
-        }
+        //private void cruiser_Click(object sender, RoutedEventArgs e)
+        //{
+        //    selectedShipLength = 3;
+        //}
 
-        private void submarine_Click(object sender, RoutedEventArgs e)
-        {
-            selectedShipLength = 3;
-        }
+        //private void submarine_Click(object sender, RoutedEventArgs e)
+        //{
+        //    selectedShipLength = 3;
+        //}
 
-        private void destroyer_Click(object sender, RoutedEventArgs e)
-        {
-            selectedShipLength = 2;
-        }
+        //private void destroyer_Click(object sender, RoutedEventArgs e)
+        //{
+        //    selectedShipLength = 2;
+        //}
 
-        private void horOrVerButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button thisButton = (Button)sender;
-            if (thisButton.Content.ToString() == "Horizontal")
-            {
-                isHorizontal = true;
-            }
-            else if (thisButton.Content.ToString() == "Vertical")
-            {
-                isHorizontal = false;
-            }
-        }
+        //private void horOrVerButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Button thisButton = (Button)sender;
+        //    if (thisButton.Content.ToString() == "Horizontal")
+        //    {
+        //        isHorizontal = true;
+        //    }
+        //    else if (thisButton.Content.ToString() == "Vertical")
+        //    {
+        //        isHorizontal = false;
+        //    }
+        //}
 
         private void OnEnemyFieldButtonClick(object sender, RoutedEventArgs e)
         {
             Button thisButton = (Button)sender;
             thisButton.FontSize = 16;
-            string msg = "/&~";
+            string msg = "012";
             msg += thisButton.Name.ToString();
             thisButton.IsEnabled = false;
             Send(msg);
