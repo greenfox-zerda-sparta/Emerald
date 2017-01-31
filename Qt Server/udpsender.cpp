@@ -16,8 +16,10 @@ void UdpSender::startBroadcasting() {
 }
 
 void UdpSender::broadcastDatagram() {
+  QHostAddress addr;
+  addr.setAddress("10.27.6.255");
   QByteArray datagram = "Broadcast message " + QByteArray::number(messageNo);
   udpSocket->writeDatagram(datagram.data(), datagram.size(),
-    QHostAddress::Broadcast, 45454);
+    addr, 45454);
   ++messageNo;
 }
