@@ -77,115 +77,115 @@
                     <Button Grid.Row="9" BorderThickness="0" Name="ex0y9">I</Button>
                     <Button Grid.Row="10" BorderThickness="0" Name="ex0y10">J</Button>
 
-                    <Button Click="OnFieldButtonClick"  Background="LightGray" Grid.Row="1" Grid.Column="1" BorderThickness="0" Name="a00" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="1" BorderThickness="0" Name="a01" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="1" BorderThickness="0" Name="a02" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="1" BorderThickness="0" Name="a03" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="1" BorderThickness="0" Name="a04" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="1" BorderThickness="0" Name="a05" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="1" BorderThickness="0" Name="a06" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="1" BorderThickness="0" Name="a07" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="1" BorderThickness="0" Name="a08" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="1" BorderThickness="0" Name="a09" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="1" BorderThickness="0" Name="a00" />
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="1" BorderThickness="0" Name="a01" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="1" BorderThickness="0" Name="a02" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="1" BorderThickness="0" Name="a03" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="1" BorderThickness="0" Name="a04" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="1" BorderThickness="0" Name="a05" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="1" BorderThickness="0" Name="a06" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="1" BorderThickness="0" Name="a07" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="1" BorderThickness="0" Name="a08" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="1" BorderThickness="0" Name="a09" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="2" BorderThickness="0"  Name="a10" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="2" BorderThickness="0"  Name="a11" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="2" BorderThickness="0"  Name="a12" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="2" BorderThickness="0"  Name="a13" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="2" BorderThickness="0"  Name="a14" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="2" BorderThickness="0"  Name="a15" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="2" BorderThickness="0"  Name="a16" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="2" BorderThickness="0"  Name="a17" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="2" BorderThickness="0"  Name="a18" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="2" BorderThickness="0"  Name="a19" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="2" BorderThickness="0"  Name="a10" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="2" BorderThickness="0"  Name="a11" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="2" BorderThickness="0"  Name="a12" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="2" BorderThickness="0"  Name="a13" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="2" BorderThickness="0"  Name="a14" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="2" BorderThickness="0"  Name="a15" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="2" BorderThickness="0"  Name="a16" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="2" BorderThickness="0"  Name="a17" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="2" BorderThickness="0"  Name="a18" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="2" BorderThickness="0"  Name="a19" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="3" BorderThickness="0" Name="a20" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="3" BorderThickness="0" Name="a21" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="3" BorderThickness="0" Name="a22" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="3" BorderThickness="0" Name="a23" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="3" BorderThickness="0" Name="a24" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="3" BorderThickness="0" Name="a25" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="3" BorderThickness="0" Name="a26" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="3" BorderThickness="0" Name="a27" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="3" BorderThickness="0" Name="a28" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="3" BorderThickness="0" Name="a29" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="3" BorderThickness="0" Name="a20" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="3" BorderThickness="0" Name="a21" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="3" BorderThickness="0" Name="a22" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="3" BorderThickness="0" Name="a23" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="3" BorderThickness="0" Name="a24" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="3" BorderThickness="0" Name="a25" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="3" BorderThickness="0" Name="a26" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="3" BorderThickness="0" Name="a27" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="3" BorderThickness="0" Name="a28" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="3" BorderThickness="0" Name="a29" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="4" BorderThickness="0" Name="a30" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="4" BorderThickness="0" Name="a31" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="4" BorderThickness="0" Name="a32" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="4" BorderThickness="0" Name="a33" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="4" BorderThickness="0" Name="a34" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="4" BorderThickness="0" Name="a35" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="4" BorderThickness="0" Name="a36" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="4" BorderThickness="0" Name="a37" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="4" BorderThickness="0" Name="a38" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="4" BorderThickness="0" Name="a39" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="4" BorderThickness="0" Name="a30" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="4" BorderThickness="0" Name="a31" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="4" BorderThickness="0" Name="a32" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="4" BorderThickness="0" Name="a33" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="4" BorderThickness="0" Name="a34" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="4" BorderThickness="0" Name="a35" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="4" BorderThickness="0" Name="a36" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="4" BorderThickness="0" Name="a37" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="4" BorderThickness="0" Name="a38" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="4" BorderThickness="0" Name="a39" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="5" BorderThickness="0" Name="a40" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="5" BorderThickness="0" Name="a41" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="5" BorderThickness="0" Name="a42" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="5" BorderThickness="0" Name="a43" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="5" BorderThickness="0" Name="a44" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="5" BorderThickness="0" Name="a45" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="5" BorderThickness="0" Name="a46" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="5" BorderThickness="0" Name="a47" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="5" BorderThickness="0" Name="a48" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="5" BorderThickness="0" Name="a49" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="5" BorderThickness="0" Name="a40" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="5" BorderThickness="0" Name="a41" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="5" BorderThickness="0" Name="a42" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="5" BorderThickness="0" Name="a43" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="5" BorderThickness="0" Name="a44" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="5" BorderThickness="0" Name="a45" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="5" BorderThickness="0" Name="a46" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="5" BorderThickness="0" Name="a47" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="5" BorderThickness="0" Name="a48" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="5" BorderThickness="0" Name="a49" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="6" BorderThickness="0" Name="a50" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="6" BorderThickness="0" Name="a51" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="6" BorderThickness="0" Name="a52" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="6" BorderThickness="0" Name="a53" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="6" BorderThickness="0" Name="a54" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="6" BorderThickness="0" Name="a55" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="6" BorderThickness="0" Name="a56" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="6" BorderThickness="0" Name="a57" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="6" BorderThickness="0" Name="a58" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="6" BorderThickness="0" Name="a59" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="6" BorderThickness="0" Name="a50" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="6" BorderThickness="0" Name="a51" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="6" BorderThickness="0" Name="a52" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="6" BorderThickness="0" Name="a53" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="6" BorderThickness="0" Name="a54" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="6" BorderThickness="0" Name="a55" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="6" BorderThickness="0" Name="a56" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="6" BorderThickness="0" Name="a57" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="6" BorderThickness="0" Name="a58" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="6" BorderThickness="0" Name="a59" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="7" BorderThickness="0" Name="a60" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="7" BorderThickness="0" Name="a61" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="7" BorderThickness="0" Name="a62" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="7" BorderThickness="0" Name="a63" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="7" BorderThickness="0" Name="a64" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="7" BorderThickness="0" Name="a65" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="7" BorderThickness="0" Name="a66" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="7" BorderThickness="0" Name="a67" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="7" BorderThickness="0" Name="a68" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="7" BorderThickness="0" Name="a69" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="7" BorderThickness="0" Name="a60" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="7" BorderThickness="0" Name="a61" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="7" BorderThickness="0" Name="a62" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="7" BorderThickness="0" Name="a63" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="7" BorderThickness="0" Name="a64" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="7" BorderThickness="0" Name="a65" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="7" BorderThickness="0" Name="a66" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="7" BorderThickness="0" Name="a67" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="7" BorderThickness="0" Name="a68" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="7" BorderThickness="0" Name="a69" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="8" BorderThickness="0" Name="a70" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="8" BorderThickness="0" Name="a71" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="8" BorderThickness="0" Name="a72" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="8" BorderThickness="0" Name="a73" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="8" BorderThickness="0" Name="a74" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="8" BorderThickness="0" Name="a75" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="8" BorderThickness="0" Name="a76" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="8" BorderThickness="0" Name="a77" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="8" BorderThickness="0" Name="a78" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="8" BorderThickness="0" Name="a79" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="8" BorderThickness="0" Name="a70" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="8" BorderThickness="0" Name="a71" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="8" BorderThickness="0" Name="a72" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="8" BorderThickness="0" Name="a73" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="8" BorderThickness="0" Name="a74" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="8" BorderThickness="0" Name="a75" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="8" BorderThickness="0" Name="a76" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="8" BorderThickness="0" Name="a77" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="8" BorderThickness="0" Name="a78" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="8" BorderThickness="0" Name="a79" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="9" BorderThickness="0" Name="a80" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="9" BorderThickness="0" Name="a81" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="9" BorderThickness="0" Name="a82" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="9" BorderThickness="0" Name="a83" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="9" BorderThickness="0" Name="a84" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="9" BorderThickness="0" Name="a85" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="9" BorderThickness="0" Name="a86" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="9" BorderThickness="0" Name="a87" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="9" BorderThickness="0" Name="a88" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="9" BorderThickness="0" Name="a89" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="9" BorderThickness="0" Name="a80" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="9" BorderThickness="0" Name="a81" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="9" BorderThickness="0" Name="a82" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="9" BorderThickness="0" Name="a83" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="9" BorderThickness="0" Name="a84" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="9" BorderThickness="0" Name="a85" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="9" BorderThickness="0" Name="a86" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="9" BorderThickness="0" Name="a87" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="9" BorderThickness="0" Name="a88" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="9" BorderThickness="0" Name="a89" ></Button>
 
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="1" Grid.Column="10" BorderThickness="0" Name="a90" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="2" Grid.Column="10" BorderThickness="0" Name="a91" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="3" Grid.Column="10" BorderThickness="0" Name="a92" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="4" Grid.Column="10" BorderThickness="0" Name="a93" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="5" Grid.Column="10" BorderThickness="0" Name="a94" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="6" Grid.Column="10" BorderThickness="0" Name="a95" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="7" Grid.Column="10" BorderThickness="0" Name="a96" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="8" Grid.Column="10" BorderThickness="0" Name="a97" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="9" Grid.Column="10" BorderThickness="0" Name="a98" ></Button>
-                    <Button Click="OnFieldButtonClick" Background="LightGray" Grid.Row="10" Grid.Column="10" BorderThickness="0" Name="a99" ></Button>
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="10" BorderThickness="0" Name="a90" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="10" BorderThickness="0" Name="a91" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="10" BorderThickness="0" Name="a92" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="10" BorderThickness="0" Name="a93" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="10" BorderThickness="0" Name="a94" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="10" BorderThickness="0" Name="a95" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="10" BorderThickness="0" Name="a96" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="10" BorderThickness="0" Name="a97" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="10" BorderThickness="0" Name="a98" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="10" BorderThickness="0" Name="a99" ></Button>
                 </Grid>
             </Grid>
 
@@ -217,8 +217,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0" x:Name="horButton" Click="horOrVerButton_Click" Content="Horizontal"></Button>
-                    <Button Grid.Column="1" x:Name="verButton" Click="horOrVerButton_Click" Content="Vertical"></Button>
+   
                 </Grid>
             </Grid>
 
