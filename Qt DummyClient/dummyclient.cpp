@@ -9,7 +9,7 @@
 DummyClient::DummyClient(QObject *parent) : QObject(parent)
 {
     socket = new QTcpSocket(this);
-    gadgetId = 12345678;
+    gadgetId = "12345678";
     serverPort = 1234;
 //    serverAddress = "T-Pc";
     serverAddress = "10.27.6.126";
@@ -17,6 +17,7 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     cReader = new ConsoleReader();
     consoleThread = new QThread();
     cReader->moveToThread(consoleThread);
+    broadcastReceiver = new BroadcastSocket();
     connect(socket, SIGNAL(readyRead()), this, SLOT(newDataAvailable()));
     connect(socket, SIGNAL(connected()), this, SLOT(sendFirstMessage()));
     connect(this, SIGNAL(incomingMessage(QString)), cReader, SLOT(writeToConsole(QString)), Qt::DirectConnection);
@@ -29,6 +30,9 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(runConsole()), cReader, SLOT(onRun()));
     //    connect(cReader, SIGNAL(finished()), consoleThread, SLOT(quit()));
     connect(this, SIGNAL(quit()), consoleThread, SLOT(quit()), Qt::DirectConnection);
+    // UDP socket control
+    connect(broadcastReceiver, SIGNAL(newDatagram(QString)), consoleThread, SLOT(writeToConsole(QString)), Qt::DirectConnection);
+    connect(this, SIGNAL(closeUdpSocket()), broadcastReceiver, SLOT(close()), Qt::DirectConnection);
 }
 
 
@@ -39,7 +43,7 @@ void DummyClient::run()
     QString message;
     message = "Server Ip: " + serverAddress;
     message += ", Server Port: " + QString::number(serverPort);
-    message += ", ID: " + QString::number(gadgetId);
+    message += ", ID: " + gadgetId;
     emit write(message);
 }
 
@@ -73,7 +77,7 @@ void DummyClient::newDataAvailable()
 void DummyClient::sendFirstMessage()
 {
     emit write("Connected.");
-    sendMessage(QString::number(gadgetId));
+    sendMessage(gadgetId);
 }
 
 void DummyClient::sendMessage(QString message)
@@ -149,8 +153,13 @@ void DummyClient::startCommand(QString text)
     }
     else if (text.left(3) == "ID " || text.left(3) == "id ")
     {
-        gadgetId = qstringToQuint32(text.mid(3));
-        emit write("  Gadget ID: " + QString::number(gadgetId));
+        gadgetId = text.mid(3);
+        emit write("  Gadget ID: " + gadgetId);
+    }
+    else if (text.left(3) == "CLOSEUDP " || text.left(3) == "closeudp ")
+    {
+        emit closeUdpSocket();
+        emit write("  UDP Socket is closed.");
     }
     else
     {

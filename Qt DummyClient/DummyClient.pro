@@ -12,7 +12,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp \
     dummyclient.cpp \
-    consolereader.cpp
+    consolereader.cpp \
+    broadcastsocket.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -27,4 +28,5 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS += \
     dummyclient.h \
-    consolereader.h
+    consolereader.h \
+    broadcastsocket.h

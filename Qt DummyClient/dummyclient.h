@@ -7,6 +7,7 @@
 #include <QTimer>
 #include <QSocketNotifier>
 #include "consolereader.h"
+#include "broadcastsocket.h"
 
 class DummyClient : public QObject
 {
@@ -24,6 +25,7 @@ signals:
     void quit();
     void runConsole();
     void write(QString);
+    void closeUdpSocket();
 
 public slots:
 //    void writeToConsole(QString);
@@ -33,12 +35,13 @@ public slots:
     void parseInputFromCommandLine(QString text);
 
 private:
-quint32 gadgetId;
+QString gadgetId;
 quint16 serverPort;
 QString serverAddress;
 QString userName;
 int timerId;
 QTcpSocket *socket;
+BroadcastSocket *broadcastReceiver;
 ConsoleReader *cReader;
 QThread *consoleThread;
 void connectToServer();
