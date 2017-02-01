@@ -3,7 +3,6 @@
 #include <QObject>
 #include <QtNetwork>
 
-
 class QTimer;
 class QUdpSocket;
 
@@ -21,6 +20,7 @@ private:
   QUdpSocket* udpSocket;
   QTimer* timer;
   int messageNo;
+  int broadcastPort;
 };
 
 #endif

@@ -6,6 +6,7 @@ UdpSender::UdpSender(QObject* parent) : QObject(parent) {
   udpSocket = new QUdpSocket(this);
   messageNo = 1;
   startBroadcasting();
+  broadcastPort = 45454;
   connect(timer, SIGNAL(timeout()), this, SLOT(broadcastDatagram()));
 }
 
@@ -18,7 +19,7 @@ void UdpSender::broadcastDatagram() {
   addr.setAddress("10.27.6.255");
   QByteArray datagram = "Broadcast message " + QByteArray::number(messageNo);
   udpSocket->writeDatagram(datagram.data(), datagram.size(),
-    addr, 45454);
+    addr, broadcastPort);
   qDebug() << "Broadcasting... " << messageNo;
   ++messageNo;
   if (messageNo == 100) {

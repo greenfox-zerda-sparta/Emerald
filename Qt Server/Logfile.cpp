@@ -20,13 +20,6 @@ void Logfile::log_buffer(std::string logbuffer) {
     logfile.close();
   }
 }
-/*
-void Logfile::print_and_log() {
-cout << logbuffer << endl;
-log_buffer();
-}
-*/
-// logbuffer = LocalTimer->GetCurrentTime() + "Client connected. There are now " + toString(clientCount) + " client(s) connected.";
 
 bool Logfile::get_logging_status() {
   return logging;

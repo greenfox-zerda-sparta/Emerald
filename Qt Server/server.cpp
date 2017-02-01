@@ -54,7 +54,7 @@ void Server::readyRead() {
     msgHandler->toFullCommand(msgBytes);                   // splitting message by byte (char)
     isAdmin(client, msgBytes);                             // checking for admin
 
-    if (users[client] == "admin" && msgBytes != "00000000") {                        // if the message is from admin, send it to all other connections
+    if (users[client] == "admin" && msgBytes != "00000000") {  // if the message is from admin, send it to all other connections
       foreach(QTcpSocket* otherClient, clients) {
         if (otherClient != client) {
           otherClient->write(msgBytes);
@@ -63,10 +63,10 @@ void Server::readyRead() {
       QString message = "Admin: " + msgBytes;               // for logging
       mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
       qDebug() << message;
-      qDebug() << "Printing message by bytes:" << msgHandler->getFullCommand()[0] << msgHandler->getFullCommand()[1]
-        << msgHandler->getFullCommand()[2] << msgHandler->getFullCommand()[3]
-        << msgHandler->getFullCommand()[4] << msgHandler->getFullCommand()[5]
-        << msgHandler->getFullCommand()[6] << msgHandler->getFullCommand()[7];
+
+      for (auto item : msgHandler->getFullCommand()) {
+        qDebug() << item;
+      }
 
     }
     else {                                               // if message is from a device, print it to console
