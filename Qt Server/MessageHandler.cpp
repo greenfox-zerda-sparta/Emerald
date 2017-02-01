@@ -1,4 +1,4 @@
-#include "MessageHandler.h"
+﻿#include "MessageHandler.h"
 
 MessageHandler::MessageHandler() {
 }
@@ -28,3 +28,5 @@ void MessageHandler::toFullCommand(QByteArray bytes) {
 std::vector<char> MessageHandler::getFullCommand() {
   return fullCommand;
 }
+
+//admin client has to send at least 8 characters in a message!!!

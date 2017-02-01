@@ -1,0 +1,242 @@
+﻿<Window x:Class="Devices.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Devices"
+        mc:Ignorable="d"
+        Title="Devices" Height="720" Width="1280" FontFamily="Comic Sans MS">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="12*"/>
+                <RowDefinition Height="8*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <TextBlock FontSize="18" Text="Your devices:" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="11" Grid.Column="1" Grid.ColumnSpan="10" Grid.RowSpan="3" Background="DarkGray" Text="" FontSize="18" Foreground="White" FontFamily="Arial" TextAlignment="Center"/>
+
+                    <Button Grid.Row="11" Grid.Column="0" BorderThickness="0" ></Button>
+
+                    <Button Grid.Column="0" Grid.Row="0" BorderThickness="0" Name="ex0y0"></Button>
+
+                    <Button Grid.Column="1" BorderThickness="0" Name="ex1y0">0</Button>
+                    <Button Grid.Column="2" BorderThickness="0" Name="ex2y0">1</Button>
+                    <Button Grid.Column="3" BorderThickness="0" Name="ex3y0">2</Button>
+                    <Button Grid.Column="4" BorderThickness="0" Name="ex4y0">3</Button>
+                    <Button Grid.Column="5" BorderThickness="0" Name="ex5y0">4</Button>
+                    <Button Grid.Column="6" BorderThickness="0" Name="ex6y0">5</Button>
+                    <Button Grid.Column="7" BorderThickness="0" Name="ex7y0">6</Button>
+                    <Button Grid.Column="8" BorderThickness="0" Name="ex8y0">7</Button>
+                    <Button Grid.Column="9" BorderThickness="0" Name="ex9y0">8</Button>
+                    <Button Grid.Column="10" BorderThickness="0" Name="ex10y0">9</Button>
+
+                    <Button Grid.Row="1" BorderThickness="0" Name="ex0y1">Lights</Button>
+                    <Button Grid.Row="2" BorderThickness="0" Name="ex0y2">Blinds</Button>
+                    <Button Grid.Row="3" BorderThickness="0" Name="ex0y3">Heating</Button>
+                    <Button Grid.Row="4" BorderThickness="0" Name="ex0y4">Cooling</Button>
+                    <Button Grid.Row="5" BorderThickness="0" Name="ex0y5">Alarm</Button>
+                    <Button Grid.Row="6" BorderThickness="0" Name="ex0y6">Garage door</Button>
+                    <Button Grid.Row="7" BorderThickness="0" Name="ex0y7">G</Button>
+                    <Button Grid.Row="8" BorderThickness="0" Name="ex0y8">H</Button>
+                    <Button Grid.Row="9" BorderThickness="0" Name="ex0y9">I</Button>
+                    <Button Grid.Row="10" BorderThickness="0" Name="ex0y10">J</Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="1" BorderThickness="0" Name="a00" />
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="1" BorderThickness="0" Name="a01" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="1" BorderThickness="0" Name="a02" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="1" BorderThickness="0" Name="a03" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="1" BorderThickness="0" Name="a04" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="1" BorderThickness="0" Name="a05" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="1" BorderThickness="0" Name="a06" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="1" BorderThickness="0" Name="a07" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="1" BorderThickness="0" Name="a08" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="1" BorderThickness="0" Name="a09" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="2" BorderThickness="0"  Name="a10" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="2" BorderThickness="0"  Name="a11" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="2" BorderThickness="0"  Name="a12" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="2" BorderThickness="0"  Name="a13" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="2" BorderThickness="0"  Name="a14" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="2" BorderThickness="0"  Name="a15" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="2" BorderThickness="0"  Name="a16" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="2" BorderThickness="0"  Name="a17" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="2" BorderThickness="0"  Name="a18" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="2" BorderThickness="0"  Name="a19" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="3" BorderThickness="0" Name="a20" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="3" BorderThickness="0" Name="a21" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="3" BorderThickness="0" Name="a22" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="3" BorderThickness="0" Name="a23" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="3" BorderThickness="0" Name="a24" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="3" BorderThickness="0" Name="a25" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="3" BorderThickness="0" Name="a26" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="3" BorderThickness="0" Name="a27" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="3" BorderThickness="0" Name="a28" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="3" BorderThickness="0" Name="a29" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="4" BorderThickness="0" Name="a30" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="4" BorderThickness="0" Name="a31" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="4" BorderThickness="0" Name="a32" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="4" BorderThickness="0" Name="a33" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="4" BorderThickness="0" Name="a34" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="4" BorderThickness="0" Name="a35" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="4" BorderThickness="0" Name="a36" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="4" BorderThickness="0" Name="a37" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="4" BorderThickness="0" Name="a38" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="4" BorderThickness="0" Name="a39" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="5" BorderThickness="0" Name="a40" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="5" BorderThickness="0" Name="a41" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="5" BorderThickness="0" Name="a42" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="5" BorderThickness="0" Name="a43" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="5" BorderThickness="0" Name="a44" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="5" BorderThickness="0" Name="a45" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="5" BorderThickness="0" Name="a46" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="5" BorderThickness="0" Name="a47" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="5" BorderThickness="0" Name="a48" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="5" BorderThickness="0" Name="a49" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="6" BorderThickness="0" Name="a50" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="6" BorderThickness="0" Name="a51" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="6" BorderThickness="0" Name="a52" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="6" BorderThickness="0" Name="a53" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="6" BorderThickness="0" Name="a54" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="6" BorderThickness="0" Name="a55" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="6" BorderThickness="0" Name="a56" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="6" BorderThickness="0" Name="a57" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="6" BorderThickness="0" Name="a58" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="6" BorderThickness="0" Name="a59" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="7" BorderThickness="0" Name="a60" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="7" BorderThickness="0" Name="a61" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="7" BorderThickness="0" Name="a62" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="7" BorderThickness="0" Name="a63" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="7" BorderThickness="0" Name="a64" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="7" BorderThickness="0" Name="a65" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="7" BorderThickness="0" Name="a66" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="7" BorderThickness="0" Name="a67" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="7" BorderThickness="0" Name="a68" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="7" BorderThickness="0" Name="a69" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="8" BorderThickness="0" Name="a70" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="8" BorderThickness="0" Name="a71" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="8" BorderThickness="0" Name="a72" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="8" BorderThickness="0" Name="a73" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="8" BorderThickness="0" Name="a74" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="8" BorderThickness="0" Name="a75" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="8" BorderThickness="0" Name="a76" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="8" BorderThickness="0" Name="a77" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="8" BorderThickness="0" Name="a78" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="8" BorderThickness="0" Name="a79" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="9" BorderThickness="0" Name="a80" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="9" BorderThickness="0" Name="a81" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="9" BorderThickness="0" Name="a82" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="9" BorderThickness="0" Name="a83" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="9" BorderThickness="0" Name="a84" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="9" BorderThickness="0" Name="a85" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="9" BorderThickness="0" Name="a86" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="9" BorderThickness="0" Name="a87" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="9" BorderThickness="0" Name="a88" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="9" BorderThickness="0" Name="a89" ></Button>
+
+                    <Button Background="LightGray" Grid.Row="1" Grid.Column="10" BorderThickness="0" Name="a90" ></Button>
+                    <Button Background="LightGray" Grid.Row="2" Grid.Column="10" BorderThickness="0" Name="a91" ></Button>
+                    <Button Background="LightGray" Grid.Row="3" Grid.Column="10" BorderThickness="0" Name="a92" ></Button>
+                    <Button Background="LightGray" Grid.Row="4" Grid.Column="10" BorderThickness="0" Name="a93" ></Button>
+                    <Button Background="LightGray" Grid.Row="5" Grid.Column="10" BorderThickness="0" Name="a94" ></Button>
+                    <Button Background="LightGray" Grid.Row="6" Grid.Column="10" BorderThickness="0" Name="a95" ></Button>
+                    <Button Background="LightGray" Grid.Row="7" Grid.Column="10" BorderThickness="0" Name="a96" ></Button>
+                    <Button Background="LightGray" Grid.Row="8" Grid.Column="10" BorderThickness="0" Name="a97" ></Button>
+                    <Button Background="LightGray" Grid.Row="9" Grid.Column="10" BorderThickness="0" Name="a98" ></Button>
+                    <Button Background="LightGray" Grid.Row="10" Grid.Column="10" BorderThickness="0" Name="a99" ></Button>
+                </Grid>
+            </Grid>
+
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="12*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="3*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="4*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="3*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+   
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <TextBlock Background="LightGray" x:Name="textBlock"/>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <TextBox x:Name="textBox" AcceptsReturn="True" Background="White" BorderBrush="Black"></TextBox>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Button x:Name="sendButton" Click="sendButton_Click" Content="SEND"  BorderBrush="Black"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

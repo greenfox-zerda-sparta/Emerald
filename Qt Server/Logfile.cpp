@@ -27,3 +27,7 @@ log_buffer();
 }
 */
 // logbuffer = LocalTimer->GetCurrentTime() + "Client connected. There are now " + toString(clientCount) + " client(s) connected.";
+
+bool Logfile::get_logging_status() {
+  return logging;
+}

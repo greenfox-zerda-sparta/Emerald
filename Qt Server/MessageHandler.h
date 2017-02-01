@@ -1,4 +1,4 @@
-// #pragma once
+﻿// #pragma once
 #ifndef MESSAGEHANDLER_H
 #define MESSAGEHANDLER_H
 #include <vector>
@@ -24,4 +24,3 @@ public:
 };
 
 #endif
-

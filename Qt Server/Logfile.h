@@ -12,13 +12,15 @@ private:
   std::string logfilename;
   std::ofstream logfile;
   MyTime* LocalTimer;
-  bool logging;
+    bool logging;
 
 public:
   Logfile();
   ~Logfile();
   void log_buffer(std::string);
   // void print_and_log();
+  bool get_logging_status();
+
 };
 
 template<class T>

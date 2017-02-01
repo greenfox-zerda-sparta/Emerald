@@ -1,14 +1,17 @@
 #include "server.h"
+#include "udpsender.h"
 
 Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
   mylogfile = new Logfile;
   msgHandler = new MessageHandler;
+  udpsender = new UdpSender;
 }
 
 Server::~Server() {
   delete mylogfile;
   delete msgHandler;
+  delete udpsender;
 }
 
 void Server::StartServer() {
@@ -17,6 +20,11 @@ void Server::StartServer() {
   }
   else {
     qDebug() << "Server started. Listening...";
+    if (mylogfile->get_logging_status()) {
+      qDebug() << "File logging is on.";
+    } else {
+      qDebug() << "File logging is off.";
+    }
   }
 }
 
@@ -34,7 +42,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 
   QString ConnectMsg = "Device " + user + " from: " + client->peerAddress().toString() + " has joined.";
   qDebug() << ConnectMsg;
-  mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + ConnectMsg.toStdString());
+  mylogfile->log_buffer("Connect message " + LocalTimer->GetTimeFileFormat() + " " + ConnectMsg.toStdString());
   PrintUserList();
 }
 
@@ -53,22 +61,23 @@ void Server::readyRead() {
         }
       }
       QString message = "Admin: " + msgBytes;               // for logging
-      mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
+      mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
       qDebug() << message;
       qDebug() << "Printing message by bytes:" << msgHandler->getFullCommand()[0] << msgHandler->getFullCommand()[1]
         << msgHandler->getFullCommand()[2] << msgHandler->getFullCommand()[3]
         << msgHandler->getFullCommand()[4] << msgHandler->getFullCommand()[5]
         << msgHandler->getFullCommand()[6] << msgHandler->getFullCommand()[7];
 
-    } else {                                               // if message is from a device, print it to console
+    }
+    else {                                               // if message is from a device, print it to console
       QString user = users[client];
       QString message = "Device " + user + ": " + msgBytes;
-     // foreach(QTcpSocket* otherClient, clients) {   // uncomment this only if clients do not echo back the received message!
-     //   if (otherClient != client) {
-     //     otherClient->write(message.toUtf8());
-    //    }
-    //  }
-      mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
+      // foreach(QTcpSocket* otherClient, clients) {   // uncomment this only if clients do not echo back the received message!
+      //   if (otherClient != client) {
+      //     otherClient->write(message.toUtf8());
+      //    }
+      //  }
+      mylogfile->log_buffer("Device message " + LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
       qDebug() << message;
     }
   }
@@ -80,11 +89,12 @@ void Server::disconnected() {
   QString DisconnectMsg;
   if (user != "admin") {
     DisconnectMsg = "Device " + user + " disconnected. ";
-  } else {
+  }
+  else {
     DisconnectMsg = "Admin disconnected. ";
   }
   qDebug() << DisconnectMsg;
-  mylogfile->log_buffer(LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg.toStdString());
+  mylogfile->log_buffer("Disconnect message " + LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg.toStdString());
   clients.remove(client);
   users.remove(client);
   PrintUserList();
