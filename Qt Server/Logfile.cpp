@@ -6,7 +6,7 @@ Logfile::Logfile() {
   logbuffer = "";
   std::ofstream logfile;
   logfilename = "Smart_Home_" + LocalTimer->GetTimeFileFormat() + ".txt";
-  logging = false;
+  logging = true;
 }
 
 Logfile::~Logfile() {
