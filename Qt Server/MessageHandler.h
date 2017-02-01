@@ -4,6 +4,7 @@
 #include <vector>
 #include <QtCore>
 
+
 class MessageHandler {
 private:
   char targetID;

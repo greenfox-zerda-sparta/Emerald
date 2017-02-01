@@ -1,13 +1,11 @@
 ﻿#ifndef UDPSENDER_H
 #define UDPSENDER_H
+#include <QObject>
+#include <QtNetwork>
 
-#include <QWidget>
-#include <QApplication>
 
-class QApplication;
 class QTimer;
 class QUdpSocket;
-
 
 class UdpSender : public QObject
 {
@@ -15,7 +13,6 @@ class UdpSender : public QObject
 
 public:
   UdpSender(QObject* parent = Q_NULLPTR);
-
   private slots:
   void startBroadcasting();
   void broadcastDatagram();
