@@ -6,13 +6,14 @@
 ConsoleReader::ConsoleReader(QObject *parent) : QObject(parent)
 {
     connect(this, SIGNAL(run()), this, SLOT(onRun()));
-    qDebug() << "Enter a command(c:COMMAND) or a message(s:message)";
-    qDebug() << "   Commands:   CONNECT";
-    qDebug() << "               QUIT";
-    //qDebug() << "               CLOSEUDP";
-    qDebug() << "               IP 10.28.2.150";
-    qDebug() << "               PORT 4321";
-    qDebug() << "               ID 12121212";
+    qDebug() << "Enter a command(/command) or a message(message)";
+    qDebug() << "   Commands:   connect         - start tcp connection";
+    qDebug() << "               quit            - quit program";
+    //qDebug() << "               openudp         - open udp socket to autoconnection";
+    qDebug() << "               closeudp        - close udp socket";
+    qDebug() << "               ip=10.28.2.150  - set ip";
+    qDebug() << "               port=4321       - set tcp port";
+    qDebug() << "               id=12121212     - set device id";
 }
 
 void ConsoleReader::onRun()
@@ -35,5 +36,6 @@ void ConsoleReader::readCommand()
 
 void ConsoleReader::writeToConsole(QString message)
 {
-    qDebug() << message;
+    QDebug qdebug = qDebug();
+    qdebug.noquote() << message;
 }

@@ -26,6 +26,7 @@ signals:
     void runConsole();
     void write(QString);
     void closeUdpSocket();
+    void openUdpSocket();
 
 public slots:
 //    void writeToConsole(QString);
@@ -35,7 +36,7 @@ public slots:
     void parseInputFromCommandLine(QString text);
 
 private:
-QString gadgetId;
+QString deviceId;
 quint16 serverPort;
 QString serverAddress;
 QString userName;
