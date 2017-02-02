@@ -1,32 +1,17 @@
 ﻿#include "MessageHandler.h"
 
 MessageHandler::MessageHandler() {
+  validKeys = { "deviceID1", "deviceID2", "cmdID", "homeID", "floorID", "roomID", "groupID", "deviceIDLow", "deviceIDHigh" };
 }
-
-MessageHandler::~MessageHandler() {
-}
-
-void MessageHandler::splitMessage(QByteArray bytes) {
-  targetID = bytes[0];
-  cmdID = bytes[1];
-  homeID = bytes[2];
-  floorID = bytes[3];
-  roomID = bytes[4];
-  groupID = bytes[5];
-  deviceIDLow = bytes[6];
-  deviceIDHigh = bytes[7];
-}
-
-void MessageHandler::toFullCommand(QByteArray bytes) {
-  splitMessage(bytes);
-  fullCommand.clear();
+ 
+void MessageHandler::splitMessage(std::vector<unsigned char> bytes) {
   for (int i = 0; i < bytes.size(); i++) {
-    fullCommand.push_back(bytes[i]);
+    if (i < validKeys.size()) {
+      commandMap[validKeys[i]] = bytes[i];
+    }
   }
 }
 
-std::vector<char> MessageHandler::getFullCommand() {
-  return fullCommand;
+std::unordered_map<std::string, unsigned char> MessageHandler::getCommandMap() {
+  return commandMap;
 }
-
-//admin client has to send at least 8 characters in a message!!!

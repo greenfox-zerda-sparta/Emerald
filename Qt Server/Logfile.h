@@ -16,11 +16,8 @@ private:
 
 public:
   Logfile();
-  ~Logfile();
   void log_buffer(std::string);
-  // void print_and_log();
   bool get_logging_status();
-
 };
 
 template<class T>
@@ -31,4 +28,4 @@ std::string toString(const T& t)
   return stream.str();
 }
 
-#endif //LOGFILE_H
+#endif 

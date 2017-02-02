@@ -9,5 +9,5 @@ public:
   std::string GetTimeFileFormat();
 };
 
-#endif //MYTIME_H
+#endif 
 

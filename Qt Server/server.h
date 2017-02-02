@@ -4,11 +4,13 @@
 #include <QStringList>
 #include <QTcpServer>
 #include <QTcpSocket>
-#include <QMap>
-#include <QSet>
+
+#include <map>
+#include <set>
 #include "Logfile.h"
 #include "MessageHandler.h"
 #include "udpsender.h"
+#include "MessageConverter.h"
 
 class Server : public QTcpServer {
   Q_OBJECT
@@ -17,26 +19,27 @@ public:
   Server(QObject* parent = Q_NULLPTR);
   ~Server();
   void StartServer();
-  bool Server::isAdmin(QTcpSocket* socket, QByteArray bytes); // QByteArray version
+  bool Server::isAdmin(QTcpSocket* socket, std::vector<unsigned char> msg);
 
   private slots:
   void readyRead();
   void disconnected();
-  void PrintUserList();
 
 protected:
   void incomingConnection(qintptr SocketDescriptor);
 
 private:
-  QSet<QTcpSocket*> clients;
-  QMap<QTcpSocket*, QString> users;
+  std::set<QTcpSocket*> socketset;
+  std::map<QTcpSocket*, int> devices;
   int ID;
   int adminID;
+  std::vector<unsigned char> AdminMsg;
   Logfile* mylogfile;
   std::string logbuffer;
   MyTime* LocalTimer;
   MessageHandler* msgHandler;
   UdpSender* udpsender;
+  MessageConverter* msgConv;
 };
 
-#endif // SERVER_H
+#endif

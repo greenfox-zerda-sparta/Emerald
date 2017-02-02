@@ -2,26 +2,16 @@
 #ifndef MESSAGEHANDLER_H
 #define MESSAGEHANDLER_H
 #include <vector>
-#include <QtCore>
-
+#include <unordered_map>
 
 class MessageHandler {
 private:
-  char targetID;
-  char cmdID;
-  char homeID;
-  char floorID;
-  char roomID;
-  char groupID;
-  char deviceIDLow;
-  char deviceIDHigh;
-  std::vector<char> fullCommand;
+  std::vector<std::string> validKeys;
+  std::unordered_map<std::string, unsigned char> commandMap;
 public:
   MessageHandler();
-  ~MessageHandler();
-  void splitMessage(QByteArray bytes);
-  void toFullCommand(QByteArray bytes);
-  std::vector<char> getFullCommand();
+  void splitMessage(std::vector<unsigned char> bytes);
+  std::unordered_map<std::string, unsigned char> getCommandMap();
 };
 
 #endif

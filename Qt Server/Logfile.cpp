@@ -1,5 +1,4 @@
 ﻿#include "Logfile.h"
-
 using namespace std;
 
 Logfile::Logfile() {
@@ -9,9 +8,6 @@ Logfile::Logfile() {
   logging = true;
 }
 
-Logfile::~Logfile() {
-
-}
 
 void Logfile::log_buffer(std::string logbuffer) {
   if (logging) {
