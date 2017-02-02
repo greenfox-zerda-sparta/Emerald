@@ -9,7 +9,7 @@
 DummyClient::DummyClient(QObject *parent) : QObject(parent)
 {
     socket = new QTcpSocket(this);
-    gadgetId = "12345678";
+    deviceId = "12345678";
     serverPort = 1234;
 //    serverAddress = "T-Pc";
     serverAddress = "10.27.6.126";
@@ -31,10 +31,12 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     //    connect(cReader, SIGNAL(finished()), consoleThread, SLOT(quit()));
     connect(this, SIGNAL(quit()), consoleThread, SLOT(quit()), Qt::DirectConnection);
     // UDP socket control
-    connect(this, SIGNAL(closeUdpSocket()), broadcastReceiver, SLOT(close()), Qt::DirectConnection);
-    connect(socket, SIGNAL(disconnected()), broadcastReceiver, SLOT(startUdp()));
+    connect(socket, SIGNAL(connected()), broadcastReceiver, SLOT(close()));
+    connect(socket, SIGNAL(disconnected()), broadcastReceiver, SLOT(startUDP()));
+//    connect(this, SIGNAL(openUdpSocket()), broadcastReceiver, SLOT(startUDP()));
+    connect(this, SIGNAL(closeUdpSocket()), broadcastReceiver, SLOT(close()));
     connect(broadcastReceiver, SIGNAL(newDatagram(QString)), cReader, SLOT(writeToConsole(QString)), Qt::DirectConnection);
-	connect(broadcastReceiver, SIGNAL(newDatagram(QString)), this, SLOT(parseInputFromCommandLine(QString)));
+    connect(broadcastReceiver, SIGNAL(newDatagram(QString)), this, SLOT(parseInputFromCommandLine(QString)));
 }
 
 
@@ -43,9 +45,9 @@ void DummyClient::run()
     consoleThread->start();
     emit runConsole();
     QString message;
-    message = "Server Ip: " + serverAddress;
+    message = "   Server Ip: " + serverAddress;
     message += ", Server Port: " + QString::number(serverPort);
-    message += ", ID: " + gadgetId;
+    message += ", ID: " + deviceId;
     emit write(message);
 }
 
@@ -78,9 +80,9 @@ void DummyClient::newDataAvailable()
 
 void DummyClient::sendFirstMessage()
 {
-    emit write("Connected.");
+    emit write("   Connected.");
     StopTimer();
-    sendMessage(gadgetId);
+    sendMessage(deviceId);
 }
 
 void DummyClient::sendMessage(QString message)
@@ -96,7 +98,7 @@ void DummyClient::sendMessage(QString message)
 void DummyClient::timerEvent(QTimerEvent *)
 {
     if (socket->state() == QTcpSocket::UnconnectedState) {
-        emit write("Connecting to host...");
+        emit write("   Connecting to host...");
         connectToServer();
     }
 }
@@ -114,23 +116,20 @@ void DummyClient::closeSocket()
 
 void DummyClient::parseInputFromCommandLine(QString text)
 {
-    if(text.left(2) == "c:")
+    if(text.left(1) == "/")
     {
-        startCommand(text.mid(2));
-    }
-    else if(text.left(2) == "s:")
-    {
-        sendMessage(text.mid(2));
+        startCommand(text.mid(1));
     }
     else
     {
-        emit write("Invalid argument");
+        sendMessage(text);
     }
 }
 
 void DummyClient::startCommand(QString text)
 {
-    if (text == "CONNECT" || text == "connect")
+    text = text.toLower();
+    if (text == "connect")
     {
         if (timerId != -1)
         {
@@ -138,35 +137,41 @@ void DummyClient::startCommand(QString text)
         }
         StartTimer();
     }
-    else if (text == "QUIT" || text == "quit")
+    else if (text == "quit")
     {
-        emit write("Bye!");
+        emit write("   Bye!");
+        delete broadcastReceiver;
         emit quit();
     }
-    else if (text.left(3) == "IP " || text.left(3) == "ip ")
+    else if (text.left(3) == "ip=")
     {
         serverAddress = text.mid(3);
-        emit write("  server address: " + serverAddress);
+        emit write("   server address: " + serverAddress);
     }
-    else if (text.left(5) == "PORT " || text.left(5) == "port ")
+    else if (text.left(5) == "port=")
     {
         serverPort = qstringToQuint32(text.mid(5));
-        emit write("  server port: " + QString::number(serverPort));
+        emit write("   server port: " + QString::number(serverPort));
 
     }
-    else if (text.left(3) == "ID " || text.left(3) == "id ")
+    else if (text.left(3) == "id=")
     {
-        gadgetId = text.mid(3);
-        emit write("  Gadget ID: " + gadgetId);
+        deviceId = text.mid(3);
+        emit write("   Device ID: " + deviceId);
     }
-    //else if (text == "CLOSEUDP" || text == "closeudp")
+    //else if (text == "openudp")
     //{
-    //    emit closeUdpSocket();
-    //    emit write("  UDP Socket is closed.");
+        //emit openUdpSocket();
+        //emit write("   UDP Socket is opened.");
     //}
+    else if (text == "closeudp")
+    {
+        emit closeUdpSocket();
+        emit write("   UDP Socket is closed.");
+    }
     else
     {
-        emit write("Invalid command.");
+        emit write("   Invalid command.");
     }
 }
 
