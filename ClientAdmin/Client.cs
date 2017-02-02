@@ -9,7 +9,7 @@ namespace Chatclient {
     private Socket sender;
     private byte[] bytes;
     private bool connected;
-    private string serverIP = "10.27.6.228";
+    private string serverIP = "10.27.6.58";
 
     public Client() {
       bytes = new byte[1024];

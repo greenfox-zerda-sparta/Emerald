@@ -50,7 +50,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {                             // if we can read from the socket
-    QByteArray msgBytes = (client->readAll()).trimmed();   // read to QByteArray, remove \n
+    QByteArray msgBytes = (client->readAll().trimmed());     // read to QByteArray, remove \n
     msgHandler->toFullCommand(msgBytes);                   // splitting message by byte (char)
     isAdmin(client, msgBytes);                             // checking for admin
 
@@ -64,8 +64,9 @@ void Server::readyRead() {
       mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message.toStdString());
       qDebug() << message;
 
+      QDebug debug = qDebug();
       for (auto item : msgHandler->getFullCommand()) {
-        qDebug() << item;
+        debug << item;
       }
 
     }
