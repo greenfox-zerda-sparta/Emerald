@@ -11,6 +11,8 @@ Server::Server(QObject* parent) : QTcpServer(parent) {
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
   udpsender = new UdpSender;
+  connect(this, SIGNAL(stopBroadcast()), udpsender, SLOT(stopBroadcasting()));
+  connect(this, SIGNAL(startBroadcast()), udpsender, SLOT(startBroadcasting()));
 }
 
 Server::~Server() {
@@ -91,6 +93,7 @@ void Server::disconnected() {
   }
   else {
     DisconnectMsg = "Admin disconnected. ";
+	emit startBroadcast();
   }
   std::cout << DisconnectMsg << std::endl;
   mylogfile->log_buffer("Disconnect message " + LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
@@ -102,7 +105,7 @@ void Server::disconnected() {
 bool Server::isAdmin(QTcpSocket* socket, std::vector<unsigned char> msg) {
   if (msg == AdminMsg) {
     devices[socket] = 0;
-	udpsender->stopBroadcasting();
+	emit stopBroadcast();
     return true;
   }
   return false;

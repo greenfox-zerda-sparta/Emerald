@@ -182,7 +182,7 @@ Szerver leállás - hiba:
 	ha a szervert elvesztik az eszközök, átállnak manual módra, utolsó parancs alapján mûködnek
 	udp-t nyitnak, tcp-t zárnak
 
-Szerver elsõ indítás: bekéri az UI Id-t
+Szerver elsõ indítás: bekéri az UI Ip-t
 
 
 Még egy dolog:
