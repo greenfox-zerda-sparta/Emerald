@@ -102,6 +102,7 @@ void Server::disconnected() {
 bool Server::isAdmin(QTcpSocket* socket, std::vector<unsigned char> msg) {
   if (msg == AdminMsg) {
     devices[socket] = 0;
+	udpsender->stopBroadcasting();
     return true;
   }
   return false;
