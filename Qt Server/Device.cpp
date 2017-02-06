@@ -23,7 +23,7 @@ void Device::set_deviceIDHigh()
 
 void Device::set_deviceIDLow()
 {
-  deviceIDLow = deviceCommandMap.at("DeviceIDHigh");
+  deviceIDLow = deviceCommandMap.at("DeviceIDLow");
 }
 
 unsigned char Device::get_deviceIDHigh()

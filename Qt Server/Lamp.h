@@ -1,10 +1,9 @@
-#ifndef DEVICE_H
-#define DEVICE_H
+#ifndef LAMP_H
+#define LAMP_H
 
-#include <string>
-#include <map>
+#include "Device.h"
 
-class Device
+class Lamp : public Device
 {
 private:
   unsigned char deviceIDHigh;
