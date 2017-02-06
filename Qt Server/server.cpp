@@ -52,19 +52,19 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 // Dealing with incoming messages QBYTEARRAY VERSION
 void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
-  if (client->canReadLine()) {                              // if we can read from the socket
-    QByteArray QmsgBytes = (client->readAll().trimmed());     // read to QByteArray, remove \n
+  if (client->canReadLine()) {                                                          // if we can read from the socket
+    QByteArray QmsgBytes = (client->readAll().trimmed());                               // read to QByteArray, remove \n
     std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
-    msgHandler->splitMessage(msgBytes);                    // splitting message by byte (char)
-    isAdmin(client, msgBytes);                             // checking for admin
+    msgHandler->splitMessage(msgBytes);                                                // splitting message by byte (char)
+    isAdmin(client, msgBytes);                                                         // checking for admin
 
-    if (devices[client] == adminID && msgBytes != AdminMsg) {  // if the message is from admin, send it to all other connections
-      for (QTcpSocket* otherClient : socketset) {            // for now the original command from the UI is sent to the devices
+    if (devices[client] == adminID && msgBytes != AdminMsg) {                         // if the message is from admin, send it to all other connections
+      for (QTcpSocket* otherClient : socketset) {                                     // for now the original command from the UI is sent to the devices
         if (otherClient != client) {
           otherClient->write(QmsgBytes);
         }
       }
-      std::string message = "Admin: ";               // for logging and print it to console
+      std::string message = "Admin: ";                                                // for logging and print it to console
       for (auto iter : msgBytes) { message += iter; }
       mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message);
       std::cout << message << std::endl;
@@ -74,7 +74,7 @@ void Server::readyRead() {
       }
       std::cout << std::endl;
     }
-    else {                                               // if message is from a device, print it to console for now
+    else {                                                                            // if message is from a device, print it to console for now
       std::string message = "Device " + toString(devices[client]) + ": ";
       for (auto iter : msgBytes) { message += iter; }
       mylogfile->log_buffer("Device message " + LocalTimer->GetTimeFileFormat() + " " + message);

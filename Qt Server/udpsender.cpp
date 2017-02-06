@@ -16,8 +16,8 @@ void UdpSender::startBroadcasting() {
 void UdpSender::broadcastDatagram() {
   QByteArray datagram = "Broadcast message " + QByteArray::number(messageNo);
   udpSocket->writeDatagram(datagram.data(), datagram.size(),
-	  QHostAddress::Broadcast, 45454);
-  qDebug() << "Broadcasting... " << messageNo;
+	  QHostAddress::Broadcast, 45455);
+ // qDebug() << "Broadcasting... " << messageNo;
   ++messageNo;
   if (messageNo == 100) {
     messageNo = 0;
