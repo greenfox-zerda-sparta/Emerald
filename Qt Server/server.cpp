@@ -12,7 +12,7 @@ Server::Server(QObject* parent) : QTcpServer(parent) {
   msgConv = new MessageConverter;
   HostAddressess = new std::vector<QHostAddress>;
   QHostAddress adminAddress;
-  adminAddress.setAddress("T-Pc");
+  adminAddress.setAddress("127.0.0.1");
   HostAddressess->push_back(adminAddress);
   udpsender = new UdpSender(HostAddressess);
   connect(this, SIGNAL(stopBroadcast()), udpsender, SLOT(stopBroadcasting()));
