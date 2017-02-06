@@ -10,11 +10,12 @@ Server::Server(QObject* parent) : QTcpServer(parent) {
   mylogfile = new Logfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
-  HostAddressess = new std::vector<QHostAddress>;
   QHostAddress adminAddress;
   adminAddress.setAddress("127.0.0.1");
-  HostAddressess->push_back(adminAddress);
-  udpsender = new UdpSender(HostAddressess);
+  HostAddresses = std::make_shared<std::vector<QHostAddress> >();
+  HostAddresses->push_back(adminAddress);
+
+  udpsender = new UdpSender(HostAddresses);
   connect(this, SIGNAL(stopBroadcast()), udpsender, SLOT(stopBroadcasting()));
   connect(this, SIGNAL(startBroadcast()), udpsender, SLOT(startBroadcasting()));
 }

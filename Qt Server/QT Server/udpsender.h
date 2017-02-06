@@ -2,6 +2,7 @@
 #define UDPSENDER_H
 #include <QObject>
 #include <QtNetwork>
+#include <memory>
 
 class QTimer;
 class QUdpSocket;
@@ -11,7 +12,7 @@ class UdpSender : public QObject
   Q_OBJECT
 
 public:
-  UdpSender(std::vector<QHostAddress> *HostAddresses, QObject* parent = Q_NULLPTR);
+  UdpSender(std::shared_ptr<std::vector<QHostAddress>> HostAddresses, QObject* parent = Q_NULLPTR);
 
 private slots:
   void startBroadcasting();
@@ -23,7 +24,7 @@ private:
   QTimer* timer;
   int messageNo;
   int broadcastPort;
-  std::vector<QHostAddress> *HostAddresses;
+  std::shared_ptr<std::vector<QHostAddress>> HostAddresses;
 };
 
 #endif

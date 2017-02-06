@@ -2,8 +2,8 @@
 #include <QDebug>
 #include <QUnhandledException>
 
-UdpSender::UdpSender(std::vector<QHostAddress> *HostAddresses, QObject* parent) : QObject(parent) {
-  this->HostAddresses = HostAddresses;
+UdpSender::UdpSender(std::shared_ptr<std::vector<QHostAddress>> HostAddresses, QObject* parent) : HostAddresses(HostAddresses), QObject(parent) {
+ // this->HostAddresses = HostAddresses;
   timer = new QTimer(this);
   udpSocket = new QUdpSocket(this);
   startBroadcasting();
