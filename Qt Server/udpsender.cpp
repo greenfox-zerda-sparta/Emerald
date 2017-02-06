@@ -1,7 +1,8 @@
 ﻿#include "udpsender.h"
 #include <QDebug>
 
-UdpSender::UdpSender(QObject* parent) : QObject(parent) {
+UdpSender::UdpSender(std::vector<QHostAddress> *HostAddresses, QObject* parent) : QObject(parent) {
+  this->HostAddresses = &HostAddresses;
   timer = new QTimer(this);
   udpSocket = new QUdpSocket(this);
   startBroadcasting();

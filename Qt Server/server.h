@@ -11,6 +11,8 @@
 #include "MessageHandler.h"
 #include "udpsender.h"
 #include "MessageConverter.h"
+#include <vector>
+#include <string>
 
 class Server : public QTcpServer {
   Q_OBJECT
@@ -44,6 +46,7 @@ private:
   MessageHandler* msgHandler;
   UdpSender* udpsender;
   MessageConverter* msgConv;
+  std::vector<QHostAddress> *HostAddressess;
 };
 
 #endif
