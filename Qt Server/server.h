@@ -15,6 +15,10 @@
 class Server : public QTcpServer {
   Q_OBJECT
 
+signals:
+  void startBroadcast();
+  void stopBroadcast();
+
 public:
   Server(QObject* parent = Q_NULLPTR);
   ~Server();

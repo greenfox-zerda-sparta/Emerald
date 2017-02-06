@@ -12,8 +12,10 @@ class UdpSender : public QObject
 
 public:
   UdpSender(QObject* parent = Q_NULLPTR);
-  private slots:
+
+private slots:
   void startBroadcasting();
+  void stopBroadcasting();
   void broadcastDatagram();
 
 private:
