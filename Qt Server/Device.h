@@ -1,8 +1,7 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 
-#include <string>
-#include <map>
+#include <unordered_map>
 
 class Device
 {
