@@ -2,8 +2,8 @@
 #include <QDebug>
 #include <QUnhandledException>
 
-UdpSender::UdpSender(std::vector<QHostAddress> *_HostAddresses, QObject* parent) : QObject(parent) {
-  HostAddresses = _HostAddresses;
+UdpSender::UdpSender(std::vector<QHostAddress> *HostAddresses, QObject* parent) : QObject(parent) {
+  this->HostAddresses = HostAddresses;
   timer = new QTimer(this);
   udpSocket = new QUdpSocket(this);
   startBroadcasting();
@@ -20,19 +20,10 @@ void UdpSender::stopBroadcasting() {
 
 void UdpSender::broadcastDatagram() {
   QByteArray datagram = "turquoise&emerald";
-  try
-  {
-	  if (!(HostAddresses)->empty()) {
+	if (!(HostAddresses)->empty()) {
       for (QHostAddress i : *HostAddresses) {
-		 // for (int i = 0; i < HostAddresses->size(); ++i) {
-			  qDebug() << HostAddresses->size();
-        udpSocket->writeDatagram(datagram.data(), datagram.size(), i, 45454);
-		  }
-		  qDebug() << "Broadcasting message: " << QString::fromUtf8(datagram);
+		  udpSocket->writeDatagram(datagram.data(), datagram.size(), i, 45454);
 	  }
-  }
-  catch (QUnhandledException &e)
-  {
-	  qDebug() << e.what();
-  }
+	  qDebug() << "Broadcasting message: " << QString::fromUtf8(datagram);
+	}
 }
