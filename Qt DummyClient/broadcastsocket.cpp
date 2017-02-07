@@ -1,23 +1,30 @@
 #include "broadcastsocket.h"
 
-BroadcastSocket::BroadcastSocket(QObject *parent) : QObject(parent)
+BroadcastSocket::BroadcastSocket(QString datagramNeeded, QObject *parent) : QObject(parent)
 {
+    this->datagramNeeded = datagramNeeded;
     udpSocket = new QUdpSocket(this);
-    isRunning = false;
+    isUdpManual = true;
     connect(udpSocket, SIGNAL(readyRead()),
          this, SLOT(processPendingDatagrams()));
+}
+
+void BroadcastSocket::manualStart()
+{
+    isUdpManual = false;
     startUDP();
 }
 
 void BroadcastSocket::startUDP()
 {
-    isRunning = true;
-    bool connState = false;
-    do {
-        connState = udpSocket->bind(45454, QUdpSocket::ShareAddress);
-    } while(!connState);
-    QDebug qdebug = qDebug();
-    qdebug.noquote() << "   UDP Socket has bound, state: " << udpSocket->state();
+    if(!isUdpManual && udpSocket->state() != QUdpSocket::BoundState) {
+        gotFirstMessage = false;
+        bool connState = false;
+        do {
+            connState = udpSocket->bind(45454, QUdpSocket::ShareAddress);
+        } while(!connState);
+        emit write("\n   UDP Socket is listening.");
+    }
 }
 
 void BroadcastSocket::processPendingDatagrams()
@@ -27,19 +34,34 @@ void BroadcastSocket::processPendingDatagrams()
             QByteArray datagram;
             datagram.resize(udpSocket->pendingDatagramSize());
             udpSocket->readDatagram(datagram.data(), datagram.size());
-            if (isRunning)
+            if (!gotFirstMessage)
             {
-                emit newDatagram("/connect");
+                parseDatagram(QString::fromUtf8(datagram));
             }
         }
     }
  }
 
+void BroadcastSocket::parseDatagram(QString datagram)
+{
+    if(datagramNeeded == datagram)
+    {
+        emit newDatagram(datagram);
+        gotFirstMessage = true;
+    }
+
+}
+
+void BroadcastSocket::manualClose()
+{
+    isUdpManual = true;
+     close();
+}
+
 void BroadcastSocket::close()
 {
-    if (isRunning)
-    {
+    if (udpSocket->state() != QUdpSocket::UnconnectedState) {
         udpSocket->close();
+        emit write("   UDP Socket is closed.\n");
     }
-    isRunning = false;
 }

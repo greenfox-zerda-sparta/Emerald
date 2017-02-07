@@ -17,7 +17,7 @@ public:
     void run();
 
 protected:
-    void timerEvent(QTimerEvent*);
+ //   void timerEvent(QTimerEvent*);
 
 signals:
     void incomingMessage(QString);
@@ -27,6 +27,8 @@ signals:
     void write(QString);
     void closeUdpSocket();
     void openUdpSocket();
+    void manualCloseUDP();
+    void manualStartUDP();
 
 public slots:
 //    void writeToConsole(QString);
@@ -34,25 +36,25 @@ public slots:
     void newDataAvailable();
     void sendFirstMessage();
     void parseInputFromCommandLine(QString text);
+    void echo(QString message);
 
 private:
-QString deviceId;
-quint16 serverPort;
-QString serverAddress;
-QString userName;
-int timerId;
-QTcpSocket *socket;
-BroadcastSocket *broadcastReceiver;
-ConsoleReader *cReader;
-QThread *consoleThread;
-void connectToServer();
-void closeSocket();
-void StartTimer();
-void StopTimer();
-void Disconnect();
-void startCommand(QString);
-void Quit();
-quint32 qstringToQuint32(QString string);
+    QString deviceId;
+    quint16 serverPort;
+    QString serverAddress;
+    QString userName;
+    QTcpSocket *socket;
+    BroadcastSocket *broadcastReceiver;
+    ConsoleReader *cReader;
+    QThread *consoleThread;
+    void connectToServer();
+    void closeSocket();
+    void Disconnect();
+    void startCommand(QString);
+    void Quit();
+    quint32 qstringToQuint32(QString string);
+    QString datagramNeeded;
+    bool isEcho;
 };
 
 #endif // DUMMYCLIENT_H
