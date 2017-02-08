@@ -10,18 +10,8 @@ Lamp::~Lamp()
 
 }
 
-Lamp::Lamp(unsigned char deviceIDHigh, unsigned char devideIDLow)
+Lamp::Lamp(byte deviceIDHigh, byte devideIDLow)
 {
 
 }
 
-void Lamp::set_groupID()
-{
-	groupID = deviceCommandMap.at("GroupID");
-}
-
-
-unsigned char Lamp::get_groupID()
-{
-	return groupID;
-}

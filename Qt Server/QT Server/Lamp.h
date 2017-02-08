@@ -4,22 +4,23 @@
 #include <unordered_map>
 #include "Device.h"
 
+typedef unsigned char byte;
+
 class Lamp : public Device
 {
 private:
-  unsigned char groupID;
-  std::unordered_map<std::string, unsigned char> deviceCommandMap;
-  unsigned char mainFunctionCommand;
-  unsigned char secondFunctionCommand;
-  unsigned char thirdFunctionCommand;
+  std::unordered_map<std::string, byte> deviceCommandMap;
+  byte mainFunctionCommand;
+  byte secondFunctionCommand;
+  byte thirdFunctionCommand;
   bool isSecondFunction;
   bool isThirdFunction;
 public:
   Lamp();
-  Lamp(unsigned char, unsigned char);
+  Lamp(byte, byte);
   ~Lamp();
   void set_groupID();
-  unsigned char get_groupID();
+  byte get_groupID();
 
 };
 

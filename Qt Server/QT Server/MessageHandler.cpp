@@ -1,10 +1,10 @@
 ﻿#include "MessageHandler.h"
 
 MessageHandler::MessageHandler() {
-  validKeys = { "deviceID1", "deviceID2", "cmdID", "homeID", "floorID", "roomID", "groupID", "deviceIDLow", "deviceIDHigh" };
+  validKeys = { "deviceIDHigh", "deviceIDLow", "groupID", "homeID", "floorID", "roomID", "cmdID" };
 }
- 
-void MessageHandler::splitMessage(std::vector<unsigned char> bytes) {
+
+void MessageHandler::splitMessage(std::vector<byte> bytes) {
   for (int i = 0; i < bytes.size(); i++) {
     if (i < validKeys.size()) {
       commandMap[validKeys[i]] = bytes[i];
@@ -12,6 +12,6 @@ void MessageHandler::splitMessage(std::vector<unsigned char> bytes) {
   }
 }
 
-std::unordered_map<std::string, unsigned char> MessageHandler::getCommandMap() {
+std::unordered_map<std::string, byte> MessageHandler::getCommandMap() {
   return commandMap;
 }

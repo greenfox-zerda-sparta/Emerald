@@ -11,19 +11,21 @@ Device::~Device()
   
 }
 
-Device::Device(unsigned char deviceIDHigh, unsigned char devideIDLow)
+Device::Device(byte _deviceIDHigh, byte _deviceIDLow, std::string _IP)
 {
   
 }
 
-void Device::set_deviceIDHigh()
+//deviceIDHigh", "deviceIDLow", "groupID", "homeID", "floorID", "roomID", "cmdID" }
+
+void Device::set_deviceIDHigh(byte)
 {
-  deviceIDHigh = deviceCommandMap.at("DeviceIDHigh");
+ 
 }
 
 void Device::set_deviceIDLow()
 {
-  deviceIDLow = deviceCommandMap.at("DeviceIDLow");
+  
 }
 
 unsigned char Device::get_deviceIDHigh()
@@ -36,6 +38,17 @@ unsigned char Device::get_deviceIDLow()
   return deviceIDLow;
 }
 
+void Device::set_groupID()
+{
+  
+}
+
+
+byte Device::get_groupID()
+{
+  return groupID;
+}
+
 void Device::connect_Device()
 {
   
@@ -46,7 +59,7 @@ void Device::disconnect_Device()
   
 }
 
-void Device::run_Main_Function(unsigned char mainFunctionCommand)
+void Device::run_Main_Function(byte mainFunctionCommand)
 {
   std::string deviceMainStatus;
 
@@ -67,12 +80,12 @@ std::string Device::send_Device_Main_Status_Message(std::string device_Main_Stat
   return device_Main_Status;
 }
 
-void Device::run_Second_Function(unsigned char secondFunctionCommand)
+void Device::run_Second_Function(byte secondFunctionCommand)
 {
 
 }
 
-void Device::run_Third_Function(unsigned char thirdFunctionCommand)
+void Device::run_Third_Function(byte thirdFunctionCommand)
 {
 
 }
