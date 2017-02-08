@@ -1,27 +1,8 @@
 #include "Lamp.h"
 
-Lamp::Lamp()
-{
 
+Lamp::Lamp(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP) 
+: Device(_deviceIDHigh, _deviceIDLow, _homeID, _floorID, _roomID, _cmdID, _IP) {
+  groupID = '1';
 }
 
-Lamp::~Lamp()
-{
-
-}
-
-Lamp::Lamp(unsigned char deviceIDHigh, unsigned char devideIDLow)
-{
-
-}
-
-void Lamp::set_groupID()
-{
-	groupID = deviceCommandMap.at("GroupID");
-}
-
-
-unsigned char Lamp::get_groupID()
-{
-	return groupID;
-}

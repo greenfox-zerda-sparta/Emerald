@@ -1,32 +1,33 @@
 #ifndef DEVICE_H
 #define DEVICE_H
+#include <string>
 
-#include <unordered_map>
+typedef unsigned char byte;
 
 class Device
 {
-private:
-  unsigned char deviceIDHigh;
-  unsigned char deviceIDLow;
-  std::unordered_map<std::string, unsigned char> deviceCommandMap;
-  unsigned char mainFunctionCommand;
-  unsigned char secondFunctionCommand;
-  unsigned char thirdFunctionCommand;
-  bool isSecondFunction;
-  bool isThirdFunction;
+protected:
+  byte deviceIDHigh;
+  byte deviceIDLow;
+  byte groupID;
+  byte homeID;
+  byte floorID;
+  byte roomID;
+  byte cmdID;
+  std::string IP;
+
 public:
-  Device();
-  Device(unsigned char, unsigned char);
-  ~Device();
-  void set_deviceIDHigh();
-  void set_deviceIDLow();
-  unsigned char get_deviceIDHigh();
-  unsigned char get_deviceIDLow();
+  Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP);
+  byte get_deviceIDHigh();
+  byte get_deviceIDLow();
+  byte get_groupID();
+  byte get_homeID();
+  byte get_floorID();
+  byte get_roomID();
+  byte get_cmdID();
+  std::string get_IP();
   void connect_Device();
   void disconnect_Device();
-  virtual void run_Main_Function(unsigned char) = 0;
-  virtual void run_Second_Function(unsigned char);
-  virtual void run_Third_Function(unsigned char);
   std::string send_Device_Main_Status_Message(std::string device_Main_Status);
 
 };

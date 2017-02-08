@@ -11,8 +11,8 @@ QString MessageConverter::stringToQString(std::string text) {
   return QString::fromStdString(text);
 }
 
-std::vector<unsigned char> MessageConverter::qbytearrayToCharArray(QByteArray byteArr) {
-  std::vector<unsigned char> charvector(byteArr.begin(), byteArr.end());
+std::vector<byte> MessageConverter::qbytearrayToCharArray(QByteArray byteArr) {
+  std::vector<byte> charvector(byteArr.begin(), byteArr.end());
   return charvector;
 }
 

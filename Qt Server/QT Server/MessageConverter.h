@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+typedef unsigned char byte;
+
 class MessageConverter {
 public:
   MessageConverter();
@@ -12,7 +14,7 @@ public:
   QString stringToQString(std::string text);
   template<class T>
   std::string toString(const T& t);
-  std::vector<unsigned char> qbytearrayToCharArray(QByteArray byteArr);
+  std::vector<byte> qbytearrayToCharArray(QByteArray byteArr);
 };
 
 #endif
