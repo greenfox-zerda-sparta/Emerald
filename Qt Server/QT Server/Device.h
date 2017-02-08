@@ -4,8 +4,7 @@
 
 typedef unsigned char byte;
 
-class Device
-{
+class Device {
 protected:
   byte deviceIDHigh;
   byte deviceIDLow;

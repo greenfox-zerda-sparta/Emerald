@@ -6,8 +6,7 @@
 
 typedef unsigned char byte;
 
-class Lamp : public Device
-{
+class Lamp : public Device {
 private:
 
 public:

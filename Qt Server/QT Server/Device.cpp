@@ -1,8 +1,7 @@
 #include "Device.h"
 
 
-Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP)
-{
+Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP) {
   deviceIDHigh = _deviceIDHigh;
   deviceIDLow = _deviceIDLow;
   homeID = _homeID;
@@ -12,52 +11,42 @@ Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorI
   IP = _IP;
 }
 
-unsigned char Device::get_deviceIDHigh()
-{
+unsigned char Device::get_deviceIDHigh() {
   return deviceIDHigh;
 }
 
-unsigned char Device::get_deviceIDLow()
-{
+unsigned char Device::get_deviceIDLow() {
   return deviceIDLow;
 }
 
-byte Device::get_groupID()
-{
+byte Device::get_groupID() {
   return groupID;
 }
 
-byte Device::get_homeID()
-{
+byte Device::get_homeID() {
   return homeID;
 }
 
-byte Device::get_floorID()
-{
+byte Device::get_floorID() {
   return floorID;
 }
 
-byte Device::get_roomID()
-{
+byte Device::get_roomID() {
   return roomID;
 }
 
-byte Device::get_cmdID()
-{
+byte Device::get_cmdID() {
   return cmdID;
 }
 
-std::string Device::get_IP()
-{
+std::string Device::get_IP() {
   return IP;
 }
 
-void Device::connect_Device()
-{
+void Device::connect_Device() {
 }
 
-void Device::disconnect_Device()
-{
+void Device::disconnect_Device() {
 }
 
 //
