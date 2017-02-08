@@ -8,6 +8,7 @@
 #include <QSocketNotifier>
 #include "consolereader.h"
 #include "broadcastsocket.h"
+#include "messages.h"
 
 class DummyClient : public QObject
 {

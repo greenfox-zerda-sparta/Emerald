@@ -9,7 +9,7 @@
 DummyClient::DummyClient(QObject *parent) : QObject(parent)
 {
     socket = new QTcpSocket(this);
-    deviceId = "00000000";
+    deviceId = "0000000";
     serverPort = 1234;
     serverAddress = "T-Pc";
 //    serverAddress = "10.27.6.126";
@@ -18,6 +18,8 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     consoleThread = new QThread();
     cReader->moveToThread(consoleThread);
     broadcastReceiver = new BroadcastSocket(datagramNeeded);
+    Messages m;
+    m.get_message(1, deviceId);
     isEcho = true;
     connect(socket, SIGNAL(readyRead()), this, SLOT(newDataAvailable()));
     connect(socket, SIGNAL(connected()), this, SLOT(sendFirstMessage()));
