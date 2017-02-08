@@ -14,6 +14,7 @@ public:
   MessageHandler();
   void splitMessage(std::vector<byte> bytes);
   std::unordered_map<std::string, byte> getCommandMap();
+  void MessageHandler::executeCmd(std::vector<byte> bytes);
 };
 
 #endif
