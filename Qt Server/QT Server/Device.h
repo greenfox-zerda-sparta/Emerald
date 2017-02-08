@@ -29,7 +29,6 @@ public:
   void connect_Device();
   void disconnect_Device();
   std::string send_Device_Main_Status_Message(std::string device_Main_Status);
-
 };
 
 
