@@ -11,11 +11,11 @@ Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorI
   IP = _IP;
 }
 
-unsigned char Device::get_deviceIDHigh() {
+byte Device::get_deviceIDHigh() {
   return deviceIDHigh;
 }
 
-unsigned char Device::get_deviceIDLow() {
+byte Device::get_deviceIDLow() {
   return deviceIDLow;
 }
 
