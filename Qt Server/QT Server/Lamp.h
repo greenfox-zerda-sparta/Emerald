@@ -1,10 +1,7 @@
 #ifndef LAMP_H
 #define LAMP_H
 
-#include <unordered_map>
 #include "Device.h"
-
-typedef unsigned char byte;
 
 class Lamp : public Device {
 private:
