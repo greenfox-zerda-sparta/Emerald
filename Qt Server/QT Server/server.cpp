@@ -10,14 +10,6 @@ Server::Server(QObject* parent) : QTcpServer(parent) {
   mylogfile = new Logfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
-  QHostAddress adminAddress;
-  adminAddress.setAddress("127.0.0.1");
-  HostAddresses = std::make_shared<std::vector<QHostAddress> >();
-  HostAddresses->push_back(adminAddress);
-
-  udpsender = new UdpSender(HostAddresses);
-  connect(this, SIGNAL(stopBroadcast()), udpsender, SLOT(stopBroadcasting()));
-  connect(this, SIGNAL(startBroadcast()), udpsender, SLOT(startBroadcasting()));
 }
 
 Server::~Server() {
@@ -27,7 +19,21 @@ Server::~Server() {
   delete udpsender;
 }
 
+void Server::AddUI() {
+  std::cout << "Please enter UI IPaddress (format: xxx.x.x.x):" << std::endl;
+  std::string input;
+  std::getline(std::cin, input);
+  QHostAddress uiAddress(msgConv->stringToQString(input));
+  HostAddresses = std::make_shared<std::vector<QHostAddress>>();
+  HostAddresses->push_back(uiAddress); // rethink> how to handle this HostAddress vector
+}
+
 void Server::StartServer() {
+  AddUI();
+  udpsender = new UdpSender(HostAddresses);
+  connect(this, SIGNAL(stopBroadcast()), udpsender, SLOT(stopBroadcasting()));
+  connect(this, SIGNAL(startBroadcast()), udpsender, SLOT(startBroadcasting()));
+
   if (!this->listen(QHostAddress::AnyIPv4, 1234)) {
     std::cerr << "Could not start server." << std::endl;
   }

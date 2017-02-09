@@ -4,16 +4,15 @@
 #include <QStringList>
 #include <QTcpServer>
 #include <QTcpSocket>
-
 #include <map>
 #include <set>
+#include <vector>
+#include <string>
+#include <memory>
 #include "Logfile.h"
 #include "MessageHandler.h"
 #include "udpsender.h"
 #include "MessageConverter.h"
-#include <vector>
-#include <string>
-#include <memory>
 
 class Server : public QTcpServer {
   Q_OBJECT
@@ -26,6 +25,7 @@ public:
   Server(QObject* parent = Q_NULLPTR);
   ~Server();
   void StartServer();
+  void Server::AddUI();
   bool Server::isAdmin(QTcpSocket* socket, std::vector<unsigned char> msg);
 
   private slots:
