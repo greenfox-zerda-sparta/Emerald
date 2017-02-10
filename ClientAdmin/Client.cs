@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Linq;
 
 namespace Chatclient {
   class Client {
@@ -9,7 +10,7 @@ namespace Chatclient {
     private Socket sender;
     private byte[] bytes;
     private bool connected;
-    private string serverIP = "10.27.6.58";
+    private string serverIP = "10.27.6.158";
 
     public Client() {
       bytes = new byte[1024];
@@ -57,10 +58,14 @@ namespace Chatclient {
     }
 
     private void Send(string message) {
-      message += "\n";
-      try {      
-        byte[] msg = Encoding.GetEncoding("UTF-8").GetBytes(message);
-        int bytesSent = sender.Send(msg);
+      message += ",10";
+      try {
+        string[] msg = message.Split(',');
+        byte[] intBytes = new byte[msg.Length];
+        for (int i = 0; i < msg.Length; i++) {
+          intBytes[i] = (byte)Int32.Parse(msg[i]);
+        }
+        int bytesSent = sender.Send(intBytes);
       } catch (ArgumentNullException ane) {
         Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
       } catch (SocketException se) {
