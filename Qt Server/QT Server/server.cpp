@@ -6,7 +6,6 @@
 Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
   adminID = 0;
-  AdminMsg = { 48, 48, 48, 48, 48, 48, 48, 48, 48, 10 };
   mylogfile = new Logfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
@@ -75,30 +74,33 @@ void Server::readyRead() {
     QByteArray QmsgBytes = (client->readAll());             // read to QByteArray, remove \n
     std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
     msgHandler->splitMessage(msgBytes);                    // splitting message by byte (char)
-   
-    if (devices[client] == adminID) {  // if the message is from admin, send it to all other connections
-      for (QTcpSocket* otherClient : socketset) {            // for now the original command from the UI is sent to the devices
-        if (otherClient != client) {
-          otherClient->write(QmsgBytes);
-        }
-      }
-      std::string message = "Admin: ";               // for logging and print it to console
-      for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
-      mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message);
-      std::cout << message << std::endl;
+    
+    std::map<QTcpSocket*, int>* ptr_socketmap = &devices;
+    msgHandler->executeCmd(client, msgBytes, ptr_socketmap, msgConv);
 
-      for (auto& item : msgHandler->getCommandMap()) {
-        std::cout << item.first << ": " << int(item.second) << " | ";
-      }
-      std::cout << std::endl;
-    }
-    else {                                               // if message is from a device, print it to console for now
-      std::string message = "Device " + toString(devices[client]) + ": ";
-      for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
-      mylogfile->log_buffer("Device message " + LocalTimer->GetTimeFileFormat() + " " + message);
-      std::cout << message << std::endl;
-    }
-    msgHandler->executeCmd(msgBytes);
+    //if (devices[client] == adminID) {  // if the message is from admin, send it to all other connections
+    //  for (QTcpSocket* otherClient : socketset) {            // for now the original command from the UI is sent to the devices
+    //    if (otherClient != client) {
+    //      otherClient->write(QmsgBytes);
+    //    }
+    //  }
+    //  std::string message = "Admin: ";               // for logging and print it to console
+    //  for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
+    //  mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message);
+    //  std::cout << message << std::endl;
+
+    //  for (auto& item : msgHandler->getCommandMap()) {
+    //    std::cout << item.first << ": " << int(item.second) << " | ";
+    //  }
+    //  std::cout << std::endl;
+    //}
+    //else {                                               // if message is from a device, print it to console for now
+    //  std::string message = "Device " + toString(devices[client]) + ": ";
+    //  for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
+    //  mylogfile->log_buffer("Device message " + LocalTimer->GetTimeFileFormat() + " " + message);
+    //  std::cout << message << std::endl;
+    //}
+    
   }
 }
 

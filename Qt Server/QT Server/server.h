@@ -41,7 +41,6 @@ private:
   int ID;
   int adminID;
   QHostAddress uiAddress;
-  std::vector<unsigned char> AdminMsg;
   Logfile* mylogfile;
   std::string logbuffer;
   MyTime* LocalTimer;
