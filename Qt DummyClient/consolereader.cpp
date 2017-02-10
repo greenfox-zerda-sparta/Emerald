@@ -16,7 +16,14 @@ ConsoleReader::ConsoleReader(QObject *parent) : QObject(parent)
     qDebug() << "               setip=10.28.2.150   - set ip";
     qDebug() << "               setport=4321        - set tcp port";
     qDebug() << "               setid=12121212      - set device id";
-    qDebug() << "               quit                - quit program";
+    qDebug() << "               1                   - Stop server";
+    qDebug() << "               2                   - Restart server";
+    qDebug() << "               3                   - Reset server";
+    qDebug() << "               ack                 - send 'ok' message";
+    qDebug() << "               crc                 - send 'crc error' message";
+    qDebug() << "               suc                 - send 'success' message";
+    qDebug() << "               err                 - send 'error in work' message";
+//    qDebug() << "               add                 - send 'add device' message";
 }
 
 void ConsoleReader::onRun()

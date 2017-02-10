@@ -9,20 +9,19 @@
 DummyClient::DummyClient(QObject *parent) : QObject(parent)
 {
     socket = new QTcpSocket(this);
-    deviceId = "0000000";
+    deviceId = "ui";
+    changeDev();
     serverPort = 1234;
-    serverAddress = "T-Pc";
-//    serverAddress = "10.27.6.126";
+//    serverAddress = "T-Pc";
+    serverAddress = "10.27.6.122";
     datagramNeeded = "turquoise&emerald";
     cReader = new ConsoleReader();
     consoleThread = new QThread();
     cReader->moveToThread(consoleThread);
     broadcastReceiver = new BroadcastSocket(datagramNeeded);
-    Messages m;
-    m.get_message(1, deviceId);
     isEcho = true;
     connect(socket, SIGNAL(readyRead()), this, SLOT(newDataAvailable()));
-    connect(socket, SIGNAL(connected()), this, SLOT(sendFirstMessage()));
+//    connect(socket, SIGNAL(connected()), this, SLOT(sendFirstMessage()));
 
     connect(this, SIGNAL(incomingMessage(QString)), cReader, SLOT(writeToConsole(QString)), Qt::DirectConnection);
     connect(this, SIGNAL(incomingMessage(QString)), this, SLOT(echo(QString)));
@@ -90,6 +89,16 @@ void DummyClient::sendMessage(QString message)
     }
     message += "\n";
     socket->write(message.toUtf8());
+    socket->flush();
+}
+
+void DummyClient::sendMessage(QByteArray message)
+{
+    if (socket->state() != QTcpSocket::ConnectedState) {
+        return;
+    }
+    message.append("\n");
+    socket->write(message);
     socket->flush();
 }
 
@@ -178,6 +187,7 @@ void DummyClient::startCommand(QString text)
     else if (text.left(6) == "setid=")
     {
         deviceId = text.mid(6);
+        changeDev();
         emit write("   Device ID: " + deviceId);
     }
     else if (text == "udpauto")
@@ -190,10 +200,61 @@ void DummyClient::startCommand(QString text)
         emit manualCloseUDP();
         emit write("   UDP Socket is in manual mode.");
     }
+    else if (text == "1")
+    {
+        QByteArray msg = messGetter.get_message(text, me);
+        sendMessage(msg);
+        emit write("   STOP SERVER command is sent.");
+    }
+    else if (text == "2")
+    {
+        QByteArray msg = messGetter.get_message(text, me);
+        sendMessage(msg);
+        emit write("   RESTART SERVER command is sent.");
+    }
+    else if (text == "3")
+    {
+        QByteArray msg = messGetter.get_message(text, me);
+        sendMessage(msg);
+        emit write("   RESET SERVER command is sent.");
+    }
+    else if (text == "ack")
+    {
+        QByteArray msg = messGetter.get_message(text, me);
+        sendMessage(msg);
+        emit write("   ACK is sent.");
+    }
+    else if (text == "crc")
+    {
+        QByteArray msg = messGetter.get_message(text, me);
+        sendMessage(msg);
+        emit write("   CRC error message is sent.");
+    }
+    else if (text == "suc")
+    {
+        QByteArray msg = messGetter.get_message(text, me);
+        sendMessage(msg);
+        emit write("   SUCCESS message is sent.");
+    }
+    else if (text == "err")
+    {
+        QByteArray msg = messGetter.get_message(text, me);
+        sendMessage(msg);
+        emit write("   ERROR message is sent.");
+    }
     else
     {
         emit write("   Invalid command.");
     }
+/*    qDebug() << "               1                   - Stop server";
+    qDebug() << "               2                   - Restart server";
+    qDebug() << "               3                   - Reset server";
+    qDebug() << "               ack                 - send 'ack' message";
+    qDebug() << "               crc                 - send 'crc error' message";
+    qDebug() << "               suc                 - send 'success' message";
+    qDebug() << "               err                 - send 'error in work' message";
+    qDebug() << "               add                 - send 'add device' message";
+*/
 }
 
 void DummyClient::Quit()
@@ -213,4 +274,22 @@ quint32 DummyClient::qstringToQuint32(QString string)
     ts >> result;
     return result;
 
+}
+
+void DummyClient::changeDev() {
+    if(deviceId == "ui"){
+        me.deviceIdHigh = Utils::qstringToQuint8("255");
+        me.deviceIdLow = Utils::qstringToQuint8("253");
+        me.homeId = Utils::qstringToQuint8("255");
+        me.floorId = Utils::qstringToQuint8("255");
+        me.roomId = Utils::qstringToQuint8("255");
+        me.groupId = Utils::qstringToQuint8("255");
+    } else if (deviceId == "lamp") {
+        me.deviceIdHigh = Utils::qstringToQuint8("0");
+        me.deviceIdLow = Utils::qstringToQuint8("1");
+        me.homeId = Utils::qstringToQuint8("1");
+        me.floorId = Utils::qstringToQuint8("1");
+        me.roomId = Utils::qstringToQuint8("1");
+        me.groupId = Utils::qstringToQuint8("1");
+    }
 }

@@ -1,6 +1,7 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
 #include <QtCore>
+#include "utils.h"
 
 using namespace std;
 
@@ -8,10 +9,10 @@ class Messages
 {
 public:
     Messages();
-    QByteArray get_message(QString mWitch, QString deviceId);
+    QByteArray get_message(QString mWitch, Dev deviceId);
 
 private:
-    quint8 qstringToQuint8(QString string);
+//    quint8 qstringToQuint8(QString string);
     QByteArray ack_message;
     QByteArray crc_message;
     QByteArray success_message;

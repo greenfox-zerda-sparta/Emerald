@@ -9,6 +9,7 @@
 #include "consolereader.h"
 #include "broadcastsocket.h"
 #include "messages.h"
+#include "utils.h"
 
 class DummyClient : public QObject
 {
@@ -56,6 +57,10 @@ private:
     quint32 qstringToQuint32(QString string);
     QString datagramNeeded;
     bool isEcho;
+    Dev me;
+    void changeDev();
+    Messages messGetter;
+    void sendMessage(QByteArray);
 };
 
 #endif // DUMMYCLIENT_H
