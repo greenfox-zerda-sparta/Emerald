@@ -13,13 +13,13 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     changeDev();
     serverPort = 1234;
 //    serverAddress = "T-Pc";
-    serverAddress = "10.27.6.122";
+    serverAddress = "10.27.6.158";
     datagramNeeded = "turquoise&emerald";
     cReader = new ConsoleReader();
     consoleThread = new QThread();
     cReader->moveToThread(consoleThread);
     broadcastReceiver = new BroadcastSocket(datagramNeeded);
-    isEcho = true;
+    isEcho = false;
     connect(socket, SIGNAL(readyRead()), this, SLOT(newDataAvailable()));
 //    connect(socket, SIGNAL(connected()), this, SLOT(sendFirstMessage()));
 
@@ -51,9 +51,9 @@ void DummyClient::run()
     QString message;
     message = "   Server Ip: " + serverAddress;
     message += ", Server Port: " + QString::number(serverPort);
-    message += ", ID: " + deviceId;
+    message += ", Device: " + deviceId;
     emit write(message);
-    emit write("   Echo is on.");
+    emit write("   Echo is off.");
 }
 
 void DummyClient::connectToServer()
@@ -79,7 +79,9 @@ void DummyClient::sendFirstMessage()
 
 void DummyClient::echo(QString message)
 {
-    if(isEcho){sendMessage(message);}
+    if(isEcho){
+        sendMessage(message);
+    }
 }
 
 void DummyClient::sendMessage(QString message)
@@ -184,11 +186,11 @@ void DummyClient::startCommand(QString text)
         emit write("   server port: " + QString::number(serverPort));
 
     }
-    else if (text.left(6) == "setid=")
+    else if (text.left(7) == "setdev=")
     {
-        deviceId = text.mid(6);
+        deviceId = text.mid(7);
         changeDev();
-        emit write("   Device ID: " + deviceId);
+        emit write("   Device: " + deviceId);
     }
     else if (text == "udpauto")
     {

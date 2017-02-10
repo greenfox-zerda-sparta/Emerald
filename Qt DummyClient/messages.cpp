@@ -17,14 +17,18 @@ Messages::Messages()
     reset_server = msg;
     msg[2] = Utils::qstringToQuint8("255");
     stop_server = msg;
-    msg[2] = Utils::qstringToQuint8("252");
-    ack_message = msg;
+//    msg[2] = Utils::qstringToQuint8("252");
+//    ack_message = msg;
     msg[2] = Utils::qstringToQuint8("251");
     crc_message = msg;
     msg[2] = Utils::qstringToQuint8("241");
     success_message = msg;
     msg[2] = Utils::qstringToQuint8("240");
     error_message = msg;
+    ack = vector<uchar>{255, 254, 254, 255, 255, 255, 255, 255, 253};
+    for(auto i: ack){
+         ack_message.push_back((quint8)(i));
+    }
 }
 
 QByteArray Messages::get_message(QString mWitch, Dev device) {
@@ -36,7 +40,7 @@ QByteArray Messages::get_message(QString mWitch, Dev device) {
     if (mWitch == "crc")msg = crc_message;
     if (mWitch == "suc")msg = success_message;
     if (mWitch == "err")msg = error_message;
-    else msg = ack_message;
+    msg[6] = device.groupId;
     msg[7] = device.deviceIdHigh;
     msg[8] = device.deviceIdLow;
     return msg;

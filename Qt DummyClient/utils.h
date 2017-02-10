@@ -18,7 +18,6 @@ public:
         quint16 result1;
         ts >> result1;
         quint8 result = (quint8) result1;
-        qDebug() << result;
         return result;
     }
 };
