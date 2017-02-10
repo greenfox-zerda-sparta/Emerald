@@ -15,6 +15,7 @@ public:
   template<class T>
   std::string toString(const T& t);
   std::vector<byte> qbytearrayToCharArray(QByteArray byteArr);
+  QByteArray bytesToQBytes(std::vector<byte>);
 };
 
 #endif
