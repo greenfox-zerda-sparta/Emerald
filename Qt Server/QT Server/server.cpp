@@ -6,7 +6,7 @@
 Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
   adminID = 0;
-  AdminMsg = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 10 };
+  AdminMsg = { 48, 48, 48, 48, 48, 48, 48, 48, 10 };
   mylogfile = new Logfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
