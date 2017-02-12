@@ -16,6 +16,14 @@ std::vector<byte> MessageConverter::qbytearrayToCharArray(QByteArray byteArr) {
   return charvector;
 }
 
+QByteArray MessageConverter::bytesToQBytes(std::vector<byte> bytes) {
+  QByteArray QbyteArr;
+  for (auto i : bytes) {
+    QbyteArr.push_back((quint8)(i));
+  }
+  return QbyteArr;
+}
+
 template<class T>
 std::string MessageConverter::toString(const T& t) {
   std::ostringstream stream;

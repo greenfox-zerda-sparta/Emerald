@@ -17,7 +17,18 @@ HEADERS = \
    $$PWD/MessageHandler.h \
    $$PWD/MyTime.h \
    $$PWD/server.h \
-   $$PWD/udpsender.h
+   $$PWD/udpsender.h \
+    Alarm.h \
+    Blinds.h \
+    catch.hpp \
+    Cooling.h \
+    Device.h \
+    GarageDoor.h \
+    Heating.h \
+    Lamp.h \
+    MessageConverter.h \
+    resource.h \
+    UI.h
 
 SOURCES = \
    $$PWD/Logfile.cpp \
@@ -25,7 +36,17 @@ SOURCES = \
    $$PWD/MessageHandler.cpp \
    $$PWD/MyTime.cpp \
    $$PWD/server.cpp \
-   $$PWD/udpsender.cpp
+   $$PWD/udpsender.cpp \
+    Alarm.cpp \
+    Blinds.cpp \
+    Cooling.cpp \
+    Device.cpp \
+    GarageDoor.cpp \
+    Heating.cpp \
+    Lamp.cpp \
+    MessageConverter.cpp \
+    test.cpp \
+    UI.cpp
 
 INCLUDEPATH = \
     $$PWD/.

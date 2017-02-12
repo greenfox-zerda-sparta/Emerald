@@ -6,7 +6,6 @@
 Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
   adminID = 0;
-  AdminMsg = { 48, 48, 48, 48, 48, 48, 48, 48, 10 };
   mylogfile = new Logfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
@@ -23,8 +22,9 @@ void Server::AddUI() {
   std::cout << "Please enter UI IPaddress (format: xxx.x.x.x):" << std::endl;  // uncomment the lines below for manually adding UI IP
   //std::string input;
   //std::getline(std::cin, input);
-  //QHostAddress uiAddress(msgConv->stringToQString(input));
-  QHostAddress uiAddress("10.27.6.127");                                         // comment this when manually adding UI IP
+  //uiAddress = msgConv->stringToQString(input);
+//  uiAddress = "10.27.6.158";                                         // comment this when manually adding UI IP
+  uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
   HostAddresses = std::make_shared<std::vector<QHostAddress>>();
   HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
@@ -55,8 +55,13 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 
   connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
   connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
-
-  devices[client] = ID++;
+ 
+  if (client->peerAddress() == uiAddress) {
+    devices[client] = 0;
+    emit stopBroadcast();
+  } else {
+    devices[client] = ID++;
+  }
 
   std::string ConnectMsg = "Device " + toString(devices[client]) + " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
   std::cout << ConnectMsg << std::endl;
@@ -70,31 +75,33 @@ void Server::readyRead() {
     QByteArray QmsgBytes = (client->readAll());             // read to QByteArray, remove \n
     std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
     msgHandler->splitMessage(msgBytes);                    // splitting message by byte (char)
-    isAdmin(client, msgBytes);                             // checking for admin
+    
+    std::map<QTcpSocket*, int>* ptr_socketmap = &devices;
+    msgHandler->executeCmd(client, msgBytes, ptr_socketmap, msgConv);
 
-    if (devices[client] == adminID && msgBytes != AdminMsg) {  // if the message is from admin, send it to all other connections
-      for (QTcpSocket* otherClient : socketset) {            // for now the original command from the UI is sent to the devices
-        if (otherClient != client) {
-          otherClient->write(QmsgBytes);
-        }
-      }
-      std::string message = "Admin: ";               // for logging and print it to console
-      for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
-      mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message);
-      std::cout << message << std::endl;
+    //if (devices[client] == adminID) {  // if the message is from admin, send it to all other connections
+    //  for (QTcpSocket* otherClient : socketset) {            // for now the original command from the UI is sent to the devices
+    //    if (otherClient != client) {
+    //      otherClient->write(QmsgBytes);
+    //    }
+    //  }
+    //  std::string message = "Admin: ";               // for logging and print it to console
+    //  for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
+    //  mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message);
+    //  std::cout << message << std::endl;
 
-      for (auto& item : msgHandler->getCommandMap()) {
-        std::cout << item.first << ": " << int(item.second) << " | ";
-      }
-      std::cout << std::endl;
-    }
-    else {                                               // if message is from a device, print it to console for now
-      std::string message = "Device " + toString(devices[client]) + ": ";
-      for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
-      mylogfile->log_buffer("Device message " + LocalTimer->GetTimeFileFormat() + " " + message);
-      std::cout << message << std::endl;
-    }
-    msgHandler->executeCmd(msgBytes);
+    //  for (auto& item : msgHandler->getCommandMap()) {
+    //    std::cout << item.first << ": " << int(item.second) << " | ";
+    //  }
+    //  std::cout << std::endl;
+    //}
+    //else {                                               // if message is from a device, print it to console for now
+    //  std::string message = "Device " + toString(devices[client]) + ": ";
+    //  for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
+    //  mylogfile->log_buffer("Device message " + LocalTimer->GetTimeFileFormat() + " " + message);
+    //  std::cout << message << std::endl;
+    //}
+    
   }
 }
 
@@ -114,12 +121,3 @@ void Server::disconnected() {
   devices.erase(client);
 }
 
-// check if message sender is admin
-bool Server::isAdmin(QTcpSocket* socket, std::vector<unsigned char> msg) {
-  if (msg == AdminMsg) {
-    devices[socket] = 0;
-	  emit stopBroadcast();
-    return true;
-  }
-  return false;
-}
