@@ -25,6 +25,7 @@ void Server::AddUI() {
   //std::getline(std::cin, input);
   //uiAddress = msgConv->stringToQString(input);
   uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
+  uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
   HostAddresses = std::make_shared<std::vector<QHostAddress>>();
   HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }

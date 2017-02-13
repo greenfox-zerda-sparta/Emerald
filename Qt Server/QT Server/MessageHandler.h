@@ -18,7 +18,7 @@ public:
   MessageHandler();
   void splitMessage(std::vector<byte> bytes);
   std::unordered_map<std::string, byte> getCommandMap();
-  void MessageHandler::executeCmd(QTcpSocket* client, std::vector<byte> bytes, std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv);
+  void executeCmd(QTcpSocket* client, std::vector<byte> bytes, std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv);
 };
 
 #endif

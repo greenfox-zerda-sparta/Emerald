@@ -15,7 +15,7 @@ ConsoleReader::ConsoleReader(QObject *parent) : QObject(parent)
     qDebug() << "               echo                - echoing messages back to server";
     qDebug() << "               setip=10.28.2.150   - set ip";
     qDebug() << "               setport=4321        - set tcp port";
-    qDebug() << "               setid=12121212      - set device id";
+    qDebug() << "               setdev=ui/lamp      - set mock device";
     qDebug() << "               1                   - Stop server";
     qDebug() << "               2                   - Restart server";
     qDebug() << "               3                   - Reset server";

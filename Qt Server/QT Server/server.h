@@ -25,8 +25,8 @@ public:
   Server(QObject* parent = Q_NULLPTR);
   ~Server();
   void StartServer();
-  void Server::AddUI();
-  bool Server::isAdmin(QTcpSocket* socket, std::vector<unsigned char> msg);
+  void AddUI();
+  bool isAdmin(QTcpSocket* socket, std::vector<unsigned char> msg);
 
   private slots:
   void readyRead();

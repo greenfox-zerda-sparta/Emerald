@@ -4,6 +4,7 @@
 #include <QtCore>
 #include <string>
 #include <vector>
+#include <sstream>
 
 typedef unsigned char byte;
 

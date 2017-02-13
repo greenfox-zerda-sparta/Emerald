@@ -36,7 +36,7 @@ QByteArray Messages::get_message(QString mWitch, Dev device) {
     if (mWitch == "crc")msg = crc_message;
     if (mWitch == "suc")msg = success_message;
     if (mWitch == "err")msg = error_message;
-    else msg = ack_message;
+//    else msg = ack_message;
     msg[7] = device.deviceIdHigh;
     msg[8] = device.deviceIdLow;
     return msg;
