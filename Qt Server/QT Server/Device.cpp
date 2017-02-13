@@ -1,13 +1,20 @@
 #include "Device.h"
 
 
-Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP) {
-  deviceIDHigh = _deviceIDHigh;
-  deviceIDLow = _deviceIDLow;
-  homeID = _homeID;
-  floorID = _floorID;
-  roomID = _roomID;
-  cmdID = _cmdID;
+//Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP) {
+Device::Device(IDs _ids, std::string _IP) {
+  //deviceIDHigh = _deviceIDHigh;
+  //deviceIDLow = _deviceIDLow;
+  //homeID = _homeID;
+  //floorID = _floorID;
+  //roomID = _roomID;
+  //cmdID = _cmdID;
+  deviceIDHigh = _ids.deviceIDHigh;
+  deviceIDLow = _ids.deviceIDLow;
+  homeID = _ids.homeID;
+  floorID = _ids.floorID;
+  roomID = _ids.roomID;
+  cmdID = _ids.cmdID;
   IP = _IP;
 }
 

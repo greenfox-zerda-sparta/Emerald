@@ -4,6 +4,16 @@
 
 typedef unsigned char byte;
 
+struct IDs {
+  byte deviceIDHigh;
+  byte deviceIDLow;
+  byte groupID;
+  byte homeID;
+  byte floorID;
+  byte roomID;
+  byte cmdID;
+};
+
 class Device {
 protected:
   byte deviceIDHigh;
@@ -16,7 +26,8 @@ protected:
   std::string IP;
 
 public:
-  Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP);
+//  Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP);
+  Device(IDs ids, std::string _IP);
   byte get_deviceIDHigh();
   byte get_deviceIDLow();
   byte get_groupID();

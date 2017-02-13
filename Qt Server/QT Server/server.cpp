@@ -2,6 +2,7 @@
 #include "udpsender.h"
 #include <iostream>
 #include <vector>
+#include <thread>
 
 Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
@@ -16,25 +17,26 @@ Server::~Server() {
   delete msgHandler;
   delete msgConv;
   delete udpsender;
-}
+}                                                  
 
 void Server::AddUI() {
-  std::cout << "Please enter UI IPaddress (format: xxx.x.x.x):" << std::endl;  // uncomment the lines below for manually adding UI IP
+  //std::cout << "Please enter UI IPaddress:" << std::endl;              // uncomment the lines below for manually adding UI IP
   //std::string input;
   //std::getline(std::cin, input);
   //uiAddress = msgConv->stringToQString(input);
-//  uiAddress = "10.27.6.158";                                         // comment this when manually adding UI IP
+  uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
   uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
   HostAddresses = std::make_shared<std::vector<QHostAddress>>();
   HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
 
 void Server::StartServer() {
+  std::cout << std::thread::hardware_concurrency() << std::endl;
   AddUI();
   udpsender = new UdpSender(HostAddresses);
   connect(this, SIGNAL(stopBroadcast()), udpsender, SLOT(stopBroadcasting()));
   connect(this, SIGNAL(startBroadcast()), udpsender, SLOT(startBroadcasting()));
-
+  std::cout << std::thread::hardware_concurrency() << std::endl;
   if (!this->listen(QHostAddress::AnyIPv4, 1234)) {
     std::cerr << "Could not start server." << std::endl;
   }
