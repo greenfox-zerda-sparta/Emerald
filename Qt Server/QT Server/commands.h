@@ -16,8 +16,9 @@ public:
     void getStatusReport();
     void setData();
     void forwardMessage();
-private:
     std::map<std::string, byte> messageMap;
+private:
+ 
     bool isSenderUi();
     bool isServerCommand();
 

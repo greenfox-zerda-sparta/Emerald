@@ -12,7 +12,7 @@ private:
   void(Commands::*ptr_resetServer)();
 public:
   std::map<byte, void(Commands::*)()> cmdMap;
-  CommandMap(Commands cmd);
+  CommandMap();
 };
 
 #endif

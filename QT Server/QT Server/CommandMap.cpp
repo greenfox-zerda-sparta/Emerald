@@ -1,8 +1,9 @@
 #include "CommandMap.h"
 
-CommandMap::CommandMap(Commands cmd) {
+CommandMap::CommandMap() {
   ptr_resetServer = &Commands::resetServer;
   cmdMap[253] = ptr_resetServer;
+  (this->*cmdMap[253])();
   /* void(*ptr_restartServer)() = cmd.restartServer;
   void(*ptr_stopServer)() = cmd.stopServer;
   void(*ptr_addDevice)() = cmd.addDevice;
