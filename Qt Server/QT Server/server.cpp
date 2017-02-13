@@ -78,29 +78,6 @@ void Server::readyRead() {
     
     std::map<QTcpSocket*, int>* ptr_socketmap = &devices;
     msgHandler->executeCmd(client, msgBytes, ptr_socketmap, msgConv);
-
-    //if (devices[client] == adminID) {  // if the message is from admin, send it to all other connections
-    //  for (QTcpSocket* otherClient : socketset) {            // for now the original command from the UI is sent to the devices
-    //    if (otherClient != client) {
-    //      otherClient->write(QmsgBytes);
-    //    }
-    //  }
-    //  std::string message = "Admin: ";               // for logging and print it to console
-    //  for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
-    //  mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message);
-    //  std::cout << message << std::endl;
-
-    //  for (auto& item : msgHandler->getCommandMap()) {
-    //    std::cout << item.first << ": " << int(item.second) << " | ";
-    //  }
-    //  std::cout << std::endl;
-    //}
-    //else {                                               // if message is from a device, print it to console for now
-    //  std::string message = "Device " + toString(devices[client]) + ": ";
-    //  for (auto iter : msgBytes) { message += toString(int(iter)) + ", "; }
-    //  mylogfile->log_buffer("Device message " + LocalTimer->GetTimeFileFormat() + " " + message);
-    //  std::cout << message << std::endl;
-    //}
     
   }
 }
