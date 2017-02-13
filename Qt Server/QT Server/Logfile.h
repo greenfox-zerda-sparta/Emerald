@@ -5,6 +5,9 @@
 #include <fstream>
 #include <sstream>
 #include "MyTime.h"
+#include <mutex>
+
+enum LogLevel { UI, Device, Warning, Error };
 
 class Logfile {
 private:
@@ -12,11 +15,13 @@ private:
   std::string logfilename;
   std::ofstream logfile;
   MyTime* LocalTimer;
-    bool logging;
+  bool logging;
+  std::mutex logmutex;
+  LogLevel loglevel;
 
 public:
   Logfile();
-  void log_buffer(std::string);
+  void log_buffer(LogLevel _loglevel, std::string);
   bool get_logging_status();
 };
 

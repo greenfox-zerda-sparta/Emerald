@@ -9,13 +9,17 @@ Logfile::Logfile() {
 }
 
 
-void Logfile::log_buffer(std::string logbuffer) {
+void Logfile::log_buffer(LogLevel _loglevel, std::string logbuffer) {
   // add mutex and enum of log levels
+  const static char* LogLevelStr[] = { "UI", "Device", "Warning", "Error" };
+
+  logmutex.lock();
   if (logging) {
     logfile.open(logfilename.c_str(), std::ios::app);
-    logfile << logbuffer << endl;
+    logfile << "[" << LogLevelStr[_loglevel] << "]" << logbuffer << endl;
     logfile.close();
   }
+  logmutex.unlock();
 }
 
 bool Logfile::get_logging_status() {
