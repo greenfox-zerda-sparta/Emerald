@@ -67,7 +67,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 
   std::string ConnectMsg = "Device " + toString(devices[client]) + " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
   std::cout << ConnectMsg << std::endl;
-  mylogfile->log_buffer("Connect message " + LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
+  mylogfile->log_buffer(Device, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
 }
 
 // Dealing with incoming messages QBYTEARRAY VERSION
@@ -89,13 +89,14 @@ void Server::disconnected() {
   std::string DisconnectMsg;
   if (devices[client] != 0) {
     DisconnectMsg = "Device " + toString(devices[client]) + " disconnected. ";
+    mylogfile->log_buffer(Device, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
   }
   else {
     DisconnectMsg = "Admin disconnected. ";
+    mylogfile->log_buffer(UI, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
 	  emit startBroadcast();
   }
   std::cout << DisconnectMsg << std::endl;
-  mylogfile->log_buffer("Disconnect message " + LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
   socketset.erase(client);
   devices.erase(client);
 }
