@@ -1,6 +1,5 @@
 #include "Device.h"
 
-
 Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP) {
   deviceIDHigh = _deviceIDHigh;
   deviceIDLow = _deviceIDLow;

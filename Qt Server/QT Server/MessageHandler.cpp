@@ -23,7 +23,7 @@ std::unordered_map<std::string, byte> MessageHandler::getCommandMap() {
 void MessageHandler::executeCmd(QTcpSocket* client, std::vector<byte> bytes, std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv) {
   if (commandMap["targetIDHigh"] == 255 && commandMap["targetIDLow"] == 254 &&
     commandMap["senderIDHigh"] == 255 && commandMap["senderIDLow"] == 253) {
-    switch (commandMap["cmdID"]) { // a case-ben indulhatna a thread. Vagy itt adja ki a parancsot, ami elinditja
+    switch (commandMap["cmdID"]) {                     // a case-ben indulhatna a thread. Vagy itt adja ki a parancsot, ami elinditja
     case 253:
       std::cout << "RESETTING SERVER\n" << std::endl; // reset server;  delete all devices
       break;
@@ -50,7 +50,7 @@ void MessageHandler::executeCmd(QTcpSocket* client, std::vector<byte> bytes, std
       break;
     }
   } else {
-    for (auto& otherClient : *ptr_socketmap) {               // for now: all other commands are sent to all devices
+    for (auto& otherClient : *ptr_socketmap) {                                  // for now: all other commands are sent to all devices
       if (otherClient.second != 0) {
         QTcpSocket* client = otherClient.first;
         client->write(msgConv->bytesToQBytes(bytes));
