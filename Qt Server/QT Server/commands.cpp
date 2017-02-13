@@ -1,6 +1,6 @@
 #include "commands.h"
 
-Commands::Commands(std::unordered_map<std::string, byte>& messageMap)
+Commands::Commands(std::map<std::string, byte>& messageMap)
 {
     this->messageMap = messageMap;
 }
@@ -15,9 +15,9 @@ bool Commands::isServerCommand() {
 }
 
 void Commands::resetServer() {
-    if(isServerCommand() && messageMap["cmdID"] == 253) {
+  //  if(isServerCommand() && messageMap["cmdID"] == 253) {
         std::cout << "RESETTING SERVER\n" << std::endl; // reset server;  delete all devices
-    }
+  //  }
 }
 
 void Commands::restartServer() {
@@ -27,9 +27,9 @@ void Commands::restartServer() {
 }
 
 void Commands::stopServer() {
-    if(isServerCommand() && messageMap["cmdID"] == 255) {
+  //  if(isServerCommand() && messageMap["cmdID"] == 255) {
         std::cout << "STOPPING SERVER\n" << std::endl; //stop server;
-    }
+  //  }
 }
 
 void Commands::addDevice() {
