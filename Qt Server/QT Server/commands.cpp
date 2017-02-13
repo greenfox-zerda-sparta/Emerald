@@ -27,9 +27,9 @@ void Commands::restartServer() {
 }
 
 void Commands::stopServer() {
-    if(isServerCommand() && messageMap["cmdID"] == 255) {
+  //  if(isServerCommand() && messageMap["cmdID"] == 255) {
         std::cout << "STOPPING SERVER\n" << std::endl; //stop server;
-    }
+  //  }
 }
 
 void Commands::addDevice() {

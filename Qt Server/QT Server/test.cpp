@@ -57,13 +57,13 @@ TEST_CASE("Checking UI constructor") {
 
 TEST_CASE("CommandMap function pointers call the right function: 253 - reset server ") {
   MessageHandler msgHandler;
-  std::vector<byte> comm = { 255, 253, 253, 255, 255, 255, 254, 255, 254 };
+  std::vector<byte> comm = { 255, 253, 255, 255, 255, 255, 254, 255, 254 };
   msgHandler.splitMessage(comm);
   Commands command(msgHandler.getmessageMap());
 
-  REQUIRE(command.messageMap["cmdID"] == 253);
-  CommandMap commMap();
-  //commMap.*cmdMap[253](); 
+  REQUIRE(command.messageMap["cmdID"] == 255);
+  CommandMap commMap(command);
+  //command.*cmdMap[253](); 
 }
 
 #endif
