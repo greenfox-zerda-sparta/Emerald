@@ -10,7 +10,7 @@ Logfile::Logfile() {
 
 
 void Logfile::log_buffer(LogLevel _loglevel, std::string logbuffer) {
-  // add mutex and enum of log levels
+
   const static char* LogLevelStr[] = { "UI", "Device", "Warning", "Error" };
 
   logmutex.lock();
