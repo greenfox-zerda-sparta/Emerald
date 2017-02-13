@@ -7,7 +7,7 @@
 #include "MyTime.h"
 #include <mutex>
 
-enum LogLevel { UI, Device, Warning, Error };
+enum LogLevel { UILog, DeviceLog, Warning, Error };
 
 class Logfile {
 private:
