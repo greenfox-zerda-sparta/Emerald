@@ -10,6 +10,7 @@ Logfile::Logfile() {
 
 
 void Logfile::log_buffer(std::string logbuffer) {
+  // add mutex and enum of log levels
   if (logging) {
     logfile.open(logfilename.c_str(), std::ios::app);
     logfile << logbuffer << endl;

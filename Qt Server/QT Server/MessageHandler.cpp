@@ -16,10 +16,6 @@ void MessageHandler::splitMessage(std::vector<byte> bytes) {
   }
 }
 
-std::unordered_map<std::string, byte> MessageHandler::getCommandMap() {
-  return commandMap;
-}
-
 void MessageHandler::executeCmd(QTcpSocket* client, std::vector<byte> bytes, std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv) {
   if (commandMap["targetIDHigh"] == 255 && commandMap["targetIDLow"] == 254 &&
     commandMap["senderIDHigh"] == 255 && commandMap["senderIDLow"] == 253) {
