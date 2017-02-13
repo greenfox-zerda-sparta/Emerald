@@ -11,7 +11,7 @@ MessageHandler::MessageHandler() {
 void MessageHandler::splitMessage(std::vector<byte> bytes) {
   for (unsigned int i = 0; i < bytes.size(); i++) {
     if (i < validKeys.size()) {
-      commandMap[validKeys[i]] = bytes[i];
+      messageMap[validKeys[i]] = bytes[i];
     }
   }
 }

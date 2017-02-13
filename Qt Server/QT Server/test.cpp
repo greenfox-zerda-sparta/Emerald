@@ -3,6 +3,7 @@
 #include "catch.hpp"
 #include "MessageConverter.h"
 #include "Lamp.h"
+#include "UI.h"
 
 #include <QtCore>
 #include <string>
@@ -27,11 +28,24 @@ TEST_CASE("QByteArray is convverted to unsigned char vector")
 
 TEST_CASE("Checking Lamp device constructor")
 {
-  Device* lamp = new Lamp(0, 1, 2, 3, 4, 5, "xxx");
+  IDs ids;
 
-  REQUIRE(lamp->get_groupID() == '1');
+  Device* lamp = new Lamp(ids, "xxx");
+
+  REQUIRE(lamp->get_groupID() == 1);
   REQUIRE(lamp->get_deviceIDHigh() == 0);
   REQUIRE(lamp->get_IP() == "xxx");
+}
+
+TEST_CASE("Checking UI constructor") {
+  IDs ids;
+
+  Device* ui = new UI(ids, "xxx");
+
+  REQUIRE(ui->get_groupID() == 254);
+  REQUIRE(ui->get_deviceIDHigh() == 255);
+  REQUIRE_FALSE(ui->get_groupID() == 13);
+  REQUIRE(ui->get_IP() == "xxx");
 }
 
 #endif

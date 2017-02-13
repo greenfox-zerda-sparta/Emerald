@@ -28,7 +28,9 @@ HEADERS = \
     Lamp.h \
     MessageConverter.h \
     resource.h \
-    UI.h
+    UI.h \
+    messages.h \
+    commands.h
 
 SOURCES = \
    $$PWD/Logfile.cpp \
@@ -46,7 +48,9 @@ SOURCES = \
     Lamp.cpp \
     MessageConverter.cpp \
     test.cpp \
-    UI.cpp
+    UI.cpp \
+    messages.cpp \
+    commands.cpp
 
 INCLUDEPATH = \
     $$PWD/.

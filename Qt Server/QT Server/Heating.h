@@ -7,7 +7,7 @@ class Heating : public Device {
 private:
 
 public:
-  Heating(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP);
+  Heating(IDs _ids, std::string _IP);
 };
 
 
