@@ -1,13 +1,13 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
-#include <unordered_map>
+#include <map>
 #include <iostream>
 
 typedef unsigned char byte;
 
 class Commands {
 public:
-    Commands(std::unordered_map<std::string, byte>& messageMap);
+    Commands(std::map<std::string, byte>& messageMap);
     void resetServer();
     void restartServer();
     void stopServer();
@@ -17,9 +17,10 @@ public:
     void setData();
     void forwardMessage();
 private:
-    std::unordered_map<std::string, byte> messageMap;
+    std::map<std::string, byte> messageMap;
     bool isSenderUi();
     bool isServerCommand();
+
 };
 
 #endif // COMMANDS_H

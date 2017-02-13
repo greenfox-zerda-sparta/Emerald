@@ -16,10 +16,14 @@ void MessageHandler::splitMessage(std::vector<byte> bytes) {
   }
 }
 
+std::map<std::string, byte> MessageHandler::getmessageMap() {
+  return messageMap;
+}
+
 void MessageHandler::executeCmd(QTcpSocket* client, std::vector<byte> bytes, std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv) {
-  if (commandMap["targetIDHigh"] == 255 && commandMap["targetIDLow"] == 254 &&
-    commandMap["senderIDHigh"] == 255 && commandMap["senderIDLow"] == 253) {
-    switch (commandMap["cmdID"]) {                     // a case-ben indulhatna a thread. Vagy itt adja ki a parancsot, ami elinditja
+  if (messageMap["targetIDHigh"] == 255 && messageMap["targetIDLow"] == 254 &&
+    messageMap["senderIDHigh"] == 255 && messageMap["senderIDLow"] == 253) {
+    switch (messageMap["cmdID"]) {                     // a case-ben indulhatna a thread. Vagy itt adja ki a parancsot, ami elinditja
     case 253:
       std::cout << "RESETTING SERVER\n" << std::endl; // reset server;  delete all devices
       break;
