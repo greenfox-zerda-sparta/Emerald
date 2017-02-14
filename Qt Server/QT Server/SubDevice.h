@@ -9,6 +9,7 @@ private:
   Logfile* mydevicelogfile;
   std::string devicelogbuffer;
   MyTime* LocalTimer;
+  bool isdeviceworking;
 public:
   SubDevice(IDs _ids, std::string _IP);
   ~SubDevice();
