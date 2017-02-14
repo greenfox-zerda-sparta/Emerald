@@ -1,24 +1,62 @@
 
 USER STORY-k fõként szerver oldalról
-(Turquoise tehetne bele többféle parancs kiadás modellezést, hogy mûködõképes-e a rendszerünk)
 
 Alaphelyzet:
 - FIX ip-k
 
+Szerver elsõ indítás: bekéri az UI Ip-t
+Szerver Start:
+			- beolvassa a fájlból vektorba az eszközöket
+			/- udp az UI -nak, megvárja míg csatlakozik - NEM; UI JÖN MEGY, AMIKOR AKAR Direkt tcp csatlakozás lehet/
+			- UDP célzottan az eszközöknek
+			- felcsatlakozás
+			- device obj update - ha az eszköz hibás
+			- Várja az UI-t, parancsokat
+			/- full STATE REPORT kérés az eszközökrõl (manuális módban változhatott az állapotuk)
+			- UI- nak REPORT az aktuális eszköz állapotokról
+			- REPORT az UI-nak, hogy üzemkész, innen fogadja a parancsokat CSAK HA UI FENT VAN, ÉS KÉRI, KÜLÖNBEN NEM TUDUNK VELE MIT KEZDENI/
+			
+
+Szerver leállítás:
+		UI:
+			- parancs a szervernek (targetIDs: 255 254)
+			- fogadja az eseleges folyamatban lévõ üzeneteket
+			- várja a nyugtát
+			- utána lecsatlakozik, udp socketet nyit, várja a szerver következõ csatlakozását
+			
+		Szerver:
+			- Üzenet minden kliensnek, hogy innen manuális módban üzemelnek
+			- függõ mûveletek megvárása, új parancsra nem reagál
+			- menti az aktuális állapotot (nem kell, ha menet közben diszkre is ment mindent, de szerintem elég, ha csak az eszközöket írja diszkre egybõl, az állapotváltozásokat csak a memóriában követi) 
+			- nyugta az UI-nak, hogy felkészült a lekapcsolásra, timeout
+			- megvárja, míg a kliensek lecsatlakoznak, timeout után zárja a tcp portot
+			- lekapcsol
+			
+		Device:
+			- Megkapja a szerver üzenetét
+			- Nem küld semmit innentõl
+			- Manual módra vált
+			- Lecsatlakozik, UDP portot nyit
+			
+Szerver restart:
+		Szerver leállítás
+		Szerver start
+
+		
 Add device:
 	UI:
 		- meghatározza az új eszköz IP-jét
 		- group, home, floor, room -ot / ebbõl tudjuk, hogy lámpa, és hogy hol van
-		- ADD DEVICE küldés a szervernek
+		- ADD DEVICE küldés a szervernek, command body-ba az ip
 		- várja a nyugtát
-		- elmenti az új id-t az eszközhöz/nem feltétlen szükséges a fix ip miatt/, ha a szerver hozzá tudta adni az eszközt
+		- elmenti az új id-t az eszközhöz, ha a szerver hozzá tudta adni az eszközt
 		- hiba esetén javítja az adatokat
 		
 	Szerver:
-		- kiosztja a következõ id-t az eszköznek /nem feltétlen szükséges a fix ip miatt/
+		- kiosztja a következõ id-t az eszköznek
 		- létrehozza hozzá az objektumot, amibe elmenti az összes állapotleíróját
-		- lemezre menti
-		- REPORT UI-nak, benne az új ID, vagy hiba (Rossz IP!)
+		- fájlba írja
+		- REPORT UI-nak, benne az új ID, vagy hiba (IP ell?)
 		- UDP üzenetek küldése célzottan az új IP-re
 		- Új eszköz csatlakozásakor status report-ot kér
 		- elküldi az id-t
@@ -42,25 +80,34 @@ Remove device:
 	
 	Szerver
 		- lecsatlakoztatja az eszközt, ha csatlakozik
-		- törli az õt reprezentáló objektumot lemezrõl, memóriából
+		- törli az õt reprezentáló objektumot a fájlból (újraírja a fájlt), memóriából
 		- REPORT az UI-nak
 		
-Replace device:
-	UI:
-		- REPLACE DEVICE küldés a szeervernek
-			Command fejléc: New Location
-			device id: amit át kell helyezni
-			/szerintem IP-t nem kell változtatni/
-		- várja a nyugtát
-		
-	Szerver:
-		- Követi a változtatásokat az objektumban
-		- REPORT /OK vagy hiba - rossz adatok
-		
+Parancsküldés az eszköznek:
+  UI:
+    - Felcsatlakozik a szerverre
+    - Elküldi a parancsot (Command header fontos)
+    - Várja a visszajelzést/hibát kezel
+    
+  Szerver:
+    - Megkapja a parancsot/hibát kezel
+    - visszajelez, hogy intézi
+    - Továbbítja az eszköz(ök)nek
+    - Várja a választ/hibát kezel
+    -..
+    - Ha megjött továbbítás a UI-nak
+    
+  Eszköz:
+    - Megkapja a parancsot / ha nem jó a CRC jelzi, -> újra megkapja
+    - végrehajtja / vagy nem tudja
+    - visszajelez -> cmd rply SUCC vagy ERR
+    
+    
+
 Eszköz lekapcsolás (funkció):
 		UI:
 			- Parancs a szervernek
-				command code: 00, target ID: az egyéni id,
+				command code: 0,2?, target ID: az egyéni id,
 			- Várja a nyugtát
 			- ha ok, nincs tennivaló
 			
@@ -70,76 +117,37 @@ Eszköz lekapcsolás (funkció):
 			- parancs az eszköznek
 			- várja a nyugtát
 			- ha hiba, REPORT az UI -nak
-			- eszköz állapotjelzõ átállítása
+			- eszköz állapotjelzõ átállítása(0)
 			
 		Eszköz:
 			- lekapcs
 			- menti az utolsó mûködési parancsot
 			- nyugta, vagy hiba
 			
-Eszköz bekapcs: UA, command: 10, vagy inkább 1			
+Eszköz bekapcs: UA, command: 1			
 
-Szerver leállítás:
-		UI:
-			- parancs a szervernek (target: 255 255)
-			- fogadja az eseleges folyamatban lévõ üzeneteket
-			- várja a nyugtát
-			- utána lecsatlakozik, udp socketet nyit, várja a szerver következõ csatlakozását
-			
-		Szerver:
-			- Üzenet minden kliensnek, hogy innen manuális módban üzemelnek
-			- függõ mûveletek megvárása, új parancsra nem reagál
-			- menti az aktuális állapotot (nem kell, ha menet közben diszkre is ment mindent, de szerintem elég, ha csak az eszközöket írja diszkre egybõl, az állapotváltozásokat csak a memóriában követi) 
-			- nyugta az UI-nak, hogy felkészült a lekapcsolásra, timeout
-			- megvárja, míg a kliensek lecsatlakoznak, timeout után zárja a tcp portot
-			- lekapcsol
-			
-		Device:
-			- Megkapja a szerver üzenetét
-			- Nem küld semmit innentõl
-			- Manual módra vált
-			- Lecsatlakozik, UDP portot nyit
-			
-Szerver restart:
-		eleje: szerver leállítás
-		
-		Start:
-			- beolvassa a diszkrõl az eszközöket
-			- udp az UI -nak, megvárja míg csatlakozik
-			- UDP célzottan az eszközöknek
-			- felcsatlakozás
-			- full STATE REPORT kérés az eszközökrõl (manuális módban változhatott az állapotuk)
-			(- memória update - nincs rá szükség)
-			- UI- nak REPORT az aktuális eszköz állapotokról
-			- REPORT az UI-nak, hogy üzemkész, innen fogadja a parancsokat
-			
-
-		
 UI leállítás, leállás:
 		Értelme nincs;
 		
-		Szrever: ha UI lecsatlakozik, értesíti az eszközöket manual módról
+		/Szerver: ha UI lecsatlakozik, értesíti az eszközöket manual módról
 				- lecsatlakoztatja az eszközöket
-				- célzottan UI -ra UDP -zik
+				- célzottan UI -ra UDP -zik NEM KELL, DEVICE -K ONLINE LESZNEK MINDIG/
 
 UI bekapcs:
 	UI:
-		- Ha nincs UDP - vár a szerverre.
-		- Ha van UDP, rámegy a szerverre, várja a szerver kérdését a status -ról
+		- TCP-t kezd, rámegy a szerverre, várja a szerver kérdését a status -ról
 		- Report, hogy üzemkész
-		- Várja az UPDATE REPORT-okat
-		- Várja az állapotjelentést a szervertõl.
 		- Normál üzem
 	
 	Szerver:
 		- UI felcsatlakozás;
 		- Állapot bekérése
 		- Ha üzemkész az UI:
-		- UDP célzottan az összes eszközre.
+		/- UDP célzottan az összes eszközre.
 		- Ha felcsatlakoztak, full state REPORT kérés
 		- Update
 		- Reportok továbbítása az UI-nak
-		- Jelzi, hogy normál üzem kész, fogadja a parancsokat
+		- Jelzi, hogy normál üzem kész, fogadja a parancsokat NEM KELL: ELVILEG ONLINE MIND/
 	
 				
 Eszköz leállás (nem funkció) - hiba:
@@ -156,7 +164,7 @@ Eszköz leállás (nem funkció) - hiba:
 		
 Eszköz feljön újra a hálóra:
 	Eszköz:
-		- kiolvassa a mentett adatokat (mûködésre vonatkozót is)
+		- kiolvassa a mentett adatokat saját fájljából (mûködésre vonatkozót is)
 		- manual módban indul utolsó mûködési instrukciók alapján
 		- UDP portot nyit
 		- Ha nincs UDP - várja a szervert
@@ -164,30 +172,35 @@ Eszköz feljön újra a hálóra:
 		- vált online módra
 		- kérésre elküldi a statust
 		- ha nem tudta kiolvasni a mentett adatokat
-			Szerver report alapján beállítja az ID-t /esetleg lehet, hogy ne mentse, hanem mindig kérje bekapcsoláskor
+			Szerver report alapján beállítja az ID-t, menti
 
 		
 	Szerver:
 		- Érzékeli a csatlakozást,
 		- bekéri az állapotjelentést
 		- ha alapadatok nem stimmelnek (pl. nem tudja kiolvasni az eszköz az ID-jét) updateli az eszközt
-		- update UI:
 		- várja a nyugtát
 		
 	UI:
-		- megkapja a REPORT-ot
-		- nyugtáz
+		- nincs teendõ
 	
 Szerver leállás - hiba:
 	ha a szervert elvesztik az eszközök, átállnak manual módra, utolsó parancs alapján mûködnek
 	udp-t nyitnak, tcp-t zárnak
 
-Szerver elsõ indítás: bekéri az UI Ip-t
+/Replace device:
+	UI:
+		- REPLACE DEVICE küldés a szeervernek
+			Command fejléc: New Location
+			device id: amit át kell helyezni
+			/szerintem IP-t nem kell változtatni/
+		- várja a nyugtát
+		
+	Szerver:
+		- Követi a változtatásokat az objektumban
+		- REPORT /OK vagy hiba - rossz adatok  KÉSÕBB ESETLEG/
+		
 
-
-Még egy dolog:
-ha az eszközöket manuálisan bindzsizik, REPORT-ot küldenek a szervernek azonnal az állapotukról, aki update-l
-Szervernek nem biztos, hogy több info-ra van szüksége elmentve, mint ami a command fejlécben van, plusz az összes IP;
-sõt memóriába sem biztos, hogy update-elnie kell.
-Állapotjelentések: mindig összevetni a szerver "adatbázissal", ha valami nem stimmel, küldeni az UI-nak
+/ha az eszközöket manuálisan bindzsizik, REPORT-ot küldenek a szervernek azonnal az állapotukról, aki update-l - NEM TUDUNK VELE MIT KEZDENI HA NINCS UI/
+Szervernek nincs több info-ra szüksége elmentve, mint ami a command fejlécben van, plusz az összes IP, plussz, hogy elérhetõ az eszköz;
 	
