@@ -12,8 +12,8 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     deviceId = "ui";
     changeDev();
     serverPort = 1234;
-    serverAddress = "T-Pc";
-//    serverAddress = "10.27.6.122";
+//    serverAddress = "T-Pc";
+    serverAddress = "10.27.6.64";
     datagramNeeded = "turquoise&emerald";
     cReader = new ConsoleReader();
     consoleThread = new QThread();

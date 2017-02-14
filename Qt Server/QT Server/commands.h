@@ -1,5 +1,8 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
+#include "Device.h"
+#include <vector>
+#include <memory>
 #include <map>
 #include <iostream>
 
@@ -31,7 +34,6 @@ private:
   void(Commands::*ptr_forwardMessage)();
   bool isSenderUi();
   bool isServerCommand();
-
 };
 
 #endif // COMMANDS_H
