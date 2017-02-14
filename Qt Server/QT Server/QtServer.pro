@@ -24,7 +24,8 @@ HEADERS = \
     UI.h \
     messages.h \
     commands.h \
-    CommandMap.h
+    CommandMap.h \
+    SubDevice.h
 
 SOURCES = \
    $$PWD/Logfile.cpp \
@@ -34,13 +35,12 @@ SOURCES = \
    $$PWD/server.cpp \
    $$PWD/udpsender.cpp \
     Device.cpp \
-    GarageDoor.cpp \
     MessageConverter.cpp \
     test.cpp \
     UI.cpp \
     messages.cpp \
     commands.cpp \
-    CommandMap.cpp
+    SubDevice.cpp
 
 INCLUDEPATH = \
     $$PWD/.

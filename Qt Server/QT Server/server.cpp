@@ -13,7 +13,7 @@ Server::Server(QObject* parent) : QTcpServer(parent) {
   addedDevices = new std::vector<Device>;
   HostAddresses = std::make_shared<std::vector<QHostAddress>>();
   try {
-      *addedDevices = mymessagelogfile->getDevices();
+      *addedDevices = mymessagelogfile->get_devices_vector();
   } catch (...){}
 }
 
@@ -40,13 +40,13 @@ void Server::AddUI() {
   byte cmdID;
 
 */
-    addedDevices->push_back(Device({255, 253, 254, 255, 255, 255}, uiAddress));
+    addedDevices->push_back(Device(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
 //    uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
      uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
   } else {
     for(auto i: *addedDevices) {
         if(i.get_groupID() == 254){
-            uiAddress = i.get_IP();
+            msgConv->qstringToString(uiAddress.toString()) = i.get_IP();
             break;
         }
     }
@@ -81,7 +81,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
   Device newDevice;
   for(auto i: *addedDevices) {
-    if(i.get_IP() = client->peerAddress()){
+    if(i.get_IP() == msgConv->qstringToString((client->peerAddress()).toString())){
        newDevice = i;
        break;
     }
@@ -90,7 +90,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   if (client->peerAddress() == uiAddress) {
     devices[client] = 0;
     if(newDevice.get_IP().size() > 0) {
-      deviceMap[client] = newDevice;
+      (*deviceMap)[client] = newDevice;
     }
     emit stopBroadcast();
   } else {

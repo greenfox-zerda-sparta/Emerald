@@ -26,7 +26,7 @@ protected:
 
 public:
   Device();
-  Device(IDs ids, std::string _IP, bool _isdeviceworking);
+  Device(IDs ids, std::string _IP, bool _isdeviceworking = true);
   byte get_deviceIDHigh();
   byte get_deviceIDLow();
   byte get_groupID();

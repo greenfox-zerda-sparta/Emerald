@@ -1,5 +1,5 @@
 #include "SubDevice.h"
-#include "messageconverter.h"
+#include "MessageConverter.h"
 
 SubDevice::SubDevice(IDs _ids, std::string _IP)
   : Device(_ids, _IP, isdeviceworking) {
