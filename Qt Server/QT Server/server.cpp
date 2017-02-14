@@ -31,12 +31,10 @@ void Server::AddUI() {
 }
 
 void Server::StartServer() {
-  std::cout << std::thread::hardware_concurrency() << std::endl;
   AddUI();
   udpsender = new UdpSender(HostAddresses);
   connect(this, SIGNAL(stopBroadcast()), udpsender, SLOT(stopBroadcasting()));
   connect(this, SIGNAL(startBroadcast()), udpsender, SLOT(startBroadcasting()));
-  std::cout << std::thread::hardware_concurrency() << std::endl;
   if (!this->listen(QHostAddress::AnyIPv4, 1234)) {
     std::cerr << "Could not start server." << std::endl;
   }

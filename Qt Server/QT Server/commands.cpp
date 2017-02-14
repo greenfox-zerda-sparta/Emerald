@@ -72,6 +72,9 @@ void Commands::stopServer() {
 void Commands::addDevice() {
     if(isServerCommand()) {
         std::cout << "ADDING DEVICE" << std::endl; //add device;
+        // Instantiate device using all IDs from MessageMap
+        // push_back to AddedDevices vector (save) in server class
+        // server checks if new connection is this one, if true, puts to devices map
     } else {
       std::cout << "Invalid command: target must be the server." << std::endl;
     }
@@ -80,6 +83,8 @@ void Commands::addDevice() {
 void Commands::removeDevice() {
     if(isServerCommand()) {
         std::cout << "REMOVING DEVICE" << std::endl; //remove device;
+        // Remove device using target device ID High, Low from MessageMap
+        // Remove AddedDevices vector (save)
     } else {
       std::cout << "Invalid command: target must be the server." << std::endl;
     }
@@ -102,5 +107,8 @@ void Commands::setData() {
 }
 
 void Commands::forwardMessage() {
-        std::cout << "FORWARDING MESSAGE TO TARGET DEVICE" << std::endl; //forward message;
+    std::cout << "FORWARDING MESSAGE TO TARGET DEVICE" << std::endl; //forward message;
+    // 1. to target device ID High, Low -> get TCPsocket from devices map in server class, forward msg.
+    // 2. to several devices: group, room or floor ID: get TCPsockets from devices map in server 
+    // class, to vector, forward msg to them.
 }
