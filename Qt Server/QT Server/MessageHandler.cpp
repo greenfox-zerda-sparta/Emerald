@@ -58,7 +58,7 @@ void MessageHandler::executeCmd(QTcpSocket* client, std::vector<byte> bytes, std
     }
     std::string message = "Device " + toString((*ptr_socketmap)[client]) + ": ";
     for (auto iter : bytes) { message += toString(int(iter)) + ", "; }
-    // mylogfile->log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message);
+    // mymessagelogfile->message_log_buffer("Admin message " + LocalTimer->GetTimeFileFormat() + " " + message);
     std::cout << message << std::endl;
   }
 }

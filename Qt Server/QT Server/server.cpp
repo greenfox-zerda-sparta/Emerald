@@ -7,13 +7,13 @@
 Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
   adminID = 0;
-  mylogfile = new Logfile;
+  mymessagelogfile = new Logfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
 }
 
 Server::~Server() {
-  delete mylogfile;
+  delete mymessagelogfile;
   delete msgHandler;
   delete msgConv;
   delete udpsender;
@@ -42,7 +42,7 @@ void Server::StartServer() {
   }
   else {
     std::cout << "Server started. Listening..." << std::endl;
-    if (mylogfile->get_logging_status()) {
+    if (mymessagelogfile->get_logging_status()) {
       std::cout << "File logging is on." << std::endl;
     } else {
       std::cout << "File logging is off." << std::endl;
@@ -67,7 +67,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 
   std::string ConnectMsg = "Device " + toString(devices[client]) + " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
   std::cout << ConnectMsg << std::endl;
-  mylogfile->log_buffer(DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
+  mymessagelogfile->message_log_buffer(DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
 }
 
 // Dealing with incoming messages QBYTEARRAY VERSION
@@ -89,11 +89,11 @@ void Server::disconnected() {
   std::string DisconnectMsg;
   if (devices[client] != 0) {
     DisconnectMsg = "Device " + toString(devices[client]) + " disconnected. ";
-    mylogfile->log_buffer(DeviceLog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
+    mymessagelogfile->message_log_buffer(DeviceLog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
   }
   else {
     DisconnectMsg = "Admin disconnected. ";
-    mylogfile->log_buffer(UILog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
+    mymessagelogfile->message_log_buffer(UILog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
 	  emit startBroadcast();
   }
   std::cout << DisconnectMsg << std::endl;

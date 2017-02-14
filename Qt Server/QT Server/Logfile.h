@@ -11,9 +11,12 @@ enum LogLevel { UILog, DeviceLog, Warning, Error };
 
 class Logfile {
 private:
-  std::string logbuffer;
-  std::string logfilename;
-  std::ofstream logfile;
+  std::string messagelogbuffer;
+  std::string messagelogfilename;
+  std::ofstream messagelogfile;
+  std::string devicelogbuffer;
+  std::string devicelogfilename;
+  std::ofstream devicelogfile;
   MyTime* LocalTimer;
   bool logging;
   std::mutex logmutex;
@@ -21,7 +24,8 @@ private:
 
 public:
   Logfile();
-  void log_buffer(LogLevel _loglevel, std::string);
+  void message_log_buffer(LogLevel _loglevel, std::string);
+  void Logfile::device_log_buffer(std::string devicelogbuffer);
   bool get_logging_status();
 };
 

@@ -41,8 +41,8 @@ private:
   int ID;
   int adminID;
   QHostAddress uiAddress;
-  Logfile* mylogfile;
-  std::string logbuffer;
+  Logfile* mymessagelogfile;
+  std::string messagelogbuffer;
   MyTime* LocalTimer;
   MessageHandler* msgHandler;
   UdpSender* udpsender;
