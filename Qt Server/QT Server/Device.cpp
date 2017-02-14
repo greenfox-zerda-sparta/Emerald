@@ -1,21 +1,19 @@
 #include "Device.h"
 
+Device::Device()
+{
+  
+}
 
-//Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP) {
-Device::Device(IDs _ids, std::string _IP) {
-  //deviceIDHigh = _deviceIDHigh;
-  //deviceIDLow = _deviceIDLow;
-  //homeID = _homeID;
-  //floorID = _floorID;
-  //roomID = _roomID;
-  //cmdID = _cmdID;
+Device::Device(IDs _ids, std::string _IP, bool _isdeviceworking) {
   deviceIDHigh = _ids.deviceIDHigh;
   deviceIDLow = _ids.deviceIDLow;
   homeID = _ids.homeID;
   floorID = _ids.floorID;
   roomID = _ids.roomID;
-  cmdID = _ids.cmdID;
+  groupID = _ids.groupID;
   IP = _IP;
+  isdeviceworking = _isdeviceworking;
 }
 
 byte Device::get_deviceIDHigh() {
@@ -40,10 +38,6 @@ byte Device::get_floorID() {
 
 byte Device::get_roomID() {
   return roomID;
-}
-
-byte Device::get_cmdID() {
-  return cmdID;
 }
 
 std::string Device::get_IP() {

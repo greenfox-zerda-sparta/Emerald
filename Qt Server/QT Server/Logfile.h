@@ -6,6 +6,10 @@
 #include <sstream>
 #include "MyTime.h"
 #include <mutex>
+#include <vector>
+#include "Device.h"
+
+typedef unsigned char byte;
 
 enum LogLevel { UILog, DeviceLog, Warning, Error };
 
@@ -21,12 +25,16 @@ private:
   bool logging;
   std::mutex logmutex;
   LogLevel loglevel;
+  int numberofids = 7;
 
 public:
   Logfile();
   void message_log_buffer(LogLevel _loglevel, std::string);
-  void Logfile::device_log_buffer(std::string devicelogbuffer);
+  void device_log_buffer(std::string devicelogbuffer);
   bool get_logging_status();
+  std::vector<Device> get_devices_vector();
+  Device get_device(std::string);
+  std::string get_devicelogfilename();
 };
 
 template<class T>

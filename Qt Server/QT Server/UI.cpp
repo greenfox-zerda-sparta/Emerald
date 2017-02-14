@@ -2,7 +2,7 @@
 #include "Logfile.h"
 
 UI::UI(IDs _ids, std::string _IP)
-: Device(_ids, _IP){
+: Device(_ids, _IP, isdeviceworking){
   deviceIDHigh = 255;
   deviceIDLow = 253;
   groupID = 254;

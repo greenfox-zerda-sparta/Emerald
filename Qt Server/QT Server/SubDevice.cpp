@@ -2,7 +2,7 @@
 #include "messageconverter.h"
 
 SubDevice::SubDevice(IDs _ids, std::string _IP)
-  : Device(_ids, _IP) {
+  : Device(_ids, _IP, isdeviceworking) {
   bool isdeviceworking = true;
   mydevicelogfile = new Logfile;
 
