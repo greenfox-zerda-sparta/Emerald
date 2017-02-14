@@ -23,7 +23,7 @@ ConsoleReader::ConsoleReader(QObject *parent) : QObject(parent)
     qDebug() << "               crc                 - send 'crc error' message";
     qDebug() << "               suc                 - send 'success' message";
     qDebug() << "               err                 - send 'error in work' message";
-//    qDebug() << "               add                 - send 'add device' message";
+    qDebug() << "               add                 - send 'add device' message";
 }
 
 void ConsoleReader::onRun()

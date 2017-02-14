@@ -20,6 +20,7 @@ private:
     QByteArray stop_server;
     QByteArray restart_server;
     QByteArray reset_server;
+    QByteArray add_device;
 };
 
 #endif // MESSAGES_H

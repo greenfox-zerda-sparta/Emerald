@@ -12,8 +12,8 @@ DummyClient::DummyClient(QObject *parent) : QObject(parent)
     deviceId = "ui";
     changeDev();
     serverPort = 1234;
-//    serverAddress = "T-Pc";
-    serverAddress = "10.27.6.64";
+    serverAddress = "localhost";
+//    serverAddress = "10.27.6.64";
     datagramNeeded = "turquoise&emerald";
     cReader = new ConsoleReader();
     consoleThread = new QThread();
@@ -67,8 +67,8 @@ void DummyClient::connectToServer()
 void DummyClient::newDataAvailable()
 {
     QByteArray incomingData = (socket->readAll()).trimmed();
-    QString str(QString::fromUtf8(incomingData));
-    emit incomingMessage(str);
+//    QString str(QString::fromUtf8(incomingData));
+    emit incomingMessage(Utils::messageToNumbers(incomingData));
 }
 
 void DummyClient::sendFirstMessage()
@@ -87,8 +87,10 @@ void DummyClient::sendMessage(QString message)
     if (socket->state() != QTcpSocket::ConnectedState) {
         return;
     }
-    message += "\n";
-    socket->write(message.toUtf8());
+//    message += "\n";
+    QByteArray temp = Utils::qstringnumbersToQByteArray(message);
+    temp.append(10);
+    socket->write(temp);
     socket->flush();
 }
 
@@ -241,6 +243,12 @@ void DummyClient::startCommand(QString text)
         QByteArray msg = messGetter.get_message(text, me);
         sendMessage(msg);
         emit write("   ERROR message is sent.");
+    }
+    else if (text == "add")
+    {
+        QByteArray msg = messGetter.get_message(text, me);
+        sendMessage(msg);
+        emit write("   ADD DEVICE COMMAND is sent.");
     }
     else
     {
