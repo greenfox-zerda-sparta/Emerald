@@ -4,7 +4,11 @@
 #include <vector>
 #include <map>
 #include <QTcpSocket>
+#include <iostream>
+#include "Logfile.h"
+#include "MyTime.h"
 #include "MessageConverter.h"
+#include "commands.h"
 
 typedef unsigned char byte;
 
@@ -16,7 +20,7 @@ private:
 public:
   MessageHandler();
   void splitMessage(std::vector<byte> bytes);
-  void executeCmd(QTcpSocket* client, std::vector<byte> bytes, std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv);
+  void executeCmd(QTcpSocket* client, std::vector<byte> , std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv);
   std::map<std::string, byte> getmessageMap();
 };
 

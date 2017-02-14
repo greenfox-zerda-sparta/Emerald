@@ -24,8 +24,8 @@ void Server::AddUI() {
   //std::string input;
   //std::getline(std::cin, input);
   //uiAddress = msgConv->stringToQString(input);
-  uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
-  uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
+  uiAddress = "10.27.6.21";                                            // comment this when manually adding UI IP
+  // uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
   HostAddresses = std::make_shared<std::vector<QHostAddress>>();
   HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
@@ -78,9 +78,8 @@ void Server::readyRead() {
     std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
     msgHandler->splitMessage(msgBytes);                    // splitting message by byte (char)
     
-    std::map<QTcpSocket*, int>* ptr_socketmap = &devices;
+    std::map<QTcpSocket*, int>* ptr_socketmap = &devices;  // ptr for devices map needed for msg transfer, get socket by device ID
     msgHandler->executeCmd(client, msgBytes, ptr_socketmap, msgConv);
-    
   }
 }
 
