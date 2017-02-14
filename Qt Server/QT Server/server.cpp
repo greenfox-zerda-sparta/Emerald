@@ -10,6 +10,11 @@ Server::Server(QObject* parent) : QTcpServer(parent) {
   mymessagelogfile = new Logfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
+  addedDevices = new std::vector<Device>;
+  HostAddresses = std::make_shared<std::vector<QHostAddress>>();
+  try {
+      *addedDevices = mymessagelogfile->getDevices();
+  } catch (...){}
 }
 
 Server::~Server() {
@@ -17,21 +22,40 @@ Server::~Server() {
   delete msgHandler;
   delete msgConv;
   delete udpsender;
+  delete[] addedDevices;
 }                                                  
 
 void Server::AddUI() {
-  //std::cout << "Please enter UI IPaddress:" << std::endl;              // uncomment the lines below for manually adding UI IP
-  //std::string input;
-  //std::getline(std::cin, input);
-  //uiAddress = msgConv->stringToQString(input);
-  uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
-  uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
-  HostAddresses = std::make_shared<std::vector<QHostAddress>>();
+  if(addedDevices->size() == 0) {
+/*    std::cout << "Please enter UI IPaddress:" << std::endl;              // uncomment the lines below for manually adding UI IP
+    std::string input;
+    std::getline(std::cin, input);
+    uiAddress = msgConv->stringToQString(input);
+  byte deviceIDHigh;
+  byte deviceIDLow;
+  byte groupID;
+  byte homeID;
+  byte floorID;
+  byte roomID;
+  byte cmdID;
+
+*/
+    addedDevices->push_back(Device({255, 253, 254, 255, 255, 255}, uiAddress));
+//    uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
+     uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
+  } else {
+    for(auto i: *addedDevices) {
+        if(i.get_groupID() == 254){
+            uiAddress = i.get_IP();
+            break;
+        }
+    }
+  }
   HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
 
 void Server::StartServer() {
-  std::cout << std::thread::hardware_concurrency() << std::endl;
+//  std::cout << std::thread::hardware_concurrency() << std::endl;
   AddUI();
   udpsender = new UdpSender(HostAddresses);
   connect(this, SIGNAL(stopBroadcast()), udpsender, SLOT(stopBroadcasting()));
@@ -57,9 +81,19 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 
   connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
   connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
- 
+  Device newDevice;
+  for(auto i: *addedDevices) {
+    if(i.get_IP() = client->peerAddress()){
+       newDevice = i;
+       break;
+    }
+  }
+
   if (client->peerAddress() == uiAddress) {
     devices[client] = 0;
+    if(newDevice.get_IP().size() > 0) {
+      deviceMap[client] = newDevice;
+    }
     emit stopBroadcast();
   } else {
     devices[client] = ID++;

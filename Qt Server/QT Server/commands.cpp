@@ -1,8 +1,9 @@
 #include "commands.h"
 
-Commands::Commands(std::map<std::string, byte>& messageMap)
+Commands::Commands(std::map<std::string, byte>& messageMap, std::shared_ptr<std::vector<Device>> Devices)
 {
     this->messageMap = messageMap;
+    this->Devices = Devices;
 }
 
 bool Commands::isSenderUi() {

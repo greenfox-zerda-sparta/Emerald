@@ -30,3 +30,4 @@ std::string MessageConverter::toString(const T& t) {
   stream << t;
   return stream.str();
 }
+

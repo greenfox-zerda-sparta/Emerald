@@ -18,16 +18,9 @@ HEADERS = \
    $$PWD/MyTime.h \
    $$PWD/server.h \
    $$PWD/udpsender.h \
-    Alarm.h \
-    Blinds.h \
     catch.hpp \
-    Cooling.h \
     Device.h \
-    GarageDoor.h \
-    Heating.h \
-    Lamp.h \
     MessageConverter.h \
-    resource.h \
     UI.h \
     messages.h \
     commands.h \
@@ -40,13 +33,8 @@ SOURCES = \
    $$PWD/MyTime.cpp \
    $$PWD/server.cpp \
    $$PWD/udpsender.cpp \
-    Alarm.cpp \
-    Blinds.cpp \
-    Cooling.cpp \
     Device.cpp \
     GarageDoor.cpp \
-    Heating.cpp \
-    Lamp.cpp \
     MessageConverter.cpp \
     test.cpp \
     UI.cpp \
