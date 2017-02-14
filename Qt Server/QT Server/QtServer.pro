@@ -30,7 +30,8 @@ HEADERS = \
     resource.h \
     UI.h \
     messages.h \
-    commands.h
+    commands.h \
+    CommandMap.h
 
 SOURCES = \
    $$PWD/Logfile.cpp \
@@ -50,7 +51,8 @@ SOURCES = \
     test.cpp \
     UI.cpp \
     messages.cpp \
-    commands.cpp
+    commands.cpp \
+    CommandMap.cpp
 
 INCLUDEPATH = \
     $$PWD/.
