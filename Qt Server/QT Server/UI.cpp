@@ -1,5 +1,4 @@
 #include "UI.h"
-#include "Logfile.h"
 
 UI::UI(IDs _ids, std::string _IP)
 : Device(_ids, _IP, isdeviceworking){
@@ -11,7 +10,7 @@ UI::UI(IDs _ids, std::string _IP)
   roomID = 255;
 
   bool isdeviceworking = true;
-  mydevicelogfile = new Logfile;
+  mydevicelogfile = new DeviceLogfile;
 
   mydevicelogfile->device_log_buffer(
     toString(int(get_homeID())) + " " +
@@ -20,7 +19,8 @@ UI::UI(IDs _ids, std::string _IP)
     toString(int(get_groupID())) + " " +
     toString(int(get_deviceIDHigh())) + " " +
     toString(int(get_deviceIDLow())) + " " +
-    _IP + " " + toString(isdeviceworking) + "\n");
+    _IP + " " + 
+    toString(isdeviceworking));
 }
 
 UI::~UI() {
