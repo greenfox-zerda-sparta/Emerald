@@ -44,7 +44,7 @@ void Server::AddUI() {
   } else {
     for(auto i: *addedDevices) {
         if(i.get_groupID() == 254){
-            msgConv->qstringToString(uiAddress.toString()) = i.get_IP();
+            uiAddress = QString::fromStdString(i.get_IP());
             break;
         }
     }
@@ -109,8 +109,8 @@ void Server::readyRead() {
     std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
     msgHandler->splitMessage(msgBytes);                    // splitting message by byte (char)
     
-//    std::map<QTcpSocket*, int>* ptr_socketmap = &devices;  // ptr for devices map needed for msg transfer, get socket by device ID
-    msgHandler->executeCmd(addedDevices, client, msgBytes, ptr_socketmap, msgConv);
+   // std::map<QTcpSocket*, int>* ptr_socketmap = &deviceMap;  // ptr for devices map needed for msg transfer, get socket by device ID
+    msgHandler->executeCmd(addedDevices, client, msgBytes, deviceMap, msgConv);
 //    msgHandler->executeCmd(client, msgBytes, ptr_socketmap, msgConv);
   }
 }

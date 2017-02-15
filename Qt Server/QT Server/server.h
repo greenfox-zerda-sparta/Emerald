@@ -38,7 +38,7 @@ protected:
 
 private:
   std::set<QTcpSocket*> socketset;
-//  std::map<QTcpSocket*, int> devices;
+  std::map<QTcpSocket*, int> devices;
   int ID;
   int adminID;
   QHostAddress uiAddress;
