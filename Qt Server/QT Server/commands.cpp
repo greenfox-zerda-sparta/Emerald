@@ -29,6 +29,10 @@ void Commands::setMessageMap(std::map<std::string, byte>& messageMap) {
   this->messageMap = messageMap;
 }
 
+void Commands::setAddedDevices(std::vector<Device>* _addedDevices) {
+  this->addedDevices = _addedDevices;
+}
+
 void Commands::runCommand() {
   if (cmdMap.count(messageMap["cmdID"]) < 1) {
     std::cout << "INVALID COMMAND" << std::endl;
@@ -73,8 +77,9 @@ void Commands::addDevice() {
     if(isServerCommand()) {
         std::cout << "ADDING DEVICE" << std::endl; //add device;
         // Instantiate device using all IDs from MessageMap
-        // push_back to AddedDevices vector (save) in server class
+        // push_back to AddedDevices vector (save) in server class, log 2x
         // server checks if new connection is this one, if true, puts to devices map
+       // addedDevices->push_back(? ? ? new device ? ? ? );
     } else {
       std::cout << "Invalid command: target must be the server." << std::endl;
     }

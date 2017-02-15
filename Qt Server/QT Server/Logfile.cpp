@@ -23,11 +23,12 @@ void Logfile::message_log_buffer(LogLevel _loglevel, std::string messagelogbuffe
   logmutex.unlock();
 }
 
-void Logfile::device_log_buffer(std::string devicelogbuffer) {
+void Logfile::device_log_buffer(vektor) { // ide kell az egesz vektor argumentkent
+  devicelogbuffer;
 
   logmutex.lock();
 //  if (logging) {
-    devicelogfile.open(devicelogfilename.c_str(), std::ios::app);
+    devicelogfile.open(devicelogfilename.c_str(), std::ios::trunc);
     devicelogfile << devicelogbuffer << std::endl;
     devicelogfile.close();
 //  }

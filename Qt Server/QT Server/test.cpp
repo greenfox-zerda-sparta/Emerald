@@ -29,12 +29,16 @@ TEST_CASE("QByteArray is convverted to unsigned char vector") {
   REQUIRE(msgConv->qbytearrayToCharArray(qbyteArr) == uCharVector);
 }
 
-//TEST_CASE("Checking SubDevice device constructor") {
-//  IDs ids;
-//  Device* device = new SubDevice(ids, "xxx");
-//  REQUIRE(device->get_deviceIDHigh() == 0);
-//  REQUIRE(device->get_IP() == "xxx");
-//}
+TEST_CASE("Checking SubDevice device constructor") {
+  //IDs ids;
+  MessageHandler msgHandler;
+  std::vector<byte> comm = { 255, 254, 247, 255, 2, 1, 1, 255, 253 };
+  msgHandler.splitMessage(comm);
+  std::map<std::string, unsigned char> mMap = msgHandler.getmessageMap();
+  Device* device = new SubDevice(mMap);
+  REQUIRE(device->get_groupID() == 1);
+ // REQUIRE(device->get_IP() == "xxx");
+}
 
 //TEST_CASE("Checking UI constructor") {
 //  IDs ids;
@@ -50,7 +54,7 @@ TEST_CASE("CommandMap function pointers call the right function from message: 25
   std::vector<byte> comm = { 255, 254, 253, 255, 255, 255, 254, 255, 253 };
   msgHandler.splitMessage(comm);
   std::map<std::string, unsigned char> mMap = msgHandler.getmessageMap();
-  Commands command;
+  Commands command();
   command.setMessageMap(mMap);
   command.runCommand();
   // should print to console: RESETTING SERVER

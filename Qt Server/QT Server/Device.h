@@ -1,6 +1,7 @@
 #ifndef DEVICE_H
 #define DEVICE_H
 #include <string>
+#include <map>
 
 typedef unsigned char byte;
 
@@ -27,6 +28,7 @@ protected:
 public:
   Device();
   Device(IDs ids, std::string _IP, bool _isdeviceworking = true);
+  Device(std::map<std::string, byte> messageMap, std::string _IP = "111.111.11.11", bool _isdeviceworking = true);
   byte get_deviceIDHigh();
   byte get_deviceIDLow();
   byte get_groupID();
@@ -36,7 +38,7 @@ public:
   std::string get_IP();
   void connect_Device();
   void disconnect_Device();
-  std::string send_Device_Main_Status_Message(std::string device_Main_Status);
+ // std::string send_Device_Main_Status_Message(std::string device_Main_Status);
 };
 
 
