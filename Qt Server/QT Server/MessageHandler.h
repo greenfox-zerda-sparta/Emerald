@@ -20,7 +20,7 @@ private:
 public:
   MessageHandler();
   void splitMessage(std::vector<byte> bytes);
-  void executeCmd(QTcpSocket* client, std::vector<byte> , std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv);
+  void executeCmd(std::vector<Device>* addedDevices, QTcpSocket* client, std::vector<byte> , std::map<QTcpSocket*, int>* ptr_socketmap, MessageConverter* msgConv);
   std::map<std::string, byte> getmessageMap();
 };
 
