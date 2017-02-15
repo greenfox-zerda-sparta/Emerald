@@ -5,7 +5,7 @@
 #include <map>
 #include <iostream>
 #include "Device.h"
-#include "server.h"
+//#include "server.h"
 
 typedef unsigned char byte;
 

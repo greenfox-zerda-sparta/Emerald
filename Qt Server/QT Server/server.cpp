@@ -12,9 +12,11 @@ Server::Server(QObject* parent) : QTcpServer(parent) {
   msgConv = new MessageConverter;
   addedDevices = new std::vector<Device>;
   HostAddresses = std::make_shared<std::vector<QHostAddress>>();
+  deviceMap = std::make_shared<std::map<QTcpSocket*, Device>>();
   try {
       *addedDevices = mymessagelogfile->get_devices_vector();
-  } catch (...){}
+  } catch (...){
+  }
 }
 
 Server::~Server() {
@@ -23,7 +25,7 @@ Server::~Server() {
   delete msgConv;
   delete udpsender;
   delete[] addedDevices;
-}                                                  
+}
 
 void Server::AddUI() {
   if(addedDevices->size() == 0) {
@@ -38,9 +40,9 @@ void Server::AddUI() {
   byte floorID;
   byte roomID;
 */
-    addedDevices->push_back(Device(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
 //    uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
      uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
+     addedDevices->push_back(Device(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
   } else {
     for(auto i: *addedDevices) {
         if(i.get_groupID() == 254){
@@ -49,7 +51,7 @@ void Server::AddUI() {
         }
     }
   }
-  HostAddresses.lock()->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
+  HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
 
 void Server::StartServer() {
@@ -84,18 +86,15 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
        break;
     }
   }
+  (*deviceMap)[client] = newDevice;
 
   if (client->peerAddress() == uiAddress) {
-//    devices[client] = 0;
-    if(newDevice.get_IP().size() > 0) {
-      (*deviceMap)[client] = newDevice;
-    }
+    if(newDevice.get_IP().length() > 0) {
+      }
     emit stopBroadcast();
   } else {
-//    devices[client] = ID++;
   }
 
-//  std::string ConnectMsg = "Device " + toString(devices[client]) + " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
   std::string ConnectMsg = "Device " + toString((*deviceMap)[client].get_groupID()) + " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
   std::cout << ConnectMsg << std::endl;
   mymessagelogfile->message_log_buffer(DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
@@ -108,10 +107,8 @@ void Server::readyRead() {
     QByteArray QmsgBytes = (client->readAll());             // read to QByteArray, remove \n
     std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
     msgHandler->splitMessage(msgBytes);                    // splitting message by byte (char)
-    
-   // std::map<QTcpSocket*, int>* ptr_socketmap = &deviceMap;  // ptr for devices map needed for msg transfer, get socket by device ID
-    msgHandler->executeCmd(addedDevices, client, msgBytes, deviceMap, msgConv);
-//    msgHandler->executeCmd(client, msgBytes, ptr_socketmap, msgConv);
+
+     msgHandler->executeCmd(addedDevices, client, msgBytes, deviceMap, msgConv);
   }
 }
 
@@ -125,7 +122,7 @@ void Server::disconnected() {
   else {
     DisconnectMsg = "UI disconnected. ";
     mymessagelogfile->message_log_buffer(UILog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
-	  emit startBroadcast();
+    emit startBroadcast();
   }
   std::cout << DisconnectMsg << std::endl;
   socketset.erase(client);
