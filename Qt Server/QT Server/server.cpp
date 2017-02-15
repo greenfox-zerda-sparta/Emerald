@@ -45,11 +45,15 @@ void Server::AddUI() {
      addedDevices->push_back(UI(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
   } else {
     for(auto i: *addedDevices) {
-        if(i.get_groupID() == 254){
+        std::cout << (*addedDevices).size() << std::endl;
+        std::cout << (int)i.get_groupID() << std::endl;
+        if((int)i.get_groupID() == 254){
+            std::cout << "IP: " << i.get_IP() << std::endl;
             uiAddress = QString::fromStdString(i.get_IP());
             break;
         }
     }
+    std::cout << msgConv->qstringToString(uiAddress.toString()) << std::endl;
   }
   HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
