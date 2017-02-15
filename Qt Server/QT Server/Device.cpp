@@ -17,8 +17,8 @@ Device::Device(IDs _ids, std::string _IP, bool _isdeviceworking) {
 }
 
 Device::Device(std::map<std::string, byte> messageMap, std::string _IP, bool _isdeviceworking) {
- // deviceIDHigh = messageMap["deviceIDHigh"];
- // deviceIDLow = messageMap["deviceIDLow"];
+  deviceIDHigh = messageMap["deviceIDHigh"];
+  deviceIDLow = messageMap["deviceIDLow"];
   homeID = messageMap["homeID"];
   floorID = messageMap["floorID"];
   roomID = messageMap["roomID"];

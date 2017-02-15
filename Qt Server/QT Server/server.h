@@ -15,6 +15,8 @@
 #include "MessageConverter.h"
 #include "Device.h"
 
+std::vector<Device*> addedDevices;
+
 class Server : public QTcpServer {
   Q_OBJECT
 
@@ -48,9 +50,9 @@ private:
   MessageHandler* msgHandler;
   UdpSender* udpsender;
   MessageConverter* msgConv;
-  std::shared_ptr<std::vector<QHostAddress>> HostAddresses;
-  std::shared_ptr<std::map<QTcpSocket*, Device>> deviceMap;
-  std::vector<Device>* addedDevices;
+  std::vector<QHostAddress> HostAddresses;
+  std::map<QTcpSocket*, Device*> deviceMap;
+
 };
 
 #endif

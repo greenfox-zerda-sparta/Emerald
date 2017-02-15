@@ -12,7 +12,7 @@ class Commands {
 public:
   Commands();
   void setMessageMap(std::map<std::string, byte>& messageMap);
-  void setAddedDevices(std::vector<Device>* _addedDevices);
+  void setAddedDevices(std::vector<Device*>& _addedDevices);
   void runCommand();
 private:
   void resetServer();
@@ -35,7 +35,7 @@ private:
   void(Commands::*ptr_forwardMessage)();
   bool isSenderUi();
   bool isServerCommand();
-  std::vector<Device>* addedDevices;
+  std::vector<Device*> addedDevices;
 };
 
 #endif // COMMANDS_H

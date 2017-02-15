@@ -29,7 +29,7 @@ void Commands::setMessageMap(std::map<std::string, byte>& messageMap) {
   this->messageMap = messageMap;
 }
 
-void Commands::setAddedDevices(std::vector<Device>* _addedDevices) {
+void Commands::setAddedDevices(std::vector<Device*>& _addedDevices) {
   this->addedDevices = _addedDevices;
 }
 
@@ -76,10 +76,14 @@ void Commands::stopServer() {
 void Commands::addDevice() {
     if(isServerCommand()) {
         std::cout << "ADDING DEVICE" << std::endl; //add device;
-        // Instantiate device using all IDs from MessageMap
-        // push_back to AddedDevices vector (save) in server class, log 2x
-        // server checks if new connection is this one, if true, puts to devices map
-       // addedDevices->push_back(? ? ? new device ? ? ? );
+        int devicesNum2 = addedDevices.empty() ? addedDevices.size() : 0;
+        int devicesNum1 = devicesNum2 < 255 ? 0 : devicesNum1 + 1;
+        // ui es server id nem lehet, utolsonal warning message
+        messageMap["deviceIDHigh"] = (byte)devicesNum1;
+        messageMap["deviceIDLow"] = (byte)devicesNum2;
+        Device* newDevice = new Device(messageMap);
+        addedDevices.push_back(newDevice);
+        // log 2x
     } else {
       std::cout << "Invalid command: target must be the server." << std::endl;
     }
