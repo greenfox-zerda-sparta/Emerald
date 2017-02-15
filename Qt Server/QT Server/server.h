@@ -13,7 +13,8 @@
 #include "MessageHandler.h"
 #include "udpsender.h"
 #include "MessageConverter.h"
-#include "Device.h"
+#include "UI.h"
+#include "SubDevice.h"
 
 class Server : public QTcpServer {
   Q_OBJECT

@@ -42,7 +42,7 @@ void Server::AddUI() {
 */
 //    uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
      uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
-     addedDevices->push_back(Device(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
+     addedDevices->push_back(UI(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
   } else {
     for(auto i: *addedDevices) {
         if(i.get_groupID() == 254){
