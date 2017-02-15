@@ -49,7 +49,7 @@ void Server::AddUI() {
         }
     }
   }
-  HostAddresses.lock()->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
+  HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
 
 void Server::StartServer() {
