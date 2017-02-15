@@ -20,7 +20,7 @@ UI::UI(IDs _ids, std::string _IP)
     toString(int(get_groupID())) + " " +
     toString(int(get_deviceIDHigh())) + " " +
     toString(int(get_deviceIDLow())) + " " +
-    _IP + toString(isdeviceworking) + "\n");
+    _IP + " " + toString(isdeviceworking) + "\n");
 }
 
 UI::~UI() {

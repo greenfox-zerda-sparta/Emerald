@@ -31,7 +31,7 @@ SubDevice::SubDevice(std::map<std::string, byte> messageMap, std::string _IP, bo
     toString(int(get_groupID())) + " " +
     toString(int(get_deviceIDHigh())) + " " +
     toString(int(get_deviceIDLow())) + " " +
-    _IP + toString(isdeviceworking) + "\n");
+    _IP + " " + toString(isdeviceworking) + "\n");
 }
 
 SubDevice::~SubDevice() {
