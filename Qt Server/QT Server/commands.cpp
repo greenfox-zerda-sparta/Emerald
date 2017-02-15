@@ -1,4 +1,5 @@
 #include "commands.h"
+#include <algorithm>
 
 Commands::Commands() {
     ptr_resetServer = &Commands::resetServer;
@@ -53,7 +54,7 @@ void Commands::resetServer() {
     if(isServerCommand()) {
         std::cout << "RESETTING SERVER" << std::endl; // reset server;  delete all devices
     } else {
-      std::cout << "Invalid command: target must be the server." << std::endl;
+      std::cerr << "Invalid command: target must be the server." << std::endl;
     }
 }
 
@@ -61,7 +62,7 @@ void Commands::restartServer() {
     if(isServerCommand()) {
         std::cout << "RESTARTING SERVER" << std::endl; // restart server;
     } else {
-      std::cout << "Invalid command: target must be the server." << std::endl;
+      std::cerr << "Invalid command: target must be the server." << std::endl;
     }
 }
 
@@ -69,33 +70,43 @@ void Commands::stopServer() {
     if(isServerCommand()) {
         std::cout << "STOPPING SERVER" << std::endl; //stop server;
     } else {
-      std::cout << "Invalid command: target must be the server." << std::endl;
+      std::cerr << "Invalid command: target must be the server." << std::endl;
     }
 }
 
 void Commands::addDevice() {
     if(isServerCommand()) {
         std::cout << "ADDING DEVICE" << std::endl; //add device;
-        int devicesNum2 = addedDevices.empty() ? addedDevices.size() : 0;
-        int devicesNum1 = devicesNum2 < 255 ? 0 : devicesNum1 + 1;
-        // ui es server id nem lehet, utolsonal warning message
-        messageMap["deviceIDHigh"] = (byte)devicesNum1;
-        messageMap["deviceIDLow"] = (byte)devicesNum2;
-        Device* newDevice = new Device(messageMap);
-        addedDevices.push_back(newDevice);
-        // log 2x
+        // IP-t hozzaadni, message bodyban kell erkeznie
+        int devicesNum2 = addedDevices.empty() ? addedDevices.size() + 1 : 0;
+        if (devicesNum2 > 252) { devicesNum2 = 252; };
+        int devicesNum1 = devicesNum2 <= 252 ? 0 : devicesNum1 + 1;
+        if (devicesNum1 >= 252) {
+          std::cerr << "Warning: no more devices can be added." << std::endl;
+        } else {
+          messageMap["deviceIDHigh"] = (byte)devicesNum1;
+          messageMap["deviceIDLow"] = (byte)devicesNum2;
+          Device* newDevice = new Device(messageMap);
+          addedDevices.push_back(newDevice);
+          // log 2x: device log es normal log
+        }
     } else {
-      std::cout << "Invalid command: target must be the server." << std::endl;
+      std::cerr << "Invalid command: target must be the server." << std::endl;
     }
 }
 
 void Commands::removeDevice() {
     if(isServerCommand()) {
         std::cout << "REMOVING DEVICE" << std::endl; //remove device;
-        // Remove device using target device ID High, Low from MessageMap
+        // Remove device using target device ID High, Low from MessageMap NEM, mert az a szerver ID-ja!!!!
+        //for (Device* d : addedDevices) {
+
+        //  }
+        //}
+        // message bodyban kell erkeznie
         // Remove AddedDevices vector (save)
     } else {
-      std::cout << "Invalid command: target must be the server." << std::endl;
+      std::cerr << "Invalid command: target must be the server." << std::endl;
     }
 }
 
@@ -103,7 +114,7 @@ void Commands::getStatusReport() {
     if(isSenderUi()) {
         std::cout << "TO DEVICES/GETTING INFOS FROM DEVICES" << std::endl; //getting reports from devices;
     } else {
-      std::cout << "Invalid command: sender must be the User Interface." << std::endl;
+      std::cerr << "Invalid command: sender must be the User Interface." << std::endl;
     }
 }
 
@@ -111,7 +122,7 @@ void Commands::setData() {
     if(isSenderUi()) {
         std::cout << "TO DEVICES/TO SET ID" << std::endl; //devices to set id;
     } else {
-      std::cout << "Invalid command: sender must be the User Interface." << std::endl;
+      std::cerr << "Invalid command: sender must be the User Interface." << std::endl;
     }
 }
 
