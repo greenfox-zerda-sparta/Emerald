@@ -10,7 +10,7 @@ UI::UI(IDs _ids, std::string _IP)
   roomID = 255;
 
   bool isdeviceworking = true;
-  mydevicelogfile = new DeviceLogfile;
+  mydevicelogfile = new Logfile;
 
   mydevicelogfile->device_log_buffer(
     toString(int(get_homeID())) + " " +

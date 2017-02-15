@@ -4,7 +4,7 @@
 SubDevice::SubDevice(IDs _ids, std::string _IP)
   : Device(_ids, _IP, isdeviceworking) {
   bool isdeviceworking = true;
-  mydevicelogfile = new DeviceLogfile;
+  mydevicelogfile = new Logfile;
 
   mydevicelogfile->device_log_buffer(
     toString(int(get_homeID())) + " " +
@@ -24,7 +24,7 @@ SubDevice::SubDevice(std::map<std::string, byte> messageMap, std::string _IP, bo
   groupID = messageMap["groupID"];
   IP = _IP;
   isdeviceworking = _isdeviceworking;
-  mydevicelogfile = new DeviceLogfile;
+  mydevicelogfile = new Logfile;
   mydevicelogfile->device_log_buffer(
     toString(int(get_homeID())) + " " +
     toString(int(get_floorID())) + " " +
