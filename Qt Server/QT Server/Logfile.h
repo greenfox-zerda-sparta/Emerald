@@ -4,9 +4,9 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "MyTime.h"
 #include <mutex>
 #include <vector>
+#include "MyTime.h"
 #include "Device.h"
 
 typedef unsigned char byte;

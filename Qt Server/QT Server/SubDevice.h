@@ -12,7 +12,7 @@ private:
   bool isdeviceworking;
 public:
   SubDevice(IDs _ids, std::string _IP);
-  SubDevice::SubDevice(std::map<std::string, byte> messageMap, std::string _IP = "111.111.11.11", bool _isdeviceworking = true);
+  SubDevice(std::map<std::string, byte> messageMap, std::string _IP = "111.111.11.11", bool _isdeviceworking = true);
   ~SubDevice();
 };
 

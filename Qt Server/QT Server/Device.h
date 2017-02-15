@@ -24,7 +24,6 @@ protected:
   byte roomID;
   std::string IP;
   bool isdeviceworking;
-
 public:
   Device();
   Device(IDs ids, std::string _IP, bool _isdeviceworking = true);

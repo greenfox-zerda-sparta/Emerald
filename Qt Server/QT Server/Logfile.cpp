@@ -17,7 +17,7 @@ void Logfile::message_log_buffer(LogLevel _loglevel, std::string messagelogbuffe
   logmutex.lock();
   if (logging) {
     messagelogfile.open(messagelogfilename.c_str(), std::ios::app);
-    messagelogfile << "[" << LogLevelStr[_loglevel] << "]" << messagelogbuffer << std::endl;
+    messagelogfile << "[" << LogLevelStr[_loglevel] << "] " << messagelogbuffer << std::endl;
     messagelogfile.close();
   }
   logmutex.unlock();
@@ -40,7 +40,6 @@ bool Logfile::get_logging_status() {
 }
 
 Device Logfile::get_device(std::string buffer) {
-//  Device returnDevice;
   std::vector<std::string> device_stuff;
   bool isdeviceworking;
   while (buffer.length() > 0) {
@@ -49,7 +48,6 @@ Device Logfile::get_device(std::string buffer) {
     buffer = buffer.substr(position);
     device_stuff.push_back(content);
   }
-
   byte deviceIDHigh = byte(stoi(device_stuff[0]));
   byte deviceIDLow = byte(stoi(device_stuff[1]));
   byte homeID = byte(stoi(device_stuff[2]));
