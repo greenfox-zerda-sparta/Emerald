@@ -1,5 +1,5 @@
-﻿#ifndef LOGFILE_H
-#define LOGFILE_H
+#ifndef DEVICELOGFILE_H
+#define DEVICELOGFILE_H
 
 #include <iostream>
 #include <fstream>
@@ -11,38 +11,24 @@
 
 typedef unsigned char byte;
 
-enum LogLevel { UILog, DeviceLog, Warning, Error };
-
-class Logfile {
+class DeviceLogfile {
 private:
-  std::string messagelogbuffer;
-  std::string messagelogfilename;
-  std::ofstream messagelogfile;
+
   std::string devicelogbuffer;
   std::string devicelogfilename;
   std::ofstream devicelogfile;
   MyTime* LocalTimer;
-  bool logging;
+//  bool logging;
   std::mutex logmutex;
-  LogLevel loglevel;
   int numberofids = 7;
 
 public:
-  Logfile();
-  void message_log_buffer(LogLevel _loglevel, std::string);
+  DeviceLogfile();
   void device_log_buffer(std::string devicelogbuffer);
-  bool get_logging_status();
+//  bool get_logging_status();
   std::vector<Device> get_devices_vector();
   Device get_device(std::string);
   std::string get_devicelogfilename();
 };
-
-template<class T>
-std::string toString(const T& t)
-{
-  std::ostringstream stream;
-  stream << t;
-  return stream.str();
-}
 
 #endif 
