@@ -12,7 +12,7 @@ class UdpSender : public QObject
   Q_OBJECT
 
 public:
-  UdpSender(std::shared_ptr<std::vector<QHostAddress>> HostAddresses, QObject* parent = Q_NULLPTR);
+  UdpSender(std::weak_ptr<std::vector<QHostAddress>> HostAddresses, QObject* parent = Q_NULLPTR);
 
 private slots:
   void startBroadcasting();

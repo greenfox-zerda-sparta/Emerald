@@ -2,7 +2,7 @@
 #include <QDebug>
 #include <QUnhandledException>
 
-UdpSender::UdpSender(std::shared_ptr<std::vector<QHostAddress>> HostAddresses, QObject* parent) : HostAddresses(HostAddresses), QObject(parent) {
+UdpSender::UdpSender(std::weak_ptr<std::vector<QHostAddress>> HostAddresses, QObject* parent) : HostAddresses(HostAddresses), QObject(parent) {
  // this->HostAddresses = HostAddresses;
   timer = new QTimer(this);
   udpSocket = new QUdpSocket(this);

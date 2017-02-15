@@ -38,7 +38,7 @@ protected:
 
 private:
   std::set<QTcpSocket*> socketset;
-  std::map<QTcpSocket*, int> devices;
+//  std::map<QTcpSocket*, int> devices;
   int ID;
   int adminID;
   QHostAddress uiAddress;
@@ -48,7 +48,7 @@ private:
   MessageHandler* msgHandler;
   UdpSender* udpsender;
   MessageConverter* msgConv;
-  std::shared_ptr<std::vector<QHostAddress>> HostAddresses;
+  std::weak_ptr<std::vector<QHostAddress>> HostAddresses;
   std::shared_ptr<std::map<QTcpSocket*, Device>> deviceMap;
   std::vector<Device>* addedDevices;
 };
