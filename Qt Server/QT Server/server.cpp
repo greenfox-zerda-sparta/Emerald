@@ -31,24 +31,20 @@ Server::~Server() {
 
 void Server::AddUI() {
   if(addedDevices->size() == 0) {
-/*    std::cout << "Please enter UI IPaddress:" << std::endl;              // uncomment the lines below for manually adding UI IP
+    std::cout << "Please enter IP address of UI:" << std::endl;              // uncomment the lines below for manually adding UI IP
     std::string input;
     std::getline(std::cin, input);
     uiAddress = msgConv->stringToQString(input);
-  byte deviceIDHigh;
-  byte deviceIDLow;
-  byte groupID;
-  byte homeID;
-  byte floorID;
-  byte roomID;
-*/
+
 //    uiAddress = "10.27.6.158";                                            // comment this when manually adding UI IP
-     uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
-     addedDevices->push_back(UI(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
+//     uiAddress = "127.0.0.1";                                         // comment this when manually adding UI IP
+    HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
+    addedDevices->push_back(UI(IDs{255, 253, 254, 255, 255, 255}, input));
   } else {
+    QHostAddress tempAddr;
     for(auto i: *addedDevices) {
-      uiAddress = QString::fromStdString(i.get_IP());
-      HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
+      tempAddr = QString::fromStdString(i.get_IP());
+      HostAddresses->push_back(tempAddr);                                        // rethink> how to handle this HostAddress vector
     }
   }
 }
