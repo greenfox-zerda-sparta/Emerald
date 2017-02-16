@@ -8,6 +8,7 @@
 #include "Logfile.h"
 #include "MyTime.h"
 #include "MessageConverter.h"
+#include "Device.h"
 #include "commands.h"
 
 typedef unsigned char byte;

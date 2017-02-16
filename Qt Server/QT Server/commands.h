@@ -12,12 +12,14 @@ typedef unsigned char byte;
 
 class Commands {
 public:
-  Commands();
+  Commands(std::vector<Device*>& _addedDevices);
+  ~Commands();
   void setMessageMap(std::map<std::string, byte>& _messageMap);
   void setAddedDevices(std::vector<Device*>& _addedDevices);
   void setDeviceMap(std::map<QTcpSocket*, Device*>& _deviceMap);
   void setBytes(std::vector<byte>& _bytes);
   void runCommand();
+  std::vector<Device*>& addedDevs;
 private:
   void resetServer();
   void restartServer();
@@ -39,7 +41,7 @@ private:
   void(Commands::*ptr_forwardMessage)();
   bool isSenderUi();
   bool isServerCommand();
-  std::vector<Device*> addedDevices;
+  
   std::map<QTcpSocket*, Device*> deviceMap;
   std::vector<byte> bytes;
   MessageConverter* msgConvert;

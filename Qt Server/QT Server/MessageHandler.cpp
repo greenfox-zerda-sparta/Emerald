@@ -23,9 +23,9 @@ std::map<std::string, byte> MessageHandler::getmessageMap() {
 void MessageHandler::makeCommand(std::vector<Device*>& addedDevices, QTcpSocket* client, std::vector<byte>& bytes,
   std::map<QTcpSocket*, Device*>& deviceMap, MessageConverter* msgConv) {
   // args will be used when message should be transferred
-  Commands* cmd = new Commands();
+  Commands* cmd = new Commands(addedDevices);
   cmd->setMessageMap(messageMap);
-  cmd->setAddedDevices(addedDevices);
+  //cmd->setAddedDevices(addedDevices);
   cmd->setDeviceMap(deviceMap);
   cmd->setBytes(bytes);
   cmd->runCommand();

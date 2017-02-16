@@ -54,7 +54,8 @@ TEST_CASE("CommandMap function pointers call the right function from message: 25
   std::vector<byte> comm = { 255, 254, 253, 255, 255, 255, 254, 255, 253 };
   msgHandler.splitMessage(comm);
   std::map<std::string, unsigned char> mMap = msgHandler.getmessageMap();
-  Commands command;
+  std::vector<Device*> Devices;
+  Commands command(Devices);
   command.setMessageMap(mMap);
   command.runCommand();
   // should print to console: RESETTING SERVER
@@ -65,11 +66,13 @@ TEST_CASE("Add device command adds a new device with new IDs") {
   std::vector<byte> comm = { 255, 254, 247, 255, 2, 1, 1, 255, 253 };
   msgHandler.splitMessage(comm);
   std::map<std::string, unsigned char> mMap = msgHandler.getmessageMap();
-  std::vector<Device*> addedDevices;
-  Commands command(addedDevices);
+  std::vector<Device*> Devices;
+  Commands command(Devices);
+  //command.setAddedDevices(Devices);
   command.setMessageMap(mMap);
   command.runCommand();
-//  REQUIRE(addedDevices[0]->get_groupID() == 1);
+  REQUIRE(Devices.size() == 1);
+  REQUIRE(Devices[0]->get_groupID() == 1);
   // should print to console: RESETTING SERVER
 }
 

@@ -15,8 +15,6 @@
 #include "MessageConverter.h"
 #include "Device.h"
 
-std::vector<Device*> addedDevices;
-
 class Server : public QTcpServer {
   Q_OBJECT
 
@@ -52,7 +50,7 @@ private:
   MessageConverter* msgConv;
   std::vector<QHostAddress> HostAddresses;
   std::map<QTcpSocket*, Device*> deviceMap;
-
+  std::vector<Device*> addedDevices;
 };
 
 #endif
