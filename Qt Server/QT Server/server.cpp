@@ -101,7 +101,7 @@ void Server::readyRead() {
     msgHandler->splitMessage(msgBytes);                    // splitting message by byte (char)
     
    // std::map<QTcpSocket*, int>* ptr_socketmap = &deviceMap;  // ptr for devices map needed for msg transfer, get socket by device ID
-    msgHandler->executeCmd(addedDevices, client, msgBytes, deviceMap, msgConv);
+    msgHandler->makeCommand(addedDevices, client, msgBytes, deviceMap, msgConv);
 //  msgHandler->executeCmd(client, msgBytes, ptr_socketmap, msgConv);
   }
 }

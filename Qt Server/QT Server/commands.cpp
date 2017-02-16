@@ -2,6 +2,7 @@
 #include <algorithm>
 
 Commands::Commands() {
+  msgConvert = new MessageConverter;
     ptr_resetServer = &Commands::resetServer;
     ptr_restartServer = &Commands::restartServer;
     ptr_stopServer = &Commands::stopServer;
@@ -26,12 +27,24 @@ Commands::Commands() {
     cmdMap[5] = ptr_forwardMessage;
 }
 
-void Commands::setMessageMap(std::map<std::string, byte>& messageMap) {
-  this->messageMap = messageMap;
+Commands::Commands() {
+  delete msgConvert;
+}
+
+void Commands::setMessageMap(std::map<std::string, byte>& _messageMap) {
+  this->messageMap = _messageMap;
 }
 
 void Commands::setAddedDevices(std::vector<Device*>& _addedDevices) {
   this->addedDevices = _addedDevices;
+}
+
+void Commands::setDeviceMap(std::map<QTcpSocket*, Device*>& _deviceMap) {
+  this->deviceMap = _deviceMap;
+}
+
+void Commands::setBytes(std::vector<byte>& _bytes) {
+  this->bytes = _bytes;
 }
 
 void Commands::runCommand() {
@@ -128,7 +141,66 @@ void Commands::setData() {
 
 void Commands::forwardMessage() {
     std::cout << "FORWARDING MESSAGE TO TARGET DEVICE" << std::endl; //forward message;
-    // 1. to target device ID High, Low -> get TCPsocket from devices map in server class, forward msg.
-    // 2. to several devices: group, room or floor ID: get TCPsockets from devices map in server 
-    // class, to vector, forward msg to them.
+    std::vector<QTcpSocket*> targets;
+
+    if (messageMap["floorID"] == 0 && messageMap["groupID"] == 0 && messageMap["roomID"] == 0) {
+      // To  all devices
+      for (auto iter : deviceMap) {
+        targets.push_back(iter.first);
+      }
+    } else if (messageMap["floorID"] == 0 && messageMap["groupID"] == 0) {
+      // To selected room type, all floor, all group
+      for (auto iter : deviceMap) {
+        if (messageMap["roomID"] == (iter.second)->get_roomID()) {
+          targets.push_back(iter.first);
+        }
+      }
+    } else if (messageMap["floorID"] == 0 && messageMap["roomID"] == 0) {
+      // To all floors, all rooms, selected group
+      for (auto iter : deviceMap) {
+        if (messageMap["groupID"] == (iter.second)->get_groupID()) {
+          targets.push_back(iter.first);
+        }
+      }
+    } else if (messageMap["groupID"] == 0 && messageMap["roomID"] == 0) {
+      // To selected floor, all rooms, all groups
+      for (auto iter : deviceMap) {
+        if (messageMap["floorID"] == (iter.second)->get_floorID()) {
+          targets.push_back(iter.first);
+        }
+      }
+    } else if (messageMap["groupID"] == 0) {
+      // To all groups, selected room, selected floor
+      for (auto iter : deviceMap) {
+        if (messageMap["floorID"] == (iter.second)->get_floorID() && messageMap["roomID"] == (iter.second)->get_roomID()) {
+          targets.push_back(iter.first);
+        }
+      }
+    } else if (messageMap["roomID"] == 0) {
+      // To all rooms, selected floor, selected group
+      for (auto iter : deviceMap) {
+        if (messageMap["floorID"] == (iter.second)->get_floorID() && messageMap["groupID"] == (iter.second)->get_groupID()) {
+          targets.push_back(iter.first);
+        }
+      }
+    } else if (messageMap["floorID"] == 0) {
+      // To all floors, selected room, selected group
+      for (auto iter : deviceMap) {
+        if (messageMap["roomID"] == (iter.second)->get_roomID() && messageMap["groupID"] == (iter.second)->get_groupID()) {
+          targets.push_back(iter.first);
+        }
+      }
+    } else {
+      for (auto iter : deviceMap) {
+        // To one device
+        if (messageMap["deviceIDHigh"] == (iter.second)->get_deviceIDHigh() && messageMap["devideIDLow"] == (iter.second)->get_deviceIDLow()) {
+          targets.push_back(iter.first);
+        }
+      }
+    }
+    // Send
+    for (auto socket : targets) {
+      socket->write(msgConvert->bytesToQBytes(bytes) + '\n');
+    }
+   
 }

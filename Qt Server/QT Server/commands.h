@@ -4,15 +4,19 @@
 #include <memory>
 #include <map>
 #include <iostream>
+#include <QTcpsocket>
 #include "Device.h"
+#include "MessageConverter.h"
 
 typedef unsigned char byte;
 
 class Commands {
 public:
   Commands();
-  void setMessageMap(std::map<std::string, byte>& messageMap);
+  void setMessageMap(std::map<std::string, byte>& _messageMap);
   void setAddedDevices(std::vector<Device*>& _addedDevices);
+  void setDeviceMap(std::map<QTcpSocket*, Device*>& _deviceMap);
+  void setBytes(std::vector<byte>& _bytes);
   void runCommand();
 private:
   void resetServer();
@@ -36,6 +40,9 @@ private:
   bool isSenderUi();
   bool isServerCommand();
   std::vector<Device*> addedDevices;
+  std::map<QTcpSocket*, Device*> deviceMap;
+  std::vector<byte> bytes;
+  MessageConverter* msgConvert;
 };
 
 #endif // COMMANDS_H
