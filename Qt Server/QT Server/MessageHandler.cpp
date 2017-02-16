@@ -4,7 +4,6 @@ MessageHandler::MessageHandler() {
   validKeys = { "targetIDHigh", "targetIDLow", "cmdID", "homeID", "floorID", "roomID", "groupID", 
                 "senderIDHigh", "senderIDLow", "body1", "body2", "body3", "body4", "body5", 
                 "crc1", "crc2", "crc3" };
-  // body and crc to be added
   validMsgLength = 17;
 }
 

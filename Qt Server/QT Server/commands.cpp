@@ -89,7 +89,7 @@ void Commands::stopServer() {
 void Commands::addDevice() {
   if (isServerCommand()) {
     std::cout << "ADDING DEVICE" << std::endl; //add device;
-    int devicesNum2 = addedDevs.empty() ? addedDevs.size() + 1 : 0;
+    int devicesNum2 = addedDevs.size() + 1;    // should find better solution
     if (devicesNum2 > 252) { devicesNum2 = 252; };
     int devicesNum1 = devicesNum2 <= 252 ? 0 : devicesNum1 + 1;
     if (devicesNum1 >= 252) {
@@ -102,9 +102,13 @@ void Commands::addDevice() {
         msgConvert->byteToString(messageMap["body2"]) + "." +
         msgConvert->byteToString(messageMap["body3"]) + "." +
         msgConvert->byteToString(messageMap["body4"]);
-      Device* newDevice = new Device(messageMap, IP);
+      Device* newDevice = new Device(messageMap, IP);    // subdevice
       addedDevs.push_back(newDevice);
       // log 2x: device log es normal log
+      // Devicelogfil->devicelogbufferheez hozzadni ay addedDevs tartalmat
+      // Devicelogfile->DeviceLogging(devicelogbuffer)
+      // Messagelofgile->messagelogbuffer
+      // Messagelogfile->MessageLogging(messagelogbuffer)
     }
   } else {
     std::cerr << "Invalid command: target must be the server." << std::endl;
