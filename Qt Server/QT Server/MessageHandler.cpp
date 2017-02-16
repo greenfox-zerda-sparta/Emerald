@@ -1,12 +1,15 @@
 ﻿#include "MessageHandler.h"
 
 MessageHandler::MessageHandler() {
-  validKeys = { "targetIDHigh", "targetIDLow", "cmdID", "homeID", "floorID", "roomID", "groupID", "senderIDHigh", "senderIDLow" };
+  validKeys = { "targetIDHigh", "targetIDLow", "cmdID", "homeID", "floorID", "roomID", "groupID", 
+                "senderIDHigh", "senderIDLow", "body1", "body2", "body3", "body4", "body5", 
+                "crc1", "crc2", "crc3" };
   // body and crc to be added
+  validMsgLength = 17;
 }
 
 void MessageHandler::splitMessage(std::vector<byte> bytes) {
-  for (unsigned int i = 0; i < bytes.size(); i++) {
+  for (unsigned int i = 0; i < validMsgLength; i++) {
     if (i < validKeys.size()) {
       messageMap[validKeys[i]] = bytes[i];
     }

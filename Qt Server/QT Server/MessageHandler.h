@@ -17,6 +17,7 @@ private:
   std::vector<std::string> validKeys;
   std::map<std::string, byte> messageMap;
   std::vector<byte> msgToSend;
+  int validMsgLength;
 public:
   MessageHandler();
   void splitMessage(std::vector<byte> bytes);
