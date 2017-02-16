@@ -85,7 +85,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   }
   (*deviceMap)[client] = newDevice;
 
-  std::string ConnectMsg = ((int)(*deviceMap)[client].get_groupID()==254?"UI":"Device");
+  std::string ConnectMsg = ((int)(*deviceMap)[client].get_groupID()==254?"UI":"Device " + toString((int)(*deviceMap)[client].get_groupID()));
   ConnectMsg += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
   std::cout << ConnectMsg << std::endl;
   mymessagelogfile->message_log_buffer(DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
@@ -106,8 +106,8 @@ void Server::readyRead() {
 void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
   std::string DisconnectMsg;
-  if ((*deviceMap)[client].get_groupID() != 254) {
-    DisconnectMsg = "Device " + toString((*deviceMap)[client].get_groupID()) + " disconnected. ";
+  if ((int)(*deviceMap)[client].get_groupID() != 254) {
+    DisconnectMsg = "Device " + toString((int)(*deviceMap)[client].get_groupID()) + " disconnected. ";
     mymessagelogfile->message_log_buffer(DeviceLog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
   }
   else {
