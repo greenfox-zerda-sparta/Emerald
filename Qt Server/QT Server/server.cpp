@@ -47,13 +47,10 @@ void Server::AddUI() {
      addedDevices->push_back(UI(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
   } else {
     for(auto i: *addedDevices) {
-        if((int)i.get_groupID() == 254){
-            uiAddress = QString::fromStdString(i.get_IP());
-            break;
-        }
+      uiAddress = QString::fromStdString(i.get_IP());
+      HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
     }
   }
-  HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
 
 void Server::StartServer() {
@@ -77,20 +74,16 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
   connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
   Device newDevice;
+  int index = -1;
   for(auto i: *addedDevices) {
     if(i.get_IP() == msgConv->qstringToString((client->peerAddress()).toString())){
        newDevice = i;
+       ++index;
+       HostAddresses->erase(HostAddresses->begin() + index);
        break;
     }
   }
   (*deviceMap)[client] = newDevice;
-
-  if (client->peerAddress() == uiAddress) {
-    if(newDevice.get_IP().length() > 0) {
-      }
-    emit stopBroadcast();
-  } else {
-  }
 
   std::string ConnectMsg = ((int)(*deviceMap)[client].get_groupID()==254?"UI":"Device");
   ConnectMsg += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
@@ -123,6 +116,7 @@ void Server::disconnected() {
     emit startBroadcast();
   }
   std::cout << DisconnectMsg << std::endl;
+  HostAddresses->push_back(client->peerAddress());
   socketset.erase(client);
   (*deviceMap).erase(client);
 }
