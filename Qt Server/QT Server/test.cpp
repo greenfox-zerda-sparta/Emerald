@@ -29,17 +29,6 @@ TEST_CASE("QByteArray is convverted to unsigned char vector") {
   REQUIRE(msgConv->qbytearrayToCharArray(qbyteArr) == uCharVector);
 }
 
-TEST_CASE("Checking Device device constructor") {
-  //IDs ids;
-  MessageHandler msgHandler;
-  std::vector<byte> comm = { 255, 254, 247, 255, 2, 1, 1, 255, 253 };
-  msgHandler.splitMessage(comm);
-  std::map<std::string, unsigned char> mMap = msgHandler.getmessageMap();
-  Device* device = new Device(mMap);
-  REQUIRE(device->get_groupID() == 1);
- // REQUIRE(device->get_IP() == "xxx");
-}
-
 TEST_CASE("Checking UI constructor") {
   IDs ids;
   Device* ui = new UI(ids, "xxx");
@@ -51,7 +40,7 @@ TEST_CASE("Checking UI constructor") {
 
 TEST_CASE("CommandMap function pointers call the right function from message: 253 - reset server ") {
   MessageHandler msgHandler;
-  std::vector<byte> comm = { 255, 254, 253, 255, 255, 255, 254, 255, 253 };
+  std::vector<byte> comm = { 255, 254, 253, 255, 255, 255, 254, 255, 253, 0, 0, 0, 0, 0, 0, 0, 0 };
   msgHandler.splitMessage(comm);
   std::map<std::string, unsigned char> mMap = msgHandler.getmessageMap();
   std::vector<Device*> Devices;
@@ -61,9 +50,9 @@ TEST_CASE("CommandMap function pointers call the right function from message: 25
   // should print to console: RESETTING SERVER
 }
 
-TEST_CASE("Add device command adds a new device with new IDs") {
+TEST_CASE("Add device command adds a new device with IP") {
   MessageHandler msgHandler;
-  std::vector<byte> comm = { 255, 254, 247, 255, 2, 1, 1, 255, 253 };
+  std::vector<byte> comm = { 255, 254, 247, 255, 2, 1, 1, 255, 253, 10, 27, 6, 21, 0, 0, 0, 0 };
   msgHandler.splitMessage(comm);
   std::map<std::string, unsigned char> mMap = msgHandler.getmessageMap();
   std::vector<Device*> Devices;
@@ -73,6 +62,7 @@ TEST_CASE("Add device command adds a new device with new IDs") {
   command.runCommand();
   REQUIRE(Devices.size() == 1);
   REQUIRE(Devices[0]->get_groupID() == 1);
+  REQUIRE(Devices[0]->get_IP() == "10.27.6.21");
   // should print to console: RESETTING SERVER
 }
 

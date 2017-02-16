@@ -31,3 +31,7 @@ std::string MessageConverter::toString(const T& t) {
   return stream.str();
 }
 
+std::string MessageConverter::byteToString(byte b) {
+  return std::to_string((int)b);
+}
+

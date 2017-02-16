@@ -5,6 +5,7 @@
 #include <map>
 #include <iostream>
 #include <QTcpsocket>
+#include <string>
 #include "Device.h"
 #include "MessageConverter.h"
 

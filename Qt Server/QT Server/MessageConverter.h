@@ -17,6 +17,7 @@ public:
   std::string toString(const T& t);
   std::vector<byte> qbytearrayToCharArray(QByteArray byteArr);
   QByteArray bytesToQBytes(std::vector<byte>);
+  std::string byteToString(byte b);
 };
 
 #endif

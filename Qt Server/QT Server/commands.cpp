@@ -89,7 +89,6 @@ void Commands::stopServer() {
 void Commands::addDevice() {
   if (isServerCommand()) {
     std::cout << "ADDING DEVICE" << std::endl; //add device;
-    // IP-t hozzaadni, message bodyban kell erkeznie
     int devicesNum2 = addedDevs.empty() ? addedDevs.size() + 1 : 0;
     if (devicesNum2 > 252) { devicesNum2 = 252; };
     int devicesNum1 = devicesNum2 <= 252 ? 0 : devicesNum1 + 1;
@@ -98,7 +97,12 @@ void Commands::addDevice() {
     } else {
       messageMap["deviceIDHigh"] = (byte)devicesNum1;
       messageMap["deviceIDLow"] = (byte)devicesNum2;
-      Device* newDevice = new Device(messageMap);
+      std::string IP = 
+        msgConvert->byteToString(messageMap["body1"]) + "." + 
+        msgConvert->byteToString(messageMap["body2"]) + "." +
+        msgConvert->byteToString(messageMap["body3"]) + "." +
+        msgConvert->byteToString(messageMap["body4"]);
+      Device* newDevice = new Device(messageMap, IP);
       addedDevs.push_back(newDevice);
       // log 2x: device log es normal log
     }
