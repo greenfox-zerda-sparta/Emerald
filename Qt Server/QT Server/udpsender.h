@@ -15,15 +15,16 @@ public:
   UdpSender(std::weak_ptr<std::vector<QHostAddress>> HostAddresses, QObject* parent = Q_NULLPTR);
 
 private slots:
-  void startBroadcasting();
-  void stopBroadcasting();
-  void broadcastDatagram();
+  void StartUdp();
+  void StopUdp();
+  void SendDatagram();
 
 private:
+  QByteArray datagram;
   QUdpSocket* udpSocket;
   QTimer* timer;
   int messageNo;
-  int broadcastPort;
+  int udpPort;
   std::shared_ptr<std::vector<QHostAddress>> HostAddresses;
 };
 

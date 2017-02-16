@@ -1,24 +1,17 @@
 #include "DeviceLogfile.h"
 
 DeviceLogfile::DeviceLogfile() {
-//  logging = true;
   devicelogfilename = "Smart_Home_Device_Log.txt";
 }
 
 
-void DeviceLogfile::device_log_buffer(std::string devicelogbuffer) { // ide kell az egesz vektor argumentkent
+void DeviceLogfile::DeviceLogging(std::string devicelogbuffer) {
   logmutex.lock();
-  //  if (logging) {
   devicelogfile.open(devicelogfilename.c_str(), std::ios::trunc);
   devicelogfile << devicelogbuffer << std::endl;
   devicelogfile.close();
-  //  }
   logmutex.unlock();
 }
-
-//bool DeviceLogfile::get_logging_status() {
-//  return logging;
-//}
 
 Device DeviceLogfile::get_device(std::string buffer) {
   std::vector<std::string> device_stuff;
@@ -55,13 +48,9 @@ std::vector<Device> DeviceLogfile::get_devices_vector() {
   std::ifstream devicelogfile(devicelogfilename.c_str());
   std::string buffer;
   while (getline(devicelogfile, buffer)) {
-    if (buffer.length() < 3) break;
+    if (buffer.length() < 3) continue;
     devices.push_back(get_device(buffer));
   }
   devicelogfile.close();
   return devices;
-}
-
-std::string DeviceLogfile::get_devicelogfilename() {
-  return devicelogfilename;
 }

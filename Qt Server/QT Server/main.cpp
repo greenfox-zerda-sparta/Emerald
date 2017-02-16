@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
   QCoreApplication app(argc, argv);
 
   Server server;
-  server.StartServer();
+  server.RunServer();
 
   return app.exec();
 }

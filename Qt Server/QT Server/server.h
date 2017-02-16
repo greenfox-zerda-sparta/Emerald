@@ -1,48 +1,37 @@
 #ifndef SERVER_H
 #define SERVER_H
 
-#include <QStringList>
-#include <QTcpServer>
-#include <QTcpSocket>
 #include <map>
-#include <set>
 #include <vector>
-#include <string>
 #include <memory>
+#include <iostream>
 #include "MessageLogfile.h"
 #include "MessageHandler.h"
 #include "udpsender.h"
 #include "MessageConverter.h"
 #include "UI.h"
-
 #include "SubDevice.h"
+#include "udpsender.h"
 
 class Server : public QTcpServer {
   Q_OBJECT
 
 signals:
-  void startBroadcast();
-  void stopBroadcast();
+  void StartUdp();
+  void StopUdp();
 
 public:
   Server(QObject* parent = Q_NULLPTR);
   ~Server();
-  void StartServer();
-  void AddUI();
-  bool isAdmin(QTcpSocket* socket, std::vector<unsigned char> msg);
+  void RunServer();
+  void InitServer();
 
   private slots:
   void readyRead();
   void disconnected();
 
-protected:
-  void incomingConnection(qintptr SocketDescriptor);
-
 private:
-  std::set<QTcpSocket*> socketset;
-  std::map<QTcpSocket*, int> devices;
-  int ID;
-  int adminID;
+  void incomingConnection(qintptr SocketDescriptor);
   QHostAddress uiAddress;
   MessageLogfile* mymessagelogfile;
   DeviceLogfile* mydevicelogfile;
@@ -52,7 +41,7 @@ private:
   UdpSender* udpsender;
   MessageConverter* msgConv;
   std::shared_ptr<std::vector<QHostAddress>> HostAddresses;
-  std::shared_ptr<std::map<QTcpSocket*, Device>> deviceMap;
+  std::shared_ptr<std::map<QTcpSocket*, Device>> onlineDevices;
   std::vector<Device>* addedDevices;
 };
 

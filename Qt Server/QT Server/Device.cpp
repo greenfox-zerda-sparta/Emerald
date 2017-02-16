@@ -1,9 +1,6 @@
 #include "Device.h"
 
-Device::Device()
-{
-  
-}
+Device::Device(){}
 
 Device::Device(IDs _ids, std::string _IP, bool _isdeviceworking) {
   deviceIDHigh = _ids.deviceIDHigh;
@@ -17,12 +14,12 @@ Device::Device(IDs _ids, std::string _IP, bool _isdeviceworking) {
 }
 
 Device::Device(std::map<std::string, byte> messageMap, std::string _IP, bool _isdeviceworking) {
- // deviceIDHigh = messageMap["deviceIDHigh"];
- // deviceIDLow = messageMap["deviceIDLow"];
+  deviceIDHigh = messageMap["deviceIDHigh"];
+  deviceIDLow = messageMap["deviceIDLow"];
+  groupID = messageMap["groupID"];
   homeID = messageMap["homeID"];
   floorID = messageMap["floorID"];
   roomID = messageMap["roomID"];
-  groupID = messageMap["groupID"];
   IP = _IP;
   isdeviceworking = _isdeviceworking;
 }
@@ -54,31 +51,3 @@ byte Device::get_roomID() {
 std::string Device::get_IP() {
   return IP;
 }
-
-void Device::connect_Device() {
-}
-
-void Device::disconnect_Device() {
-}
-
-//
-//void Device::run_Main_Function(byte mainFunctionCommand)
-//{
-//  std::string deviceMainStatus;
-//
-//  if (mainFunctionCommand == 0)
-//  {
-//    deviceMainStatus = "OFF";
-//  } else
-//  {
-//    deviceMainStatus = "ON";
-//  }
-//
-//  send_Device_Main_Status_Message(deviceMainStatus);
-//
-//}
-//
-//std::string Device::send_Device_Main_Status_Message(std::string device_Main_Status)
-//{
-//  return device_Main_Status;
-//}
