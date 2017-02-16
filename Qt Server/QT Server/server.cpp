@@ -7,20 +7,22 @@
 Server::Server(QObject* parent) : QTcpServer(parent) {
   ID = 1;
   adminID = 0;
-  mymessagelogfile = new Logfile;
+  mymessagelogfile = new MessageLogfile;
+  mydevicelogfile = new DeviceLogfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
   addedDevices = new std::vector<Device>;
   HostAddresses = std::make_shared<std::vector<QHostAddress>>();
   deviceMap = std::make_shared<std::map<QTcpSocket*, Device>>();
   try {
-      *addedDevices = mymessagelogfile->get_devices_vector();
+      *addedDevices = mydevicelogfile->get_devices_vector();
   } catch (...){
   }
 }
 
 Server::~Server() {
   delete mymessagelogfile;
+  delete mydevicelogfile;
   delete msgHandler;
   delete msgConv;
   delete udpsender;
@@ -68,11 +70,6 @@ void Server::StartServer() {
   }
   else {
     std::cout << "Server started. Listening..." << std::endl;
-    if (mymessagelogfile->get_logging_status()) {
-      std::cout << "File logging is on." << std::endl;
-    } else {
-      std::cout << "File logging is off." << std::endl;
-    }
   }
 }
 

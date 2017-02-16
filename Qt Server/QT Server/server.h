@@ -9,11 +9,12 @@
 #include <vector>
 #include <string>
 #include <memory>
-#include "Logfile.h"
+#include "MessageLogfile.h"
 #include "MessageHandler.h"
 #include "udpsender.h"
 #include "MessageConverter.h"
 #include "UI.h"
+
 #include "SubDevice.h"
 
 class Server : public QTcpServer {
@@ -43,7 +44,8 @@ private:
   int ID;
   int adminID;
   QHostAddress uiAddress;
-  Logfile* mymessagelogfile;
+  MessageLogfile* mymessagelogfile;
+  DeviceLogfile* mydevicelogfile;
   std::string messagelogbuffer;
   MyTime* LocalTimer;
   MessageHandler* msgHandler;

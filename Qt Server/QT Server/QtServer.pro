@@ -25,7 +25,9 @@ HEADERS = \
     messages.h \
     commands.h \
     CommandMap.h \
-    SubDevice.h
+    SubDevice.h \
+    DeviceLogfile.h \
+    MessageLogfile.h
 
 SOURCES = \
    $$PWD/Logfile.cpp \
@@ -40,7 +42,9 @@ SOURCES = \
     UI.cpp \
     messages.cpp \
     commands.cpp \
-    SubDevice.cpp
+    SubDevice.cpp \
+    DeviceLogfile.cpp \
+    MessageLogfile.cpp
 
 INCLUDEPATH = \
     $$PWD/.

@@ -8,6 +8,13 @@
 
 typedef unsigned char byte;
 
+template<class T>
+std::string toString(const T& t) {
+ std::ostringstream stream;
+ stream << t;
+ return stream.str();
+}
+
 class MessageConverter {
 public:
   MessageConverter();

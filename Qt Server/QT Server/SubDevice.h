@@ -2,11 +2,11 @@
 #define SUBDEVICE_H
 
 #include "Device.h"
-#include "Logfile.h"
+#include "DeviceLogfile.h"
 
 class SubDevice : public Device {
 private:
-  Logfile* mydevicelogfile;
+  DeviceLogfile* mydevicelogfile;
   std::string devicelogbuffer;
   MyTime* LocalTimer;
   bool isdeviceworking;

@@ -35,10 +35,10 @@ Device DeviceLogfile::get_device(std::string buffer) {
   }
   byte deviceIDHigh = byte(stoi(device_stuff[0]));
   byte deviceIDLow = byte(stoi(device_stuff[1]));
-  byte homeID = byte(stoi(device_stuff[2]));
-  byte floorID = byte(stoi(device_stuff[3]));
-  byte roomID = byte(stoi(device_stuff[4]));
-  byte groupID = byte(stoi(device_stuff[5]));
+  byte groupID = byte(stoi(device_stuff[2]));
+  byte homeID = byte(stoi(device_stuff[3]));
+  byte floorID = byte(stoi(device_stuff[4]));
+  byte roomID = byte(stoi(device_stuff[5]));
   std::string IP = device_stuff[6];
   if (device_stuff[7] == "1") {
     isdeviceworking = true;
@@ -46,7 +46,7 @@ Device DeviceLogfile::get_device(std::string buffer) {
   else {
     isdeviceworking = false;
   }
-  Device returnDevice(IDs{ deviceIDHigh, deviceIDLow, homeID, floorID, roomID, groupID }, IP, isdeviceworking);
+  Device returnDevice(IDs{deviceIDHigh, deviceIDLow, groupID, homeID, floorID, roomID}, IP, isdeviceworking);
   return returnDevice;
 }
 

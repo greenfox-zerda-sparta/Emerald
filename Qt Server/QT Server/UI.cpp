@@ -10,15 +10,23 @@ UI::UI(IDs _ids, std::string _IP)
   roomID = 255;
 
   bool isdeviceworking = true;
-  mydevicelogfile = new Logfile;
+  mydevicelogfile = new DeviceLogfile;
 
+  //  struct IDs {
+  //    byte deviceIDHigh;
+  //    byte deviceIDLow;
+  //    byte groupID;
+  //    byte homeID;
+  //    byte floorID;
+  //    byte roomID;
+  //  };
   mydevicelogfile->device_log_buffer(
+    toString(int(get_deviceIDHigh())) + " " +
+    toString(int(get_deviceIDLow())) + " " +
+    toString(int(get_groupID())) + " " +
     toString(int(get_homeID())) + " " +
     toString(int(get_floorID())) + " " +
     toString(int(get_roomID())) + " " +
-    toString(int(get_groupID())) + " " +
-    toString(int(get_deviceIDHigh())) + " " +
-    toString(int(get_deviceIDLow())) + " " +
     _IP + " " + 
     toString(isdeviceworking));
 }

@@ -3,11 +3,12 @@
 
 #include "Device.h"
 #include "MyTime.h"
-#include "Logfile.h"
+#include "DeviceLogfile.h"
+#include "MessageConverter.h"
 
 class UI : public Device {
 private:
-  Logfile* mydevicelogfile;
+  DeviceLogfile* mydevicelogfile;
   std::string devicelogbuffer;
   MyTime* LocalTimer;
   bool isdeviceworking;

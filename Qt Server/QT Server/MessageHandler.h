@@ -5,7 +5,7 @@
 #include <map>
 #include <QTcpSocket>
 #include <iostream>
-#include "Logfile.h"
+#include "MessageLogfile.h"
 #include "MyTime.h"
 #include "MessageConverter.h"
 #include "commands.h"
