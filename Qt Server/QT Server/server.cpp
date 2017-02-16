@@ -47,15 +47,11 @@ void Server::AddUI() {
      addedDevices->push_back(UI(IDs{255, 253, 254, 255, 255, 255}, msgConv->qstringToString(uiAddress.toString())));
   } else {
     for(auto i: *addedDevices) {
-        std::cout << (*addedDevices).size() << std::endl;
-        std::cout << (int)i.get_groupID() << std::endl;
         if((int)i.get_groupID() == 254){
-            std::cout << "IP: " << i.get_IP() << std::endl;
             uiAddress = QString::fromStdString(i.get_IP());
             break;
         }
     }
-    std::cout << msgConv->qstringToString(uiAddress.toString()) << std::endl;
   }
   HostAddresses->push_back(uiAddress);                                        // rethink> how to handle this HostAddress vector
 }
@@ -96,7 +92,8 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   } else {
   }
 
-  std::string ConnectMsg = "Device " + toString((*deviceMap)[client].get_groupID()) + " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
+  std::string ConnectMsg = ((int)(*deviceMap)[client].get_groupID()==254?"UI":"Device");
+  ConnectMsg += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
   std::cout << ConnectMsg << std::endl;
   mymessagelogfile->message_log_buffer(DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
 }
