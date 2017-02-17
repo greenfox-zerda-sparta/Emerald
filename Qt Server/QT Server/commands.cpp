@@ -120,6 +120,11 @@ std::string Commands::getDeviceText(Device* dev) {
     msgConvert->byteToString(dev->isworking()) + "\n";
 }
 
+bool Commands::IsRoomForDevice() {
+  return (IDHigh >= 252 && IDLow >= 252); {
+    std::cerr << "Warning: no more devices can be added." << std::endl;
+  }
+}
 void Commands::logDeviceList() {
   for (Device* device : addedDevs) {
     deviceLogBuffer += getDeviceText(device);
@@ -130,21 +135,23 @@ void Commands::logDeviceList() {
 
 void Commands::addDevice() {
   if (isServerCommand()) {
-    std::cout << "ADDING DEVICE" << std::endl; //add device;
-    generateNextIDs();
-    if (IDHigh >= 252 && IDLow >= 252) {
-      std::cerr << "Warning: no more devices can be added." << std::endl;
-    } else {
-      messageMap["deviceIDHigh"] = (byte)IDHigh;
-      messageMap["deviceIDLow"] = (byte)IDLow;
-      std::string IP = getIPString();
-      Device* newDevice = new Device(messageMap, IP);
-      addedDevs.push_back(newDevice);
-      logDeviceList();
-      //log 2x: device log es normal log
+    if (messageMap["groupID"] != 254 && messageMap["groupID"] != 254) {
+      generateNextIDs();
+      if (IsRoomForDevice()) {
+        messageMap["deviceIDHigh"] = (byte)IDHigh;
+        messageMap["deviceIDLow"] = (byte)IDLow;
+        std::string IP = getIPString();
+        std::cout << "ADDING DEVICE" << std::endl;
+        Device* newDevice = new Device(messageMap, IP);
+        addedDevs.push_back(newDevice);
+        logDeviceList();
+        //log 2x: device log es normal log
+      } else {
+        std::cerr << "Warning: no more devices can be added." << std::endl;
+      }
     }
   } else {
-    std::cerr << "Invalid command: target must be the server." << std::endl;
+    std::cerr << "Invalid command." << std::endl;
   }
 }
 

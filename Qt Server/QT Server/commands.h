@@ -33,6 +33,7 @@ private:
   void generateNextIDs();
   std::string getIPString();
   std::string getDeviceText(Device* dev);
+  bool IsRoomForDevice();
   void logDeviceList();
   int IDLow;
   int IDHigh;
