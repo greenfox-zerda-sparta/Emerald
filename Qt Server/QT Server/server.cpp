@@ -78,8 +78,7 @@ void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
     QByteArray QmsgBytes = (client->readAll());
-    std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);  // do we need to return msgBytes here? should stay in msgHandler
-    msgHandler->MakeMessageMap(msgBytes);
+    std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
     msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices);
   }
 }

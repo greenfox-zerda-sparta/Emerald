@@ -1,5 +1,4 @@
 #include "commands.h"
-#include "DeviceLogfile.h"
 
 Commands::Commands(std::vector<Device*>& _addedDevices) : addedDevs(_addedDevices) {
   devicelog = new DeviceLogfile;
@@ -159,7 +158,7 @@ void Commands::removeDevice() {
       }
     }
     logDeviceList();
-    // needs message log too
+    // needs message log too. Removing from onlineDevices map?
   } else {
     std::cerr << "Invalid command: target must be the server." << std::endl;
   }
