@@ -1,5 +1,5 @@
 #include "commands.h"
-#include "DeviceLogFile.h"
+#include "DeviceLogfile.h"
 
 Commands::Commands(std::vector<Device*>& _addedDevices) : addedDevs(_addedDevices) {
   devicelog = new DeviceLogfile;
@@ -96,8 +96,8 @@ void Commands::addDevice() {
       IDLow = 1;
       IDHigh = 0;
     } else {
-      IDHigh = (int)(addedDevs[addedDevs.size() - 1]->get_deviceIDHigh());
-      IDLow =  (int)(addedDevs[addedDevs.size() - 1]->get_deviceIDLow()) + 1;
+      IDHigh = int(addedDevs[addedDevs.size() - 1]->get_deviceIDHigh());
+      IDLow =  int(addedDevs[addedDevs.size() - 1]->get_deviceIDLow()) + 1;
       if (IDLow == 253) {
         IDHigh++;
         IDLow = 0;
@@ -105,28 +105,26 @@ void Commands::addDevice() {
     }
     if (IDHigh >= 252 && IDLow >= 252) {
       std::cerr << "Warning: no more devices can be added." << std::endl;
-      std::cout << IDHigh << " " << IDLow << std::endl;
     } else {
-      std::cout << IDHigh << " " << IDLow << std::endl; // EZ MEG JOL IRJA KI, de a fajlba rosszul irja
       messageMap["deviceIDHigh"] = (byte)IDHigh;
       messageMap["deviceIDLow"] = (byte)IDLow;
       std::string IP =
-        msgConvert->byteToString(messageMap["body1"]) + "." +
+        (messageMap["body1"]) + "." +
         msgConvert->byteToString(messageMap["body2"]) + "." +
         msgConvert->byteToString(messageMap["body3"]) + "." +
         msgConvert->byteToString(messageMap["body4"]);
-      SubDevice* newDevice = new SubDevice(messageMap, IP);    // subdevice
+      Device* newDevice = new Device(messageMap, IP);
       addedDevs.push_back(newDevice);
       for (Device* dev : addedDevs) {
         deviceLogBuffer +=
-          toString(int(dev->get_deviceIDHigh())) + " " +
-          toString(int(dev->get_deviceIDLow())) + " " +
-          toString(int(dev->get_groupID())) + " " +
-          toString(int(dev->get_homeID())) + " " +
-          toString(int(dev->get_floorID())) + " " +
-          toString(int(dev->get_roomID())) + " " +
+          msgConvert->byteToString(dev->get_deviceIDHigh()) + " " +
+          msgConvert->byteToString(dev->get_deviceIDLow()) + " " +
+          msgConvert->byteToString(dev->get_groupID()) + " " +
+          msgConvert->byteToString(dev->get_homeID()) + " " +
+          msgConvert->byteToString(dev->get_floorID()) + " " +
+          msgConvert->byteToString(dev->get_roomID()) + " " +
           toString(dev->get_IP()) + " " +
-          toString(int(dev->isworking())) + "\n";
+          msgConvert->byteToString(dev->isworking()) + "\n";
       }
       std::cout << deviceLogBuffer;
       devicelog->DeviceLogging(deviceLogBuffer);

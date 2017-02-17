@@ -4,9 +4,9 @@
 #include <memory>
 #include <map>
 #include <iostream>
-#include <QTcpsocket>
+#include <QTcpSocket>
 #include <string>
-#include "SubDevice.h"
+#include "Device.h"
 #include "MessageConverter.h"
 
 typedef unsigned char byte;
