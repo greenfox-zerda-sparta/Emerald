@@ -109,7 +109,7 @@ void Commands::addDevice() {
       messageMap["deviceIDHigh"] = (byte)IDHigh;
       messageMap["deviceIDLow"] = (byte)IDLow;
       std::string IP =
-        (messageMap["body1"]) + "." +
+        msgConvert->byteToString(messageMap["body1"]) + "." +
         msgConvert->byteToString(messageMap["body2"]) + "." +
         msgConvert->byteToString(messageMap["body3"]) + "." +
         msgConvert->byteToString(messageMap["body4"]);

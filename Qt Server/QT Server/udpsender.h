@@ -25,7 +25,7 @@ private:
   QTimer* timer;
   int messageNo;
   int udpPort;
-  std::vector<QHostAddress> HostAddresses;
+  std::vector<QHostAddress>& HostAddresses;
 };
 
 #endif

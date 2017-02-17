@@ -58,14 +58,14 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
   connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
   Device* newDevice;
-  int index = -1;
+  int index = 0;
   for (auto i : addedDevices) {
     if (i->get_IP() == msgConv->qstringToString((client->peerAddress()).toString())) {
       newDevice = i;
-      ++index;
       HostAddresses.erase(HostAddresses.begin() + index);
       break;
     }
+    ++index;
   }
   (onlineDevices)[client] = newDevice;
   std::string ConnectMsg = ((int)onlineDevices[client]->get_groupID() == 254 ? "UI" : "Device " + toString((int)onlineDevices[client]->get_groupID()));

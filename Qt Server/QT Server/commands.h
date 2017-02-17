@@ -6,7 +6,7 @@
 #include <iostream>
 #include <QTcpSocket>
 #include <string>
-#include "Device.h"
+#include "SubDevice.h"
 #include "MessageConverter.h"
 
 typedef unsigned char byte;
