@@ -1,17 +1,15 @@
 #ifndef SERVER_H
 #define SERVER_H
-
-#include <map>
-#include <vector>
-#include <memory>
 #include <iostream>
+#include <map>
+#include <memory>
+#include <vector>
+#include "MessageConverter.h"
 #include "MessageLogfile.h"
 #include "MessageHandler.h"
-#include "udpsender.h"
-#include "MessageConverter.h"
-#include "UI.h"
 #include "SubDevice.h"
 #include "udpsender.h"
+#include "UI.h"
 
 class Server : public QTcpServer {
   Q_OBJECT
@@ -32,17 +30,17 @@ public:
 
 private:
   void incomingConnection(qintptr SocketDescriptor);
-  QHostAddress uiAddress;
-  MessageLogfile* mymessagelogfile;
-  DeviceLogfile* mydevicelogfile;
-  std::string messagelogbuffer;
   MyTime* LocalTimer;
   MessageHandler* msgHandler;
   UdpSender* udpsender;
   MessageConverter* msgConv;
-  std::shared_ptr<std::vector<QHostAddress>> HostAddresses;
-  std::shared_ptr<std::map<QTcpSocket*, Device>> onlineDevices;
-  std::vector<Device>* addedDevices;
+  MessageLogfile* mymessagelogfile;
+  DeviceLogfile* mydevicelogfile;
+  QHostAddress uiAddress;
+  std::string messagelogbuffer;
+  std::vector<QHostAddress> HostAddresses;
+  std::map<QTcpSocket*, Device*> onlineDevices;
+  std::vector<Device*> addedDevices;
 };
 
 #endif

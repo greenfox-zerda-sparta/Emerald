@@ -10,9 +10,9 @@ typedef unsigned char byte;
 
 template<class T>
 std::string toString(const T& t) {
- std::ostringstream stream;
- stream << t;
- return stream.str();
+  std::ostringstream stream;
+  stream << t;
+  return stream.str();
 }
 
 class MessageConverter {
@@ -24,6 +24,7 @@ public:
   std::string toString(const T& t);
   std::vector<byte> qbytearrayToCharArray(QByteArray byteArr);
   QByteArray bytesToQBytes(std::vector<byte>);
+  std::string byteToString(byte b);
 };
 
 #endif

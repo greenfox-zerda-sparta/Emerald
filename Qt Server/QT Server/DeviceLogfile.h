@@ -18,8 +18,8 @@ private:
 public:
   DeviceLogfile();
   void DeviceLogging(std::string devicelogbuffer);
-  std::vector<Device> get_devices_vector();
-  Device get_device(std::string);
+  std::vector<Device*> get_devices_vector();
+  Device* get_device(std::string);
 };
 
 #endif 

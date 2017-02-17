@@ -1,6 +1,6 @@
 #include "Device.h"
 
-Device::Device(){}
+Device::Device() {}
 
 Device::Device(IDs _ids, std::string _IP, bool _isdeviceworking) {
   deviceIDHigh = _ids.deviceIDHigh;
@@ -50,4 +50,8 @@ byte Device::get_roomID() {
 
 std::string Device::get_IP() {
   return IP;
+}
+
+byte Device::isworking() {
+  return isdeviceworking ? 1 : 0;
 }

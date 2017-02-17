@@ -4,7 +4,6 @@ DeviceLogfile::DeviceLogfile() {
   devicelogfilename = "Smart_Home_Device_Log.txt";
 }
 
-
 void DeviceLogfile::DeviceLogging(std::string devicelogbuffer) {
   logmutex.lock();
   devicelogfile.open(devicelogfilename.c_str(), std::ios::trunc);
@@ -13,7 +12,7 @@ void DeviceLogfile::DeviceLogging(std::string devicelogbuffer) {
   logmutex.unlock();
 }
 
-Device DeviceLogfile::get_device(std::string buffer) {
+Device* DeviceLogfile::get_device(std::string buffer) {
   std::vector<std::string> device_stuff;
   bool isdeviceworking;
   size_t position = buffer.find(" ");
@@ -39,12 +38,12 @@ Device DeviceLogfile::get_device(std::string buffer) {
   else {
     isdeviceworking = false;
   }
-  Device returnDevice(IDs{deviceIDHigh, deviceIDLow, groupID, homeID, floorID, roomID}, IP, isdeviceworking);
+  Device* returnDevice = new Device(IDs{deviceIDHigh, deviceIDLow, groupID, homeID, floorID, roomID}, IP, isdeviceworking);
   return returnDevice;
 }
 
-std::vector<Device> DeviceLogfile::get_devices_vector() {
-  std::vector<Device> devices;
+std::vector<Device*> DeviceLogfile::get_devices_vector() {
+  std::vector<Device*> devices;
   std::ifstream devicelogfile(devicelogfilename.c_str());
   std::string buffer;
   while (getline(devicelogfile, buffer)) {

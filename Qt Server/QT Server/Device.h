@@ -35,6 +35,7 @@ public:
   byte get_floorID();
   byte get_roomID();
   std::string get_IP();
+  byte isworking();
 };
 
 
