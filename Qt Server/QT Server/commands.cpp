@@ -53,7 +53,7 @@ void Commands::runCommand() {
   if (cmdMap.count(messageMap["cmdID"]) < 1) {
     std::cerr << "INVALID COMMAND" << std::endl;
   } else {
-    (this->*cmdMap[messageMap["cmdID"]])();
+(this->*cmdMap[messageMap["cmdID"]])();
   }
 }
 
@@ -89,49 +89,60 @@ void Commands::stopServer() {
   }
 }
 
+void Commands::generateNextIDs() {
+  if (addedDevs.size() <= 1) {
+    IDLow = 1;
+    IDHigh = 0;
+  } else {
+    IDHigh = int(addedDevs[addedDevs.size() - 1]->get_deviceIDHigh());
+    IDLow = int(addedDevs[addedDevs.size() - 1]->get_deviceIDLow()) + 1;
+    if (IDLow == 253) {
+      IDHigh++;
+      IDLow = 0;
+    }
+  }
+}
+
+std::string Commands::getIPString() {
+  return msgConvert->byteToString(messageMap["body1"]) + "." +
+    msgConvert->byteToString(messageMap["body2"]) + "." +
+    msgConvert->byteToString(messageMap["body3"]) + "." +
+    msgConvert->byteToString(messageMap["body4"]);
+}
+
+std::string Commands::getDeviceText(Device* dev) {
+  return msgConvert->byteToString(dev->get_deviceIDHigh()) + " " +
+    msgConvert->byteToString(dev->get_deviceIDLow()) + " " +
+    msgConvert->byteToString(dev->get_groupID()) + " " +
+    msgConvert->byteToString(dev->get_homeID()) + " " +
+    msgConvert->byteToString(dev->get_floorID()) + " " +
+    msgConvert->byteToString(dev->get_roomID()) + " " +
+    toString(dev->get_IP()) + " " +
+    msgConvert->byteToString(dev->isworking()) + "\n";
+}
+
+void Commands::logDeviceList() {
+  for (Device* device : addedDevs) {
+    deviceLogBuffer += getDeviceText(device);
+  }
+  std::cout << deviceLogBuffer;
+  devicelog->DeviceLogging(deviceLogBuffer);
+}
+
 void Commands::addDevice() {
   if (isServerCommand()) {
     std::cout << "ADDING DEVICE" << std::endl; //add device;
-    if (addedDevs.size() <= 1) {
-      IDLow = 1;
-      IDHigh = 0;
-    } else {
-      IDHigh = int(addedDevs[addedDevs.size() - 1]->get_deviceIDHigh());
-      IDLow =  int(addedDevs[addedDevs.size() - 1]->get_deviceIDLow()) + 1;
-      if (IDLow == 253) {
-        IDHigh++;
-        IDLow = 0;
-      }
-    }
+    generateNextIDs();
     if (IDHigh >= 252 && IDLow >= 252) {
       std::cerr << "Warning: no more devices can be added." << std::endl;
     } else {
       messageMap["deviceIDHigh"] = (byte)IDHigh;
       messageMap["deviceIDLow"] = (byte)IDLow;
-      std::string IP =
-        msgConvert->byteToString(messageMap["body1"]) + "." +
-        msgConvert->byteToString(messageMap["body2"]) + "." +
-        msgConvert->byteToString(messageMap["body3"]) + "." +
-        msgConvert->byteToString(messageMap["body4"]);
+      std::string IP = getIPString();
       Device* newDevice = new Device(messageMap, IP);
       addedDevs.push_back(newDevice);
-      for (Device* dev : addedDevs) {
-        deviceLogBuffer +=
-          msgConvert->byteToString(dev->get_deviceIDHigh()) + " " +
-          msgConvert->byteToString(dev->get_deviceIDLow()) + " " +
-          msgConvert->byteToString(dev->get_groupID()) + " " +
-          msgConvert->byteToString(dev->get_homeID()) + " " +
-          msgConvert->byteToString(dev->get_floorID()) + " " +
-          msgConvert->byteToString(dev->get_roomID()) + " " +
-          toString(dev->get_IP()) + " " +
-          msgConvert->byteToString(dev->isworking()) + "\n";
-      }
-      std::cout << deviceLogBuffer;
-      devicelog->DeviceLogging(deviceLogBuffer);
-      // log 2x: device log es normal log
-      // Messagelofgile->messagelogbuffer
-      // Messagelogfile->MessageLogging(messagelogbuffer)
-      deviceLogBuffer = "";
+      logDeviceList();
+      //log 2x: device log es normal log
     }
   } else {
     std::cerr << "Invalid command: target must be the server." << std::endl;
@@ -141,8 +152,14 @@ void Commands::addDevice() {
 void Commands::removeDevice() {
   if (isServerCommand()) {
     std::cout << "REMOVING DEVICE" << std::endl; //remove device;
-    // Remove device using target device ID High, Low from MessageMap NEM, mert az a szerver ID-ja!!!!
-    // Remove AddedDevices vector (save)
+    for (int i = 0; i < addedDevs.size(); i++) {
+      if (addedDevs[i]->get_deviceIDHigh() == messageMap["body1"] &&
+        addedDevs[i]->get_deviceIDLow() == messageMap["body2"]) {
+        addedDevs.erase(addedDevs.begin() + i);
+      }
+    }
+    logDeviceList();
+    // needs message log too
   } else {
     std::cerr << "Invalid command: target must be the server." << std::endl;
   }

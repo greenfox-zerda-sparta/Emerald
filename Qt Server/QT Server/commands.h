@@ -29,6 +29,10 @@ private:
   std::map<byte, void(Commands::*)()> cmdMap;
   std::map<QTcpSocket*, Device*> deviceMap;
   std::vector<byte> bytes;
+  void generateNextIDs();
+  std::string getIPString();
+  std::string getDeviceText(Device* dev);
+  void logDeviceList();
   int IDLow;
   int IDHigh;
   bool isSenderUi();
