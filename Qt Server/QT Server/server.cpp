@@ -74,7 +74,9 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
     ConnectMsg += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
     std::cout << ConnectMsg << std::endl;
     mymessagelogfile->MessageLogging(LogLevel::DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
-/////////////////////////////// New message to UI <- device connected
+    Messages Msg;
+    std::vector<byte> msg = Msg.getMessage(246, onlineDevices[client]->get_deviceIDHigh(), onlineDevices[client]->get_deviceIDLow());
+    msgHandler->MakeCommand(addedDevices, msg, onlineDevices);
   } else {
     std::cout << "Unauthorized connection from ip: " << msgConv->qstringToString((client->peerAddress()).toString()) << " rejected." << std::endl;
     client->close();
@@ -102,7 +104,6 @@ void Server::disconnected() {
   if ((int)onlineDevices[client]->get_groupID() != 254) {
     DisconnectMsg = "Device " + toString((int)onlineDevices[client]->get_groupID()) + " disconnected. ";
     mymessagelogfile->MessageLogging(LogLevel::DeviceLog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
-    /////////////////////////////// New message to UI <- device disconnected
     Messages Msg;
     std::vector<byte> msg = Msg.getMessage(249, onlineDevices[client]->get_deviceIDHigh(), onlineDevices[client]->get_deviceIDLow());
     msgHandler->MakeCommand(addedDevices, msg, onlineDevices);

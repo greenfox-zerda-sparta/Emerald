@@ -170,7 +170,7 @@ void Commands::removeDevice() {
 }
 
 void Commands::getStatusReport() {
-  if (isSenderUi()) {
+if (isSenderUi() || (messageMap["senderIDHigh"] == 255 && messageMap["senderIDLow"] == 254)) {
     std::cout << "TO DEVICES/GETTING INFOS FROM DEVICES" << std::endl; //getting reports from devices;
   } else {
     std::cerr << "Invalid command: sender must be the User Interface." << std::endl;
