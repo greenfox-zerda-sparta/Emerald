@@ -1,7 +1,7 @@
-#include "server.h"
+#include "Server.h"
 
 Server::Server(QObject* parent) : QTcpServer(parent) {
-  log = new messageLogfile;
+  log = new MessageLogfile;
   myDeviceLogfile = new DeviceLogfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
@@ -74,11 +74,11 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
     onlineDevices[client] = newDevice;
     connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
     connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
-    logBuffer = ((int)onlineDevices[client]->GetGroupID() == 254 ? "UI" : "Device " + ToString((int)onlineDevices[client]->GetGroupID()));
+    logBuffer = (int(onlineDevices[client]->GetGroupID()) == 254 ? "UI" : "Device " + ToString(int(onlineDevices[client]->GetGroupID())));
     logBuffer += " from: " + msgConv->QStringToString(client->peerAddress().toString()) + " has joined.";
     log->MessageLogging(DeviceLog, logBuffer);
     Messages Msg;
-    std::vector<byte> msg = Msg.getMessage(246, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow());
+    std::vector<byte> msg = Msg.GetMessage(246, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow());
     msgHandler->MakeCommand(addedDevices, msg, onlineDevices, log);
   } else {
     logBuffer = "Unauthorized connection from ip: " + msgConv->QStringToString((client->peerAddress()).toString()) + " rejected.";
@@ -107,10 +107,10 @@ void Server::readyRead() {
 void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (int(onlineDevices[client]->GetGroupID()) != 254) {
-    logBuffer = "Device type " + ToString((int)onlineDevices[client]->GetGroupID()) + " disconnected. ";
+    logBuffer = "Device type " + ToString(int(onlineDevices[client]->GetGroupID())) + " disconnected. ";
     log->MessageLogging(DeviceLog, logBuffer);
     Messages Msg;
-    std::vector<byte> msg = Msg.getMessage(249, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow());
+    std::vector<byte> msg = Msg.GetMessage(249, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow());
     msgHandler->MakeCommand(addedDevices, msg, onlineDevices, log);
   } else {
     logBuffer = "UI disconnected. ";

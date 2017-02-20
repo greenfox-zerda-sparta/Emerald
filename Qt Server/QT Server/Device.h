@@ -4,7 +4,6 @@
 #include <map>
 #include <string>
 
-
 typedef unsigned char byte;
 
 struct IDs {
@@ -41,8 +40,6 @@ class Device {
     byte IsWorking();
     void SetIsOnline(bool);
     bool GetIsOnline();
-
 };
-
 
 #endif

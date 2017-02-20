@@ -14,7 +14,6 @@ class DeviceLogfile {
     std::string deviceLogFilename;
     std::ofstream deviceLogfile;
     std::mutex logMutex;
-
   public:
     DeviceLogfile();
     void DeviceLogging(std::string devicelogbuffer);

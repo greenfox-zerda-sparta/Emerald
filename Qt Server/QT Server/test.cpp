@@ -6,7 +6,7 @@
 #include <vector>
 #include <QtCore>
 #include "catch.hpp"
-#include "commands.h"
+#include "Commands.h"
 #include "DeviceLogfile.h"
 #include "MessageConverter.h"
 #include "MessageHandler.h"
@@ -80,6 +80,5 @@ TEST_CASE("DeviceLogfile class getDevice(...) method can build a device from ser
   REQUIRE(ui.GetIP() == gotDev->GetIP());
   REQUIRE_FALSE(ui.IsWorking() == gotDev->IsWorking());
 }
-
 
 #endif
