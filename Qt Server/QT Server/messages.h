@@ -5,12 +5,11 @@
 
 typedef unsigned char byte;
 
-class Messages
-{
-public:
+class Messages {
+  public:
     Messages();
     QByteArray getMessage(byte& messageId);
-private:
+  private:
     QByteArray message;
     bool isValidMessageID(byte& messageId);
 };

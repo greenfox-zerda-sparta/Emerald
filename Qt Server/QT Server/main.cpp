@@ -8,13 +8,10 @@
 
 #ifndef TEST
 
-int main(int argc, char **argv) {
-
+int main(int argc, char** argv) {
   QCoreApplication app(argc, argv);
-
   Server server;
   server.RunServer();
-
   return app.exec();
 }
 #endif

@@ -11,7 +11,6 @@ Commands::Commands(std::vector<Device*>& _addedDevices) : addedDevs(_addedDevice
   ptr_getStatusReport = &Commands::getStatusReport;
   ptr_setData = &Commands::setData;
   ptr_forwardMessage = &Commands::forwardMessage;
-
   cmdMap[239] = ptr_setData;
   cmdMap[246] = ptr_getStatusReport;
   cmdMap[247] = ptr_addDevice;
@@ -52,7 +51,7 @@ void Commands::runCommand() {
   if (cmdMap.count(messageMap["cmdID"]) < 1) {
     std::cerr << "INVALID COMMAND" << std::endl;
   } else {
-(this->*cmdMap[messageMap["cmdID"]])();
+    (this->*cmdMap[messageMap["cmdID"]])();
   }
 }
 
@@ -104,24 +103,25 @@ void Commands::generateNextIDs() {
 
 std::string Commands::getIPString() {
   return msgConvert->byteToString(messageMap["body1"]) + "." +
-    msgConvert->byteToString(messageMap["body2"]) + "." +
-    msgConvert->byteToString(messageMap["body3"]) + "." +
-    msgConvert->byteToString(messageMap["body4"]);
+         msgConvert->byteToString(messageMap["body2"]) + "." +
+         msgConvert->byteToString(messageMap["body3"]) + "." +
+         msgConvert->byteToString(messageMap["body4"]);
 }
 
 std::string Commands::getDeviceText(Device* dev) {
   return msgConvert->byteToString(dev->get_deviceIDHigh()) + " " +
-    msgConvert->byteToString(dev->get_deviceIDLow()) + " " +
-    msgConvert->byteToString(dev->get_groupID()) + " " +
-    msgConvert->byteToString(dev->get_homeID()) + " " +
-    msgConvert->byteToString(dev->get_floorID()) + " " +
-    msgConvert->byteToString(dev->get_roomID()) + " " +
-    toString(dev->get_IP()) + " " +
-    msgConvert->byteToString(dev->isworking()) + "\n";
+         msgConvert->byteToString(dev->get_deviceIDLow()) + " " +
+         msgConvert->byteToString(dev->get_groupID()) + " " +
+         msgConvert->byteToString(dev->get_homeID()) + " " +
+         msgConvert->byteToString(dev->get_floorID()) + " " +
+         msgConvert->byteToString(dev->get_roomID()) + " " +
+         toString(dev->get_IP()) + " " +
+         msgConvert->byteToString(dev->isworking()) + "\n";
 }
 
 bool Commands::IsRoomForDevice() {
   return (IDHigh < 252 && IDLow < 252); // 
+  {
 }
 
 void Commands::logDeviceList() {
@@ -159,7 +159,7 @@ void Commands::removeDevice() {
     std::cout << "REMOVING DEVICE" << std::endl; //remove device;
     for (int i = 0; i < addedDevs.size(); i++) {
       if (addedDevs[i]->get_deviceIDHigh() == messageMap["body1"] &&
-        addedDevs[i]->get_deviceIDLow() == messageMap["body2"]) {
+          addedDevs[i]->get_deviceIDLow() == messageMap["body2"]) {
         addedDevs.erase(addedDevs.begin() + i);
       }
     }
@@ -189,7 +189,6 @@ void Commands::setData() {
 void Commands::forwardMessage() {
   std::cout << "FORWARDING MESSAGE TO TARGET DEVICE" << std::endl; //forward message;
   std::vector<QTcpSocket*> targets;
-
   if (messageMap["floorID"] == 0 && messageMap["groupID"] == 0 && messageMap["roomID"] == 0) {
     // To  all devices
     for (auto iter : deviceMap) {

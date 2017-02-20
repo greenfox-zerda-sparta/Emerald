@@ -6,13 +6,13 @@
 #include "MessageConverter.h"
 
 class UI : public Device {
-private:
-  DeviceLogfile* mydevicelogfile;
-  std::string devicelogbuffer;
-  bool isdeviceworking;
-public:
-  UI(IDs _ids, std::string _IP, bool isdeviceworking);
-  ~UI();
+  private:
+    DeviceLogfile* mydevicelogfile;
+    std::string devicelogbuffer;
+    bool isdeviceworking;
+  public:
+    UI(IDs _ids, std::string _IP, bool isdeviceworking);
+    ~UI();
 };
 
 #endif

@@ -34,8 +34,7 @@ Device* DeviceLogfile::get_device(std::string buffer) {
   std::string IP = device_stuff[6];
   if (device_stuff[7] == "1") {
     isdeviceworking = true;
-  }
-  else {
+  } else {
     isdeviceworking = false;
   }
   Device* returnDevice = new Device(IDs{deviceIDHigh, deviceIDLow, groupID, homeID, floorID, roomID}, IP, isdeviceworking);
@@ -47,7 +46,9 @@ std::vector<Device*> DeviceLogfile::get_devices_vector() {
   std::ifstream devicelogfile(devicelogfilename.c_str());
   std::string buffer;
   while (getline(devicelogfile, buffer)) {
-    if (buffer.length() < 3) continue;
+    if (buffer.length() < 3) {
+      continue;
+    }
     devices.push_back(get_device(buffer));
   }
   devicelogfile.close();

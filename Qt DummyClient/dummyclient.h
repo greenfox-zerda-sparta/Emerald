@@ -11,17 +11,16 @@
 #include "messages.h"
 #include "utils.h"
 
-class DummyClient : public QObject
-{
+class DummyClient : public QObject {
     Q_OBJECT
-public:
-    explicit DummyClient(QObject *parent = 0);
+  public:
+    explicit DummyClient(QObject* parent = 0);
     void run();
 
-protected:
- //   void timerEvent(QTimerEvent*);
+  protected:
+//   void timerEvent(QTimerEvent*);
 
-signals:
+  signals:
     void incomingMessage(QString);
     void inputFromCommandLine(QString);
     void quit();
@@ -32,7 +31,7 @@ signals:
     void manualCloseUDP();
     void manualStartUDP();
 
-public slots:
+  public slots:
 //    void writeToConsole(QString);
     void sendMessage(QString);
     void newDataAvailable();
@@ -40,15 +39,15 @@ public slots:
     void parseInputFromCommandLine(QString text);
     void echo(QString message);
 
-private:
+  private:
     QString deviceId;
     quint16 serverPort;
     QString serverAddress;
     QString userName;
-    QTcpSocket *socket;
-    BroadcastSocket *broadcastReceiver;
-    ConsoleReader *cReader;
-    QThread *consoleThread;
+    QTcpSocket* socket;
+    BroadcastSocket* broadcastReceiver;
+    ConsoleReader* cReader;
+    QThread* consoleThread;
     void connectToServer();
     void closeSocket();
     void Disconnect();
