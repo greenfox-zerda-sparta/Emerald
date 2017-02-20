@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include "messages.h"
 #include "MessageConverter.h"
 #include "MessageLogfile.h"
 #include "MessageHandler.h"
