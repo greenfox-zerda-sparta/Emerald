@@ -121,10 +121,9 @@ std::string Commands::getDeviceText(Device* dev) {
 }
 
 bool Commands::IsRoomForDevice() {
-  return (IDHigh >= 252 && IDLow >= 252); {
-    std::cerr << "Warning: no more devices can be added." << std::endl;
-  }
+  return (IDHigh < 252 && IDLow < 252); // 
 }
+
 void Commands::logDeviceList() {
   for (Device* device : addedDevs) {
     deviceLogBuffer += getDeviceText(device);
