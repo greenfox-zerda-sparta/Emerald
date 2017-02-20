@@ -8,13 +8,14 @@
 #include <string>
 #include "DeviceLogfile.h"
 #include "MessageConverter.h"
+#include "MessageLogfile.h"
 #include "SubDevice.h"
 
 typedef unsigned char byte;
 
 class Commands {
   public:
-    Commands(std::vector<Device*>& _addedDevices);
+    Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog);
     ~Commands();
     void setMessageMap(std::map<std::string, byte>& _messageMap);
     void setAddedDevices(std::vector<Device*>& _addedDevices);
@@ -23,7 +24,9 @@ class Commands {
     void runCommand();
   private:
     DeviceLogfile* devicelog;
+    MessageLogfile* msgLogger;
     std::string deviceLogBuffer;
+    std::string msgLog;
     MessageConverter* msgConvert;
     std::vector<Device*>& addedDevs;
     std::map<std::string, byte> messageMap;

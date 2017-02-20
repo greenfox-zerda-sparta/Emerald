@@ -20,9 +20,9 @@ std::map<std::string, byte> MessageHandler::GetMessageMap() {
   return messageMap;
 }
 
-void MessageHandler::MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap) {
+void MessageHandler::MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap, MessageLogfile* msgLog) {
   MakeMessageMap(bytes);
-  Commands* cmd = new Commands(addedDevices);
+  Commands* cmd = new Commands(addedDevices, msgLog);
   cmd->setMessageMap(messageMap);
   cmd->setDeviceMap(deviceMap);
   cmd->setBytes(bytes);

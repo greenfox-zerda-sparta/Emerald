@@ -1,6 +1,7 @@
 ﻿#ifndef MESSAGELOGFILE_H
 #define MESSAGELOGFILE_H
 
+#include <iostream>
 #include <fstream>
 #include <mutex>
 #include "MyTime.h"

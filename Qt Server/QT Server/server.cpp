@@ -83,8 +83,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
       connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
       std::string ConnectMsg = ((int)onlineDevices[client]->get_groupID() == 254 ? "UI" : "Device " + toString((int)onlineDevices[client]->get_groupID()));
       ConnectMsg += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
-      std::cout << ConnectMsg << std::endl;
-      mymessagelogfile->MessageLogging(LogLevel::DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
+      mymessagelogfile->MessageLogging(LogLevel::DeviceLog, ConnectMsg);
       } else {
       std::cout << "Unauthorized connection from ip: " << msgConv->qstringToString((client->peerAddress()).toString()) << " rejected." << std::endl;
       client->close();
@@ -95,12 +94,14 @@ void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
     QByteArray QmsgBytes = (client->readAll());
+    messagelogbuffer = "Received: " + msgConv->qbytearrayToString(QmsgBytes) + " from: " + msgConv->qstringToString((client->peerAddress()).toString());
+    mymessagelogfile->MessageLogging(LogLevel::DeviceLog, messagelogbuffer);
     if (QmsgBytes.length() < 18) {
-      //log
-      std::cerr << "Error: command too short." << std::endl;
+      messagelogbuffer += "\nError: command too short.";
+      mymessagelogfile->MessageLogging(LogLevel::DeviceLog, messagelogbuffer);
     } else {
       std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
-      msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices);
+      msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices, mymessagelogfile);
     }
   }
 }
@@ -109,14 +110,13 @@ void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
   std::string DisconnectMsg;
   if ((int)onlineDevices[client]->get_groupID() != 254) {
-    DisconnectMsg = "Device " + toString((int)onlineDevices[client]->get_groupID()) + " disconnected. ";
-    mymessagelogfile->MessageLogging(LogLevel::DeviceLog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
+    DisconnectMsg = "Device type " + toString((int)onlineDevices[client]->get_groupID()) + " disconnected. ";
+    mymessagelogfile->MessageLogging(LogLevel::DeviceLog, DisconnectMsg);
   } else {
     DisconnectMsg = "UI disconnected. ";
-    mymessagelogfile->MessageLogging(LogLevel::UILog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
-    emit StartUdp();
+    mymessagelogfile->MessageLogging(LogLevel::UILog, DisconnectMsg);
+  //  emit StartUdp();
   }
-  std::cout << DisconnectMsg << std::endl;
 //////////////////////////////////////////////////
   HostAddresses.push_back(client->peerAddress());
   onlineDevices.erase(client);
