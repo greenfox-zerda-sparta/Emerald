@@ -20,7 +20,7 @@ class MessageHandler {
   public:
     MessageHandler();
     void MakeMessageMap(std::vector<byte> bytes);
-    void MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap);
+    void MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap, MessageLogfile* msgLog);
     std::map<std::string, byte> GetMessageMap();
 };
 

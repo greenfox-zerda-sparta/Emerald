@@ -1,7 +1,8 @@
 #include "commands.h"
 
-Commands::Commands(std::vector<Device*>& _addedDevices) : addedDevs(_addedDevices) {
+Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog) : addedDevs(_addedDevices), msgLogger(_msgLog) {
   devicelog = new DeviceLogfile;
+
   msgConvert = new MessageConverter;
   ptr_resetServer = &Commands::resetServer;
   ptr_restartServer = &Commands::restartServer;
@@ -116,7 +117,7 @@ std::string Commands::getDeviceText(Device* dev) {
          msgConvert->byteToString(dev->get_floorID()) + " " +
          msgConvert->byteToString(dev->get_roomID()) + " " +
          toString(dev->get_IP()) + " " +
-         msgConvert->byteToString(dev->isworking()) + "\n";
+         msgConvert->byteToString(dev->isworking());
 }
 
 bool Commands::IsRoomForDevice() {
@@ -125,9 +126,8 @@ bool Commands::IsRoomForDevice() {
 
 void Commands::logDeviceList() {
   for (Device* device : addedDevs) {
-    deviceLogBuffer += getDeviceText(device);
+    deviceLogBuffer += getDeviceText(device) + "\n";
   }
-  std::cout << deviceLogBuffer;
   devicelog->DeviceLogging(deviceLogBuffer);
 }
 
@@ -139,18 +139,20 @@ void Commands::addDevice() {
         messageMap["deviceIDHigh"] = (byte)IDHigh;
         messageMap["deviceIDLow"] = (byte)IDLow;
         std::string IP = getIPString();
-        std::cout << "ADDING DEVICE" << std::endl;
         Device* newDevice = new Device(messageMap, IP);
         addedDevs.push_back(newDevice);
         logDeviceList();
-        //log 2x: device log es normal log
+        msgLog = "ADDING DEVICE: " + getDeviceText(newDevice);
       } else {
-        std::cerr << "Warning: no more devices can be added." << std::endl;
+        msgLog = "Warning: no more devices can be added.\n";
+       
       }
     }
   } else {
-    std::cerr << "Invalid command." << std::endl;
+    msgLog = "Invalid command.\n";
   }
+  std::cout << msgLog;
+  msgLogger->MessageLogging(LogLevel::DeviceLog, msgLog);
 }
 
 void Commands::removeDevice() {
