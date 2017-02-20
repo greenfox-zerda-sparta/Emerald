@@ -145,14 +145,12 @@ void Commands::addDevice() {
         logDeviceList();
         msgLog = "ADDING DEVICE: " + getDeviceText(newDevice);
       } else {
-        msgLog = "Warning: no more devices can be added.\n";
-       
+        msgLog = "Warning: no more devices can be added.\n";    
       }
     }
   } else {
     msgLog = "Invalid command.\n";
   }
-  std::cout << msgLog;
   msgLogger->MessageLogging(LogLevel::DeviceLog, msgLog);
 }
 
