@@ -1,6 +1,6 @@
 ﻿#include "udpsender.h"
 
-UdpSender::UdpSender(std::vector<QHostAddress>& _HostAddresses, QObject* parent) : hostAddresses(_HostAddresses), QObject(parent) {
+UdpSender::UdpSender(std::vector<Device*>& addedDevices, QObject* parent) : addedDevices(addedDevices), QObject(parent) {
   datagram = "turquoise&emerald";
   timer = new QTimer(this);
   udpSocket = new QUdpSocket(this);
@@ -18,10 +18,10 @@ void UdpSender::StopUdp() {
 }
 
 void UdpSender::SendDatagram() {
-  if (!hostAddresses.empty()) {
-    for (QHostAddress ip : hostAddresses) {
-      udpSocket->writeDatagram(datagram.data(), datagram.size(), ip, udpPort);
-      qDebug() << "UDP to: " << ip << " Message: " << QString::fromUtf8(datagram);
+  for (Device* dev : addedDevices) {
+    if(!dev->GetIsOnline() && dev->IsWorking()) {
+      udpSocket->writeDatagram(datagram.data(), datagram.size(), QHostAddress(QString::fromStdString(dev->get_IP())), udpPort);
+      qDebug() << "UDP to: " << QString::fromStdString(dev->get_IP()) << " Message: " << QString::fromUtf8(datagram);
     }
   }
 }

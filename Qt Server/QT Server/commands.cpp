@@ -1,7 +1,8 @@
 #include "commands.h"
 
-Commands::Commands(std::vector<Device*>& _addedDevices) : addedDevs(_addedDevices) {
+Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog) : addedDevs(_addedDevices), msgLogger(_msgLog) {
   deviceLog = new DeviceLogfile;
+
   msgConvert = new MessageConverter;
   ptr_resetServer = &Commands::ResetServer;
   ptr_restartServer = &Commands::RestartServer;
@@ -116,7 +117,7 @@ std::string Commands::GetDeviceText(Device* dev) {
          msgConvert->ByteToString(dev->GetFloorID()) + " " +
          msgConvert->ByteToString(dev->GetRoomID()) + " " +
          ToString(dev->GetIP()) + " " +
-         msgConvert->ByteToString(dev->IsWorking()) + "\n";
+         msgConvert->ByteToString(dev->IsWorking());
 }
 
 bool Commands::IsRoomForDevice() {
@@ -125,9 +126,8 @@ bool Commands::IsRoomForDevice() {
 
 void Commands::LogDeviceList() {
   for (Device* device : addedDevs) {
-    deviceLogBuffer += GetDeviceText(device);
+    deviceLogBuffer += GetDeviceText(device) + "\n";
   }
-  std::cout << deviceLogBuffer;
   deviceLog->DeviceLogging(deviceLogBuffer);
 }
 
@@ -139,24 +139,26 @@ void Commands::AddDevice() {
         messageMap["deviceIDHigh"] = (byte)IDHigh;
         messageMap["deviceIDLow"] = (byte)IDLow;
         std::string IP = GetIPString();
-        std::cout << "ADDING DEVICE" << std::endl;
         Device* newDevice = new Device(messageMap, IP);
         addedDevs.push_back(newDevice);
         LogDeviceList();
-        //log 2x: device log es normal log
+        msgLog = "ADDING DEVICE: " + getDeviceText(newDevice);
       } else {
-        std::cerr << "Warning: no more devices can be added." << std::endl;
+        msgLog = "Warning: no more devices can be added.\n";
+       
       }
     }
   } else {
-    std::cerr << "Invalid command." << std::endl;
+    msgLog = "Invalid command.\n";
   }
+  std::cout << msgLog;
+  msgLogger->MessageLogging(LogLevel::DeviceLog, msgLog);
 }
 
 void Commands::RemoveDevice() {
   if (IsServerCommand()) {
     std::cout << "REMOVING DEVICE" << std::endl; //remove device;
-    for (int i = 0; i < addedDevs.size(); i++) {
+    for (unsigned int i = 0; i < addedDevs.size(); i++) {
       if (addedDevs[i]->GetDeviceIDHigh() == messageMap["body1"] &&
           addedDevs[i]->GetDeviceIDLow() == messageMap["body2"]) {
         addedDevs.erase(addedDevs.begin() + i);

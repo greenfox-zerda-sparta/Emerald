@@ -8,13 +8,14 @@
 #include <QTcpSocket>
 #include "DeviceLogfile.h"
 #include "MessageConverter.h"
+#include "MessageLogfile.h"
 #include "SubDevice.h"
 
 typedef unsigned char byte;
 
 class Commands {
   public:
-    Commands(std::vector<Device*>& _addedDevices);
+    Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog);
     ~Commands();
     void SetMessageMap(std::map<std::string, byte>& _messageMap);
     void SetAddedDevices(std::vector<Device*>& _addedDevices);
@@ -23,7 +24,9 @@ class Commands {
     void RunCommand();
   private:
     DeviceLogfile* deviceLog;
+    MessageLogfile* msgLogger;
     std::string deviceLogBuffer;
+    std::string msgLog;
     MessageConverter* msgConvert;
     std::vector<Device*>& addedDevs;
     std::map<std::string, byte> messageMap;

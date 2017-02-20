@@ -34,3 +34,15 @@ std::string MessageConverter::ToString(const T& t) {
 std::string MessageConverter::ByteToString(byte byteValue) {
   return std::to_string((int)byteValue);
 }
+
+std::string MessageConverter::QByteArrayToString(QByteArray byteArr) {
+  std::string result = "";
+  for (int i = 0; i < QByteArrayToCharArray(byteArr).size(); i++) {
+    if (i < QByteArrayToCharArray(byteArr).size() - 1) {
+      result += ByteToString(QByteArrayToCharArray(byteArr)[i]) + " ";
+    } else {
+      result += ByteToString(QByteArrayToCharArray(byteArr)[i]);
+    }
+  }
+  return result;
+}

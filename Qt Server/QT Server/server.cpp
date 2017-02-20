@@ -35,19 +35,11 @@ void Server::InitServer() {
     std::string input;
     std::getline(std::cin, input);
     uiAddress = msgConv->StringToQString(input);
-    ////////////////////////////////////////////////// hostAddresses helyett addedDevices-t fogunk haszna'lni
-    hostAddresses.push_back(uiAddress);
     addedDevices.push_back(new UI(IDs{ 255, 253, 254, 255, 255, 255 }, input, 1));
-  } else {
-    QHostAddress tempAddr;
-    for (auto i : addedDevices) {
-      tempAddr = QString::fromStdString(i->GetIP());
-      //////////////////////////////////////////////////
-      hostAddresses.push_back(tempAddr);
-    }
+
+
   }
-  //////////////////////////////////////////////////
-  udpSender = new UdpSender(hostAddresses);
+  udpSender = new UdpSender(addedDevices);
   connect(this, SIGNAL(StopUdp()), udpSender, SLOT(StopUdp()));
   connect(this, SIGNAL(StartUdp()), udpSender, SLOT(StartUdp()));
 }
@@ -70,24 +62,24 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   for (auto i : addedDevices) {
     if (i->GetIP() == msgConv->QStringToString((client->peerAddress()).toString())) {
       newDevice = i;
-      //////////////////////////////////////////////////
-      hostAddresses.erase(hostAddresses.begin() + index);
+      i->SetIsOnline(true);
       isExistingDevice = true;
       break;
     }
     ++index;
   }
   if (isExistingDevice) {
-      onlineDevices[client] = newDevice;
-      connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
-      connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
-      std::string connectMsg = ((int)onlineDevices[client]->GetGroupID() == 254 ? "UI" : "Device " + ToString((int)onlineDevices[client]->GetGroupID()));
-      connectMsg += " from: " + msgConv->QStringToString(client->peerAddress().toString()) + " has joined.";
-      std::cout << connectMsg << std::endl;
-      myMessageLogfile->MessageLogging(LogLevel::DeviceLog, localTimer->GetTimeFileFormat() + " " + connectMsg);
-      } else {
-      std::cout << "Unauthorized connection from ip: " << msgConv->QStringToString((client->peerAddress()).toString()) << " rejected." << std::endl;
-      client->close();
+    onlineDevices[client] = newDevice;
+    connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
+    connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
+    std::string connectMsg = ((int)onlineDevices[client]->GetGroupID() == 254 ? "UI" : "Device " + ToString((int)onlineDevices[client]->GetGroupID()));
+    connectMsg += " from: " + msgConv->QStringToString(client->peerAddress().ToString()) + " has joined.";
+      myMessageLogfile->MessageLogging(LogLevel::DeviceLog, ConnectMsg);
+/////////////////////////////// New message to UI <- device connected
+  } else {
+    std::cout << "Unauthorized connection from ip: " << msgConv->QStringToString((client->peerAddress()).ToString()) << " rejected." << std::endl;
+    client->close();
+    delete newDevice;
   }
 }
 
@@ -95,12 +87,13 @@ void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
     QByteArray qMsgBytes = (client->readAll());
-    if (qMsgBytes.length() < 18) {
-      //log
-      std::cerr << "Error: command too short." << std::endl;
+    messageLogBuffer = "Received: " + msgConv->QByteArrayToString(qMsgBytes) + " from: " + msgConv->QStringToString((client->peerAddress()).ToString());
+    myMessageLogfile->MessageLogging(LogLevel::DeviceLog, messageLogBuffer);
+      messageLogBuffer += "\nError: command too short.";
+      myMessageLogfile->MessageLogging(LogLevel::DeviceLog, messageLogBuffer);
     } else {
       std::vector<unsigned char> msgBytes = msgConv->QByteArrayToCharArray(qMsgBytes);
-      msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices);
+      msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices, myMessageLogfile);
     }
   }
 }
@@ -109,15 +102,17 @@ void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
   std::string disconnectMsg;
   if (int(onlineDevices[client]->GetGroupID()) != 254) {
-    disconnectMsg = "Device " + ToString(int(onlineDevices[client]->GetGroupID())) + " disconnected. ";
-    myMessageLogfile->MessageLogging(LogLevel::DeviceLog, localTimer->GetTimeFileFormat() + " " + disconnectMsg);
+    disconnectMsg = "Device type " + ToString((int)onlineDevices[client]->GetGroupID()) + " disconnected. ";
+    myMessageLogfile->MessageLogging(LogLevel::DeviceLog, disconnectMsg);
+    /////////////////////////////// New message to UI <- device disconnected
+    Messages Msg;
+    std::vector<byte> msg = Msg.getMessage(249, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow());
+    msgHandler->MakeCommand(addedDevices, msg, onlineDevices);
   } else {
     disconnectMsg = "UI disconnected. ";
-    myMessageLogfile->MessageLogging(LogLevel::UILog, localTimer->GetTimeFileFormat() + " " + disconnectMsg);
-    emit StartUdp();
+    myMessageLogfile->MessageLogging(LogLevel::UILog, disconnectMsg);
+  //  emit StartUdp();
   }
-  std::cout << disconnectMsg << std::endl;
-//////////////////////////////////////////////////
-  hostAddresses.push_back(client->peerAddress());
+  onlineDevices[client]->SetIsOnline(false);
   onlineDevices.erase(client);
 }

@@ -25,6 +25,7 @@ class MessageConverter {
     std::vector<byte> QByteArrayToCharArray(QByteArray byteArr);
     QByteArray BytesToQBytes(std::vector<byte>);
     std::string ByteToString(byte b);
+    std::string QByteArrayToString(QByteArray byteArr);
 };
 
 #endif
