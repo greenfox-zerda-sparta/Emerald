@@ -158,7 +158,7 @@ void Commands::addDevice() {
 void Commands::removeDevice() {
   if (isServerCommand()) {
     std::cout << "REMOVING DEVICE" << std::endl; //remove device;
-    for (int i = 0; i < addedDevs.size(); i++) {
+    for (unsigned int i = 0; i < addedDevs.size(); i++) {
       if (addedDevs[i]->get_deviceIDHigh() == messageMap["body1"] &&
           addedDevs[i]->get_deviceIDLow() == messageMap["body2"]) {
         addedDevs.erase(addedDevs.begin() + i);

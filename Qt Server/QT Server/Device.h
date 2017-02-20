@@ -24,6 +24,7 @@ class Device {
     byte roomID;
     std::string IP;
     bool isdeviceworking;
+    bool isOnline = false;
   public:
     Device();
     Device(IDs ids, std::string _IP, bool _isdeviceworking = true);
@@ -36,6 +37,9 @@ class Device {
     byte get_roomID();
     std::string get_IP();
     byte isworking();
+    void SetIsOnline(bool);
+    bool GetIsOnline();
+
 };
 
 

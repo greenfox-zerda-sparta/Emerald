@@ -4,6 +4,7 @@
 #include <map>
 #include <memory>
 #include <vector>
+#include "messages.h"
 #include "MessageConverter.h"
 #include "MessageLogfile.h"
 #include "MessageHandler.h"
@@ -38,7 +39,6 @@ class Server : public QTcpServer {
     DeviceLogfile* mydevicelogfile;
     QHostAddress uiAddress;
     std::string messagelogbuffer;
-    std::vector<QHostAddress> HostAddresses;
     std::map<QTcpSocket*, Device*> onlineDevices;
     std::vector<Device*> addedDevices;
 };

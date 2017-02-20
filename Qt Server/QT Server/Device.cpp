@@ -55,3 +55,11 @@ std::string Device::get_IP() {
 byte Device::isworking() {
   return isdeviceworking ? 1 : 0;
 }
+
+void Device::SetIsOnline(bool state) {
+  isOnline = state;
+}
+
+bool Device::GetIsOnline() {
+  return isOnline;
+}
