@@ -86,8 +86,13 @@ void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
     QByteArray QmsgBytes = (client->readAll());
-    std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
-    msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices);
+    if (QmsgBytes.length() < 18) {
+      //log
+      std::cerr << "Error: command too short." << std::endl;
+    } else {
+      std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
+      msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices);
+    }
   }
 }
 
