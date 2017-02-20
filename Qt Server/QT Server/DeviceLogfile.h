@@ -10,16 +10,16 @@ typedef unsigned char byte;
 
 class DeviceLogfile {
   private:
-    std::string devicelogbuffer;
-    std::string devicelogfilename;
-    std::ofstream devicelogfile;
-    std::mutex logmutex;
+    std::string deviceLogBuffer;
+    std::string deviceLogFilename;
+    std::ofstream deviceLogfile;
+    std::mutex logMutex;
 
   public:
     DeviceLogfile();
     void DeviceLogging(std::string devicelogbuffer);
-    std::vector<Device*> get_devices_vector();
-    Device* get_device(std::string);
+    std::vector<Device*> getDevicesVector();
+    Device* getDevice(std::string);
 };
 
 #endif

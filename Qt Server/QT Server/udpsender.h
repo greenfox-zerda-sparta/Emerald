@@ -1,8 +1,10 @@
 ﻿#ifndef UDPSENDER_H
 #define UDPSENDER_H
+
+#include <memory>
+#include <QDebug>
 #include <QObject>
 #include <QtNetwork>
-#include <memory>
 
 class QTimer;
 class QUdpSocket;
@@ -24,7 +26,7 @@ class UdpSender : public QObject {
     QTimer* timer;
     int messageNo;
     int udpPort;
-    std::vector<QHostAddress>& HostAddresses;
+    std::vector<QHostAddress>& hostAddresses;
 };
 
 #endif

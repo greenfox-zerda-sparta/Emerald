@@ -1,19 +1,19 @@
 #include "server.h"
 
 Server::Server(QObject* parent) : QTcpServer(parent) {
-  mymessagelogfile = new MessageLogfile;
-  mydevicelogfile = new DeviceLogfile;
+  myMessageLogfile = new MessageLogfile;
+  myDeviceLogfile = new DeviceLogfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
-  addedDevices = mydevicelogfile->get_devices_vector();
+  addedDevices = myDeviceLogfile->getDevicesVector();
 }
 
 Server::~Server() {
-  delete mymessagelogfile;
-  delete mydevicelogfile;
+  delete myMessageLogfile;
+  delete myDeviceLogfile;
   delete msgHandler;
   delete msgConv;
-  delete udpsender;
+  delete udpSender;
   for (Device* device : addedDevices) {
     if (device) {
       delete device;
@@ -34,22 +34,22 @@ void Server::InitServer() {
     std::cout << "Please enter IP address of UI:" << std::endl;
     std::string input;
     std::getline(std::cin, input);
-    uiAddress = msgConv->stringToQString(input);
-    ////////////////////////////////////////////////// HostAddresses helyett addedDevices-t fogunk haszna'lni
-    HostAddresses.push_back(uiAddress);
+    uiAddress = msgConv->StringToQString(input);
+    ////////////////////////////////////////////////// hostAddresses helyett addedDevices-t fogunk haszna'lni
+    hostAddresses.push_back(uiAddress);
     addedDevices.push_back(new UI(IDs{ 255, 253, 254, 255, 255, 255 }, input, 1));
   } else {
     QHostAddress tempAddr;
     for (auto i : addedDevices) {
-      tempAddr = QString::fromStdString(i->get_IP());
+      tempAddr = QString::fromStdString(i->GetIP());
       //////////////////////////////////////////////////
-      HostAddresses.push_back(tempAddr);
+      hostAddresses.push_back(tempAddr);
     }
   }
   //////////////////////////////////////////////////
-  udpsender = new UdpSender(HostAddresses);
-  connect(this, SIGNAL(StopUdp()), udpsender, SLOT(StopUdp()));
-  connect(this, SIGNAL(StartUdp()), udpsender, SLOT(StartUdp()));
+  udpSender = new UdpSender(hostAddresses);
+  connect(this, SIGNAL(StopUdp()), udpSender, SLOT(StopUdp()));
+  connect(this, SIGNAL(StartUdp()), udpSender, SLOT(StartUdp()));
 }
 
 void Server::RunServer() {
@@ -68,10 +68,10 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   bool isExistingDevice = false;
   int index = 0;
   for (auto i : addedDevices) {
-    if (i->get_IP() == msgConv->qstringToString((client->peerAddress()).toString())) {
+    if (i->GetIP() == msgConv->QStringToString((client->peerAddress()).toString())) {
       newDevice = i;
       //////////////////////////////////////////////////
-      HostAddresses.erase(HostAddresses.begin() + index);
+      hostAddresses.erase(hostAddresses.begin() + index);
       isExistingDevice = true;
       break;
     }
@@ -81,12 +81,12 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
       onlineDevices[client] = newDevice;
       connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
       connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
-      std::string ConnectMsg = ((int)onlineDevices[client]->get_groupID() == 254 ? "UI" : "Device " + toString((int)onlineDevices[client]->get_groupID()));
-      ConnectMsg += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
-      std::cout << ConnectMsg << std::endl;
-      mymessagelogfile->MessageLogging(LogLevel::DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
+      std::string connectMsg = ((int)onlineDevices[client]->GetGroupID() == 254 ? "UI" : "Device " + ToString((int)onlineDevices[client]->GetGroupID()));
+      connectMsg += " from: " + msgConv->QStringToString(client->peerAddress().toString()) + " has joined.";
+      std::cout << connectMsg << std::endl;
+      myMessageLogfile->MessageLogging(LogLevel::DeviceLog, localTimer->GetTimeFileFormat() + " " + connectMsg);
       } else {
-      std::cout << "Unauthorized connection from ip: " << msgConv->qstringToString((client->peerAddress()).toString()) << " rejected." << std::endl;
+      std::cout << "Unauthorized connection from ip: " << msgConv->QStringToString((client->peerAddress()).toString()) << " rejected." << std::endl;
       client->close();
   }
 }
@@ -94,12 +94,12 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
-    QByteArray QmsgBytes = (client->readAll());
-    if (QmsgBytes.length() < 18) {
+    QByteArray qMsgBytes = (client->readAll());
+    if (qMsgBytes.length() < 18) {
       //log
       std::cerr << "Error: command too short." << std::endl;
     } else {
-      std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
+      std::vector<unsigned char> msgBytes = msgConv->QByteArrayToCharArray(qMsgBytes);
       msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices);
     }
   }
@@ -107,17 +107,17 @@ void Server::readyRead() {
 
 void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
-  std::string DisconnectMsg;
-  if ((int)onlineDevices[client]->get_groupID() != 254) {
-    DisconnectMsg = "Device " + toString((int)onlineDevices[client]->get_groupID()) + " disconnected. ";
-    mymessagelogfile->MessageLogging(LogLevel::DeviceLog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
+  std::string disconnectMsg;
+  if (int(onlineDevices[client]->GetGroupID()) != 254) {
+    disconnectMsg = "Device " + ToString(int(onlineDevices[client]->GetGroupID())) + " disconnected. ";
+    myMessageLogfile->MessageLogging(LogLevel::DeviceLog, localTimer->GetTimeFileFormat() + " " + disconnectMsg);
   } else {
-    DisconnectMsg = "UI disconnected. ";
-    mymessagelogfile->MessageLogging(LogLevel::UILog, LocalTimer->GetTimeFileFormat() + " " + DisconnectMsg);
+    disconnectMsg = "UI disconnected. ";
+    myMessageLogfile->MessageLogging(LogLevel::UILog, localTimer->GetTimeFileFormat() + " " + disconnectMsg);
     emit StartUdp();
   }
-  std::cout << DisconnectMsg << std::endl;
+  std::cout << disconnectMsg << std::endl;
 //////////////////////////////////////////////////
-  HostAddresses.push_back(client->peerAddress());
+  hostAddresses.push_back(client->peerAddress());
   onlineDevices.erase(client);
 }

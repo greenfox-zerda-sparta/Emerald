@@ -1,10 +1,11 @@
 ﻿// #pragma once
 #ifndef MESSAGEHANDLER_H
 #define MESSAGEHANDLER_H
+
 #include <iostream>
 #include <map>
-#include <QTcpSocket>
 #include <vector>
+#include <QTcpSocket>
 #include "commands.h"
 #include "MessageLogfile.h"
 #include "MyTime.h"
@@ -13,7 +14,7 @@ typedef unsigned char byte;
 
 class MessageHandler {
   private:
-    std::vector<std::string> Keys;
+    std::vector<std::string> keys;
     std::map<std::string, byte> messageMap;
     std::vector<byte> msgToSend;
     int validMsgLength;

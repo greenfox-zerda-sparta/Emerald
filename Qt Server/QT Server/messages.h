@@ -1,7 +1,8 @@
 #ifndef MESSAGES_H
 #define MESSAGES_H
-#include <QtCore>
+
 #include <vector>
+#include <QtCore>
 
 typedef unsigned char byte;
 
