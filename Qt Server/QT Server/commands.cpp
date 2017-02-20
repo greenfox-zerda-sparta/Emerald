@@ -142,7 +142,7 @@ void Commands::AddDevice() {
         Device* newDevice = new Device(messageMap, IP);
         addedDevs.push_back(newDevice);
         LogDeviceList();
-        msgLog = "ADDING DEVICE: " + getDeviceText(newDevice);
+        msgLog = "ADDING DEVICE: " + GetDeviceText(newDevice);
       } else {
         msgLog = "Warning: no more devices can be added.\n";
        

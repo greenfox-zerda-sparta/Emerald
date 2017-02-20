@@ -73,11 +73,11 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
     connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
     connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
     std::string connectMsg = ((int)onlineDevices[client]->GetGroupID() == 254 ? "UI" : "Device " + ToString((int)onlineDevices[client]->GetGroupID()));
-    connectMsg += " from: " + msgConv->QStringToString(client->peerAddress().ToString()) + " has joined.";
-      myMessageLogfile->MessageLogging(LogLevel::DeviceLog, ConnectMsg);
+    connectMsg += " from: " + msgConv->QStringToString(client->peerAddress().toString()) + " has joined.";
+      myMessageLogfile->MessageLogging(LogLevel::DeviceLog, connectMsg);
 /////////////////////////////// New message to UI <- device connected
   } else {
-    std::cout << "Unauthorized connection from ip: " << msgConv->QStringToString((client->peerAddress()).ToString()) << " rejected." << std::endl;
+    std::cout << "Unauthorized connection from ip: " << msgConv->QStringToString((client->peerAddress()).toString()) << " rejected." << std::endl;
     client->close();
     delete newDevice;
   }
@@ -87,7 +87,7 @@ void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
     QByteArray qMsgBytes = (client->readAll());
-    messageLogBuffer = "Received: " + msgConv->QByteArrayToString(qMsgBytes) + " from: " + msgConv->QStringToString((client->peerAddress()).ToString());
+    messageLogBuffer = "Received: " + msgConv->QByteArrayToString(qMsgBytes) + " from: " + msgConv->QStringToString((client->peerAddress()).toString());
     myMessageLogfile->MessageLogging(LogLevel::DeviceLog, messageLogBuffer);
       messageLogBuffer += "\nError: command too short.";
       myMessageLogfile->MessageLogging(LogLevel::DeviceLog, messageLogBuffer);
@@ -96,7 +96,6 @@ void Server::readyRead() {
       msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices, myMessageLogfile);
     }
   }
-}
 
 void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
