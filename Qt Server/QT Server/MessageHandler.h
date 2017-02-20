@@ -7,7 +7,7 @@
 #include <vector>
 #include <QTcpSocket>
 #include "commands.h"
-#include "MessageLogfile.h"
+#include "messageLogfile.h"
 #include "MyTime.h"
 
 typedef unsigned char byte;
@@ -21,7 +21,7 @@ class MessageHandler {
   public:
     MessageHandler();
     void MakeMessageMap(std::vector<byte> bytes);
-    void MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap, MessageLogfile* msgLog);
+    void MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap, messageLogfile* msgLog);
     std::map<std::string, byte> GetMessageMap();
 };
 

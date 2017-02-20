@@ -12,7 +12,7 @@ void DeviceLogfile::DeviceLogging(std::string devicelogbuffer) {
   logMutex.unlock();
 }
 
-Device* DeviceLogfile::getDevice(std::string buffer) {
+Device* DeviceLogfile::GetDevice(std::string buffer) {
   std::vector<std::string> deviceStuff;
   bool isDeviceWorking;
   size_t position = buffer.find(" ");
@@ -41,7 +41,7 @@ Device* DeviceLogfile::getDevice(std::string buffer) {
   return returnDevice;
 }
 
-std::vector<Device*> DeviceLogfile::getDevicesVector() {
+std::vector<Device*> DeviceLogfile::GetDevicesVector() {
   std::vector<Device*> devices;
   std::ifstream deviceLogfile(deviceLogFilename.c_str());
   std::string buffer;
@@ -49,7 +49,7 @@ std::vector<Device*> DeviceLogfile::getDevicesVector() {
     if (buffer.length() < 3) {
       continue;
     }
-    devices.push_back(getDevice(buffer));
+    devices.push_back(GetDevice(buffer));
   }
   deviceLogfile.close();
   return devices;

@@ -8,7 +8,7 @@
 #include "messages.h"
 #include "MessageConverter.h"
 #include "MessageHandler.h"
-#include "MessageLogfile.h"
+#include "messageLogfile.h"
 #include "SubDevice.h"
 #include "udpsender.h"
 #include "UI.h"
@@ -36,7 +36,7 @@ class Server : public QTcpServer {
     MessageHandler* msgHandler;
     UdpSender* udpSender;
     MessageConverter* msgConv;
-    MessageLogfile* myMessageLogfile;
+    messageLogfile* mymessageLogfile;
     DeviceLogfile* myDeviceLogfile;
     QHostAddress uiAddress;
     std::string messageLogBuffer;

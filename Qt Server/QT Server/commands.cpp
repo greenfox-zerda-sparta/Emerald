@@ -1,6 +1,6 @@
 #include "commands.h"
 
-Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog) : addedDevs(_addedDevices), msgLogger(_msgLog) {
+Commands::Commands(std::vector<Device*>& _addedDevices, messageLogfile* _msgLog) : addedDevs(_addedDevices), msgLogger(_msgLog) {
   deviceLog = new DeviceLogfile;
 
   msgConvert = new MessageConverter;
