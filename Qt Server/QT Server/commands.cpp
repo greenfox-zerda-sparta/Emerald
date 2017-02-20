@@ -259,7 +259,7 @@ void Commands::ForwardMessage() {
   // Send
   for (auto socket : targets) {
     socket->write(msgConvert->BytesToQBytes(bytes) + '\n');
-    msgLog = "FORWARDING MESSAGE TO TARGET DEVICE(S): " + msgConvert->ToString(socket);
+    msgLog = "FORWARDING MESSAGE TO TARGET DEVICE(S)."; //+ msgConvert->ToString(socket);
     msgLogger->MessageLogging(Log, msgLog);
   }
 }
