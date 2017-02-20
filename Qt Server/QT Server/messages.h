@@ -8,9 +8,9 @@ typedef unsigned char byte;
 class Messages {
   public:
     Messages();
-    QByteArray getMessage(byte messageId, byte body1 = 0, byte body2 = 0, byte body3 = 0, byte body4 = 0, byte body5 = 0);
+    std::vector<byte> getMessage(byte messageId, byte body1 = 0, byte body2 = 0, byte body3 = 0, byte body4 = 0, byte body5 = 0);
   private:
-    QByteArray message;
+    std::vector<byte> message;
     bool isValidMessageID(byte messageId);
 };
 

@@ -3,10 +3,7 @@
 using namespace std;
 
 Messages::Messages() {
-  vector<byte> ack = vector<byte> {255, 253, 240, 255, 255, 255, 254, 255, 254, 0, 0, 0, 0, 0, 0, 0, 0};
-  for(auto i: ack) {
-    message.push_back((quint8)(i));
-  }
+  message = vector<byte> {255, 253, 240, 255, 255, 255, 254, 255, 254, 0, 0, 0, 0, 0, 0, 0, 0};
 }
 
 bool Messages::isValidMessageID(byte messageId) {
@@ -19,8 +16,8 @@ bool Messages::isValidMessageID(byte messageId) {
           messageId == 252);  // ACK
 }
 
-QByteArray Messages::getMessage(byte messageId, byte body1 = 0, byte body2 = 0, byte body3 = 0, byte body4 = 0, byte body5 = 0) {
-  QByteArray retMessage = message;
+std::vector<byte> Messages::getMessage(byte messageId, byte body1, byte body2, byte body3, byte body4, byte body5) {
+  vector<byte> retMessage = message;
   if(isValidMessageID(messageId)) {
     retMessage[2] = messageId;
     retMessage[9] = body1;
