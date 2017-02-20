@@ -1,11 +1,11 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
-#include <vector>
-#include <memory>
-#include <map>
+
 #include <iostream>
-#include <QTcpSocket>
+#include <map>
 #include <string>
+#include <vector>
+#include <QTcpSocket>
 #include "DeviceLogfile.h"
 #include "MessageConverter.h"
 #include "MessageLogfile.h"
@@ -17,13 +17,13 @@ class Commands {
   public:
     Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog);
     ~Commands();
-    void setMessageMap(std::map<std::string, byte>& _messageMap);
-    void setAddedDevices(std::vector<Device*>& _addedDevices);
-    void setDeviceMap(std::map<QTcpSocket*, Device*>& _deviceMap);
-    void setBytes(std::vector<byte>& _bytes);
-    void runCommand();
+    void SetMessageMap(std::map<std::string, byte>& _messageMap);
+    void SetAddedDevices(std::vector<Device*>& _addedDevices);
+    void SetDeviceMap(std::map<QTcpSocket*, Device*>& _deviceMap);
+    void SetBytes(std::vector<byte>& _bytes);
+    void RunCommand();
   private:
-    DeviceLogfile* devicelog;
+    DeviceLogfile* deviceLog;
     MessageLogfile* msgLogger;
     std::string deviceLogBuffer;
     std::string msgLog;
@@ -33,23 +33,23 @@ class Commands {
     std::map<byte, void(Commands::*)()> cmdMap;
     std::map<QTcpSocket*, Device*> deviceMap;
     std::vector<byte> bytes;
-    void generateNextIDs();
-    std::string getIPString();
-    std::string getDeviceText(Device* dev);
+    void GenerateNextIDs();
+    std::string GetIPString();
+    std::string GetDeviceText(Device* dev);
     bool IsRoomForDevice();
-    void logDeviceList();
+    void LogDeviceList();
     int IDLow;
     int IDHigh;
-    bool isSenderUi();
-    bool isServerCommand();
-    void resetServer();
-    void restartServer();
-    void stopServer();
-    void addDevice();
-    void removeDevice();
-    void getStatusReport();
-    void setData();
-    void forwardMessage();
+    bool IsSenderUi();
+    bool IsServerCommand();
+    void ResetServer();
+    void RestartServer();
+    void StopServer();
+    void AddDevice();
+    void RemoveDevice();
+    void GetStatusReport();
+    void SetData();
+    void ForwardMessage();
     void(Commands::*ptr_resetServer)();
     void(Commands::*ptr_restartServer)();
     void(Commands::*ptr_stopServer)();

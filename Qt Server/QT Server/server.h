@@ -1,13 +1,14 @@
 #ifndef SERVER_H
 #define SERVER_H
+
 #include <iostream>
 #include <map>
 #include <memory>
 #include <vector>
 #include "messages.h"
 #include "MessageConverter.h"
-#include "MessageLogfile.h"
 #include "MessageHandler.h"
+#include "MessageLogfile.h"
 #include "SubDevice.h"
 #include "udpsender.h"
 #include "UI.h"
@@ -31,14 +32,14 @@ class Server : public QTcpServer {
 
   private:
     void incomingConnection(qintptr SocketDescriptor);
-    MyTime* LocalTimer;
+    MyTime* localTimer;
     MessageHandler* msgHandler;
-    UdpSender* udpsender;
+    UdpSender* udpSender;
     MessageConverter* msgConv;
-    MessageLogfile* mymessagelogfile;
-    DeviceLogfile* mydevicelogfile;
+    MessageLogfile* myMessageLogfile;
+    DeviceLogfile* myDeviceLogfile;
     QHostAddress uiAddress;
-    std::string messagelogbuffer;
+    std::string messageLogBuffer;
     std::map<QTcpSocket*, Device*> onlineDevices;
     std::vector<Device*> addedDevices;
 };

@@ -7,11 +7,11 @@
 
 class UI : public Device {
   private:
-    DeviceLogfile* mydevicelogfile;
-    std::string devicelogbuffer;
-    bool isdeviceworking;
+    DeviceLogfile* myDeviceLogfile;
+    std::string deviceLogBuffer;
+    bool isDeviceWorking;
   public:
-    UI(IDs _ids, std::string _IP, bool isdeviceworking);
+    UI(IDs _ids, std::string _IP, bool _isDeviceWorking);
     ~UI();
 };
 

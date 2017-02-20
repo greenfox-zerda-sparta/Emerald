@@ -13,11 +13,10 @@ CONFIG += console
 TEMPLATE = app
 
 HEADERS = \
-   $$PWD/Logfile.h \
-   $$PWD/MessageHandler.h \
-   $$PWD/MyTime.h \
-   $$PWD/server.h \
-   $$PWD/udpsender.h \
+    MessageHandler.h \
+    MyTime.h \
+    server.h \
+    udpsender.h \
     catch.hpp \
     Device.h \
     MessageConverter.h \
@@ -30,12 +29,11 @@ HEADERS = \
     MessageLogfile.h
 
 SOURCES = \
-   $$PWD/Logfile.cpp \
-   $$PWD/main.cpp \
-   $$PWD/MessageHandler.cpp \
-   $$PWD/MyTime.cpp \
-   $$PWD/server.cpp \
-   $$PWD/udpsender.cpp \
+    main.cpp \
+    MessageHandler.cpp \
+    MyTime.cpp \
+    server.cpp \
+    udpsender.cpp \
     Device.cpp \
     MessageConverter.cpp \
     test.cpp \

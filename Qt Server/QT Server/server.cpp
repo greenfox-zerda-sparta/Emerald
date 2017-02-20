@@ -1,19 +1,19 @@
 #include "server.h"
 
 Server::Server(QObject* parent) : QTcpServer(parent) {
-  mymessagelogfile = new MessageLogfile;
-  mydevicelogfile = new DeviceLogfile;
+  myMessageLogfile = new MessageLogfile;
+  myDeviceLogfile = new DeviceLogfile;
   msgHandler = new MessageHandler;
   msgConv = new MessageConverter;
-  addedDevices = mydevicelogfile->get_devices_vector();
+  addedDevices = myDeviceLogfile->getDevicesVector();
 }
 
 Server::~Server() {
-  delete mymessagelogfile;
-  delete mydevicelogfile;
+  delete myMessageLogfile;
+  delete myDeviceLogfile;
   delete msgHandler;
   delete msgConv;
-  delete udpsender;
+  delete udpSender;
   for (Device* device : addedDevices) {
     if (device) {
       delete device;
@@ -39,7 +39,7 @@ void Server::InitServer() {
     uiAddress = msgConv->stringToQString(input);
     addedDevices.push_back(new UI(IDs{ 255, 253, 254, 255, 255, 255 }, input, 1));
   }
-  udpsender = new UdpSender(addedDevices);
+  udpSender = new UdpSender(addedDevices);
   messagelogbuffer = "UDP messaging available for devices added but not connected.";
   mymessagelogfile->MessageLogging(Log, messagelogbuffer);
 }
@@ -62,7 +62,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
   bool isExistingDevice = false;
   int index = 0;
   for (auto i : addedDevices) {
-    if (i->get_IP() == msgConv->qstringToString((client->peerAddress()).toString())) {
+    if (i->GetIP() == msgConv->QStringToString((client->peerAddress()).toString())) {
       newDevice = i;
       i->SetIsOnline(true);
       isExistingDevice = true;
@@ -77,7 +77,9 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
     messagelogbuffer = ((int)onlineDevices[client]->get_groupID() == 254 ? "UI" : "Device " + toString((int)onlineDevices[client]->get_groupID()));
     messagelogbuffer += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
     mymessagelogfile->MessageLogging(DeviceLog, messagelogbuffer);
-/////////////////////////////// New message to UI <- device connected
+    Messages Msg;
+    std::vector<byte> msg = Msg.getMessage(246, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow());
+    msgHandler->MakeCommand(addedDevices, msg, onlineDevices, myMessageLogfile);
   } else {
     messagelogbuffer = "Unauthorized connection from ip: " + msgConv->qstringToString((client->peerAddress()).toString()) + " rejected.";
     mymessagelogfile->MessageLogging(Warning, messagelogbuffer);
@@ -89,27 +91,26 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
 void Server::readyRead() {
   QTcpSocket* client = (QTcpSocket*)sender();
   if (client->canReadLine()) {
-    QByteArray QmsgBytes = (client->readAll());
-    messagelogbuffer = "Received: " + msgConv->qbytearrayToString(QmsgBytes) + " from: " + msgConv->qstringToString((client->peerAddress()).toString());
-    mymessagelogfile->MessageLogging(DeviceLog, messagelogbuffer);
-    if (QmsgBytes.length() < 18) {
-      messagelogbuffer += "\nError: command too short.";
-      mymessagelogfile->MessageLogging(Error, messagelogbuffer);
+    QByteArray qMsgBytes = (client->readAll());
+    messageLogBuffer = "Received: " + msgConv->QByteArrayToString(qMsgBytes) + " from: " + msgConv->QStringToString((client->peerAddress()).toString());
+    myMessageLogfile->MessageLogging(LogLevel::DeviceLog, messageLogBuffer);
+    if (qMsgBytes.length() < 18) {
+      messageLogBuffer += "\nError: command too short.";
+      myMessageLogfile->MessageLogging(Error, messageLogBuffer);
     } else {
-      std::vector<unsigned char> msgBytes = msgConv->qbytearrayToCharArray(QmsgBytes);
-      msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices, mymessagelogfile);
+      std::vector<unsigned char> msgBytes = msgConv->QByteArrayToCharArray(qMsgBytes);
+      msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices, myMessageLogfile);
     }
   }
 }
 
 void Server::disconnected() {
   QTcpSocket* client = (QTcpSocket*)sender();
-  if ((int)onlineDevices[client]->get_groupID() != 254) {
+  if (int(onlineDevices[client]->GetGroupID()) != 254) {
     messagelogbuffer = "Device type " + toString((int)onlineDevices[client]->get_groupID()) + " disconnected. ";
     mymessagelogfile->MessageLogging(DeviceLog, messagelogbuffer);
-    /////////////////////////////// New message to UI <- device disconnected
     Messages Msg;
-    std::vector<byte> msg = Msg.getMessage(249, onlineDevices[client]->get_deviceIDHigh(), onlineDevices[client]->get_deviceIDLow());
+    std::vector<byte> msg = Msg.getMessage(249, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow());
     msgHandler->MakeCommand(addedDevices, msg, onlineDevices, mymessagelogfile);
   } else {
     messagelogbuffer = "UI disconnected. ";

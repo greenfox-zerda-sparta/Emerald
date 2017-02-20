@@ -1,7 +1,9 @@
 #ifndef DEVICE_H
 #define DEVICE_H
-#include <string>
+
 #include <map>
+#include <string>
+
 
 typedef unsigned char byte;
 
@@ -23,20 +25,20 @@ class Device {
     byte floorID;
     byte roomID;
     std::string IP;
-    bool isdeviceworking;
+    bool isDeviceWorking;
     bool isOnline = false;
   public:
     Device();
-    Device(IDs ids, std::string _IP, bool _isdeviceworking = true);
-    Device(std::map<std::string, byte> messageMap, std::string _IP, bool _isdeviceworking = true);
-    byte get_deviceIDHigh();
-    byte get_deviceIDLow();
-    byte get_groupID();
-    byte get_homeID();
-    byte get_floorID();
-    byte get_roomID();
-    std::string get_IP();
-    byte isworking();
+    Device(IDs ids, std::string _IP, bool _isDeviceWorking = true);
+    Device(std::map<std::string, byte> messageMap, std::string _IP, bool _isDeviceWorking = true);
+    byte GetDeviceIDHigh();
+    byte GetDeviceIDLow();
+    byte GetGroupID();
+    byte GetHomeID();
+    byte GetFloorID();
+    byte GetRoomID();
+    std::string GetIP();
+    byte IsWorking();
     void SetIsOnline(bool);
     bool GetIsOnline();
 
