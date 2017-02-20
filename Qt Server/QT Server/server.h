@@ -36,10 +36,10 @@ class Server : public QTcpServer {
     MessageHandler* msgHandler;
     UdpSender* udpSender;
     MessageConverter* msgConv;
-    messageLogfile* mymessageLogfile;
+    messageLogfile* log;
     DeviceLogfile* myDeviceLogfile;
     QHostAddress uiAddress;
-    std::string messageLogBuffer;
+    std::string logBuffer;
     std::map<QTcpSocket*, Device*> onlineDevices;
     std::vector<Device*> addedDevices;
 };

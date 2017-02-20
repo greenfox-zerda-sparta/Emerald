@@ -51,7 +51,8 @@ void Commands::SetBytes(std::vector<byte>& _bytes) {
 
 void Commands::RunCommand() {
   if (cmdMap.count(messageMap["cmdID"]) < 1) {
-    std::cerr << "INVALID COMMAND" << std::endl;
+    msgLog = "INVALID COMMAND";
+    msgLogger->MessageLogging(Error, msgLog);
   } else {
     (this->*cmdMap[messageMap["cmdID"]])();
   }
@@ -67,25 +68,31 @@ bool Commands::IsServerCommand() {
 
 void Commands::ResetServer() {
   if (IsServerCommand()) {
-    std::cout << "RESETTING SERVER" << std::endl; // reset server;  delete all devices
+    msgLog = "RESETTING SERVER";
+    msgLogger->MessageLogging(Log, msgLog);
   } else {
-    std::cerr << "Invalid command: target must be the server." << std::endl;
+    msgLog = "Invalid command: target must be the server.";
+    msgLogger->MessageLogging(Error, msgLog);
   }
 }
 
 void Commands::RestartServer() {
   if (IsServerCommand()) {
-    std::cout << "RESTARTING SERVER" << std::endl; // restart server;
+    msgLog = "RESTARTING SERVER";
+    msgLogger->MessageLogging(Log, msgLog);
   } else {
-    std::cerr << "Invalid command: target must be the server." << std::endl;
+    msgLog = "Invalid command: target must be the server.";
+    msgLogger->MessageLogging(Error, msgLog);
   }
 }
 
 void Commands::StopServer() {
   if (IsServerCommand()) {
-    std::cout << "STOPPING SERVER" << std::endl; //stop server;
+    msgLog = "STOPPING SERVER";
+    msgLogger->MessageLogging(Log, msgLog);
   } else {
-    std::cerr << "Invalid command: target must be the server." << std::endl;
+    msgLog = "Invalid command: target must be the server.";
+    msgLogger->MessageLogging(Error, msgLog);
   }
 }
 
@@ -122,7 +129,7 @@ std::string Commands::GetDeviceText(Device* dev) {
 }
 
 bool Commands::IsRoomForDevice() {
-  return (IDHigh < 252 && IDLow < 252); // 
+  return (IDHigh < 252 && IDLow < 252);
 }
 
 void Commands::LogDeviceList() {
@@ -156,38 +163,43 @@ void Commands::AddDevice() {
 
 void Commands::RemoveDevice() {
   if (IsServerCommand()) {
-    std::cout << "REMOVING DEVICE" << std::endl; //remove device;
     for (unsigned int i = 0; i < addedDevs.size(); i++) {
       if (addedDevs[i]->GetDeviceIDHigh() == messageMap["body1"] &&
           addedDevs[i]->GetDeviceIDLow() == messageMap["body2"]) {
+        msgLog = "REMOVING DEVICE" + GetDeviceText(addedDevs[i]);
         addedDevs.erase(addedDevs.begin() + i);
+        msgLogger->MessageLogging(DeviceLog, msgLog);
       }
     }
     LogDeviceList();
-    // needs message log too. Removing from onlineDevices map?
   } else {
-    std::cerr << "Invalid command: target must be the server." << std::endl;
+    msgLog = "Invalid command: target must be the server, device IDs must be in message body.";
+    msgLogger->MessageLogging(Error, msgLog);
   }
 }
 
 void Commands::GetStatusReport() {
 if (IsSenderUi() || (messageMap["senderIDHigh"] == 255 && messageMap["senderIDLow"] == 254)) {
-    std::cout << "TO DEVICES/GETTING INFOS FROM DEVICES" << std::endl; //getting reports from devices;
+  msgLog = "TO DEVICES/GETTING INFOS FROM DEVICES";
+  msgLogger->MessageLogging(DeviceLog, msgLog);
+  ForwardMessage();
   } else {
-    std::cerr << "Invalid command: sender must be the User Interface." << std::endl;
+  msgLog = "Invalid command: sender must be the User Interface.";
+  msgLogger->MessageLogging(Error, msgLog);
   }
 }
 
 void Commands::SetData() {
   if (IsSenderUi()) {
-    std::cout << "TO DEVICES/TO SET ID" << std::endl; //devices to set id;
+    msgLog = "TO DEVICES/TO SET ID";
+    msgLogger->MessageLogging(DeviceLog, msgLog);
   } else {
-    std::cerr << "Invalid command: sender must be the User Interface." << std::endl;
+    msgLog = "Invalid command: sender must be the User Interface.";
+    msgLogger->MessageLogging(Error, msgLog);
   }
 }
 
 void Commands::ForwardMessage() {
-  std::cout << "FORWARDING MESSAGE TO TARGET DEVICE" << std::endl; //forward message;
   std::vector<QTcpSocket*> targets;
   if (messageMap["floorID"] == 0 && messageMap["groupID"] == 0 && messageMap["roomID"] == 0) {
     // To  all devices
@@ -247,5 +259,7 @@ void Commands::ForwardMessage() {
   // Send
   for (auto socket : targets) {
     socket->write(msgConvert->BytesToQBytes(bytes) + '\n');
+    msgLog = "FORWARDING MESSAGE TO TARGET DEVICE(S): " + msgConvert->ToString(socket);
+    msgLogger->MessageLogging(Log, msgLog);
   }
 }

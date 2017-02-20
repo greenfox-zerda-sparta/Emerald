@@ -12,7 +12,7 @@ enum LogLevel { UILog, DeviceLog, Log, Warning, Error };
 
 class messageLogfile {
 private:
-  std::string messageLogBuffer;
+  std::string logBuffer;
   std::string messageLogfilename;
   std::ofstream messageLog;
   MyTime* localTimer;

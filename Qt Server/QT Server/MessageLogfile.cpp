@@ -1,7 +1,7 @@
 ﻿#include "MessageLogfile.h"
 
 messageLogfile::messageLogfile() {
-  messageLogBuffer = "";
+  logBuffer = "";
   messageLogfilename = "Smart_Home_" + localTimer->GetTimeFileFormat() + ".txt";
 }
 
