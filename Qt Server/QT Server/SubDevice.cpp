@@ -23,14 +23,14 @@ SubDevice::SubDevice(std::map<std::string, byte>& messageMap, std::string _IP, b
   IP = _IP;
   isdeviceworking = _isdeviceworking;
   /*mydevicelogfile = new DeviceLogfile;
-  mydevicelogfile->DeviceLogging(
+    mydevicelogfile->DeviceLogging(
     toString(int(get_deviceIDHigh())) + " " +
     toString(int(get_deviceIDLow())) + " " +
     toString(int(get_groupID())) + " " +
     toString(int(get_homeID())) + " " +
     toString(int(get_floorID())) + " " +
     toString(int(get_roomID())) + " " +
-    _IP + " " + 
+    _IP + " " +
     toString(isdeviceworking));*/
 }
 

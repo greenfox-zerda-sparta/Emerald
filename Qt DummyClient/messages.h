@@ -5,13 +5,12 @@
 
 using namespace std;
 
-class Messages
-{
-public:
+class Messages {
+  public:
     Messages();
     QByteArray get_message(QString mWitch, Dev deviceId);
 
-private:
+  private:
 //    quint8 qstringToQuint8(QString string);
     QByteArray ack_message;
     QByteArray crc_message;

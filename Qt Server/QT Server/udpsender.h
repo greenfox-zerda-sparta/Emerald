@@ -7,25 +7,24 @@
 class QTimer;
 class QUdpSocket;
 
-class UdpSender : public QObject
-{
-  Q_OBJECT
+class UdpSender : public QObject {
+    Q_OBJECT
 
-public:
-  UdpSender(std::vector<QHostAddress>& _HostAddresses, QObject* parent = Q_NULLPTR);
+  public:
+    UdpSender(std::vector<QHostAddress>& _HostAddresses, QObject* parent = Q_NULLPTR);
 
-private slots:
-  void StartUdp();
-  void StopUdp();
-  void SendDatagram();
+  private slots:
+    void StartUdp();
+    void StopUdp();
+    void SendDatagram();
 
-private:
-  QByteArray datagram;
-  QUdpSocket* udpSocket;
-  QTimer* timer;
-  int messageNo;
-  int udpPort;
-  std::vector<QHostAddress>& HostAddresses;
+  private:
+    QByteArray datagram;
+    QUdpSocket* udpSocket;
+    QTimer* timer;
+    int messageNo;
+    int udpPort;
+    std::vector<QHostAddress>& HostAddresses;
 };
 
 #endif

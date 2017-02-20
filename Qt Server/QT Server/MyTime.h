@@ -4,10 +4,10 @@
 #include <string>
 
 class MyTime {
-public:
-  MyTime();
-  std::string GetTimeFileFormat();
+  public:
+    MyTime();
+    std::string GetTimeFileFormat();
 };
 
-#endif 
+#endif
 

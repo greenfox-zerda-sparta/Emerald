@@ -2,8 +2,9 @@
 
 MessageHandler::MessageHandler() {
   Keys = { "targetIDHigh", "targetIDLow", "cmdID", "homeID", "floorID", "roomID", "groupID",
-    "senderIDHigh", "senderIDLow", "body1", "body2", "body3", "body4", "body5",
-    "crc1", "crc2", "crc3" };
+           "senderIDHigh", "senderIDLow", "body1", "body2", "body3", "body4", "body5",
+           "crc1", "crc2", "crc3"
+         };
   validMsgLength = 17;
 }
 

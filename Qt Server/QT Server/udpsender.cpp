@@ -15,14 +15,14 @@ void UdpSender::StartUdp() {
 }
 
 void UdpSender::StopUdp() {
-	timer->stop();
+  timer->stop();
 }
 
 void UdpSender::SendDatagram() {
-	if (!HostAddresses.empty()) {
-      for (QHostAddress ip : HostAddresses) {
+  if (!HostAddresses.empty()) {
+    for (QHostAddress ip : HostAddresses) {
       udpSocket->writeDatagram(datagram.data(), datagram.size(), ip, udpPort);
       qDebug() << "UDP to: " << ip << " Message: " << QString::fromUtf8(datagram);
     }
-	}
+  }
 }

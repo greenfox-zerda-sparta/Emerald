@@ -15,11 +15,17 @@ Server::~Server() {
   delete msgConv;
   delete udpsender;
   for (Device* device : addedDevices) {
-    if (device) { delete device; }
+    if (device) {
+      delete device;
+    }
   }
   for (auto iter : onlineDevices) {
-    if (iter.first) { delete iter.first; }
-    if (iter.second) { delete iter.second; }
+    if (iter.first) {
+      delete iter.first;
+    }
+    if (iter.second) {
+      delete iter.second;
+    }
   }
 }
 
@@ -29,15 +35,18 @@ void Server::InitServer() {
     std::string input;
     std::getline(std::cin, input);
     uiAddress = msgConv->stringToQString(input);
+    ////////////////////////////////////////////////// HostAddresses helyett addedDevices-t fogunk haszna'lni
     HostAddresses.push_back(uiAddress);
     addedDevices.push_back(new UI(IDs{ 255, 253, 254, 255, 255, 255 }, input, 1));
   } else {
     QHostAddress tempAddr;
     for (auto i : addedDevices) {
       tempAddr = QString::fromStdString(i->get_IP());
+      //////////////////////////////////////////////////
       HostAddresses.push_back(tempAddr);
     }
   }
+  //////////////////////////////////////////////////
   udpsender = new UdpSender(HostAddresses);
   connect(this, SIGNAL(StopUdp()), udpsender, SLOT(StopUdp()));
   connect(this, SIGNAL(StartUdp()), udpsender, SLOT(StartUdp()));
@@ -55,23 +64,31 @@ void Server::RunServer() {
 void Server::incomingConnection(qintptr SocketDescriptor) {
   QTcpSocket* client = new QTcpSocket(this);
   client->setSocketDescriptor(SocketDescriptor);
-  connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
-  connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
   Device* newDevice;
+  bool isExistingDevice = false;
   int index = 0;
   for (auto i : addedDevices) {
     if (i->get_IP() == msgConv->qstringToString((client->peerAddress()).toString())) {
       newDevice = i;
+      //////////////////////////////////////////////////
       HostAddresses.erase(HostAddresses.begin() + index);
+      isExistingDevice = true;
       break;
     }
     ++index;
   }
-  (onlineDevices)[client] = newDevice;
-  std::string ConnectMsg = ((int)onlineDevices[client]->get_groupID() == 254 ? "UI" : "Device " + toString((int)onlineDevices[client]->get_groupID()));
-  ConnectMsg += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
-  std::cout << ConnectMsg << std::endl;
-  mymessagelogfile->MessageLogging(LogLevel::DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
+  if (isExistingDevice) {
+      onlineDevices[client] = newDevice;
+      connect(client, SIGNAL(readyRead()), this, SLOT(readyRead()));
+      connect(client, SIGNAL(disconnected()), this, SLOT(disconnected()));
+      std::string ConnectMsg = ((int)onlineDevices[client]->get_groupID() == 254 ? "UI" : "Device " + toString((int)onlineDevices[client]->get_groupID()));
+      ConnectMsg += " from: " + msgConv->qstringToString(client->peerAddress().toString()) + " has joined.";
+      std::cout << ConnectMsg << std::endl;
+      mymessagelogfile->MessageLogging(LogLevel::DeviceLog, LocalTimer->GetTimeFileFormat() + " " + ConnectMsg);
+      } else {
+      std::cout << "Unauthorized connection from ip: " << msgConv->qstringToString((client->peerAddress()).toString()) << " rejected." << std::endl;
+      client->close();
+  }
 }
 
 void Server::readyRead() {
@@ -95,6 +112,7 @@ void Server::disconnected() {
     emit StartUdp();
   }
   std::cout << DisconnectMsg << std::endl;
+//////////////////////////////////////////////////
   HostAddresses.push_back(client->peerAddress());
   onlineDevices.erase(client);
 }
