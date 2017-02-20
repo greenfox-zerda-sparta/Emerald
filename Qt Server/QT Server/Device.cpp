@@ -10,7 +10,7 @@ Device::Device(IDs _ids, std::string _IP, bool _isdeviceworking) {
   roomID = _ids.roomID;
   groupID = _ids.groupID;
   IP = _IP;
-  isdeviceworking = _isdeviceworking;
+  isDeviceWorking = _isdeviceworking;
 }
 
 Device::Device(std::map<std::string, byte> messageMap, std::string _IP, bool _isdeviceworking) {
@@ -21,39 +21,39 @@ Device::Device(std::map<std::string, byte> messageMap, std::string _IP, bool _is
   floorID = messageMap["floorID"];
   roomID = messageMap["roomID"];
   IP = _IP;
-  isdeviceworking = _isdeviceworking;
+  isDeviceWorking = _isdeviceworking;
 }
 
-byte Device::get_deviceIDHigh() {
+byte Device::GetDeviceIDHigh() {
   return deviceIDHigh;
 }
 
-byte Device::get_deviceIDLow() {
+byte Device::GetDeviceIDLow() {
   return deviceIDLow;
 }
 
-byte Device::get_groupID() {
+byte Device::GetGroupID() {
   return groupID;
 }
 
-byte Device::get_homeID() {
+byte Device::GetHomeID() {
   return homeID;
 }
 
-byte Device::get_floorID() {
+byte Device::GetFloorID() {
   return floorID;
 }
 
-byte Device::get_roomID() {
+byte Device::GetRoomID() {
   return roomID;
 }
 
-std::string Device::get_IP() {
+std::string Device::GetIP() {
   return IP;
 }
 
-byte Device::isworking() {
-  return isdeviceworking ? 1 : 0;
+byte Device::IsWorking() {
+  return isDeviceWorking ? 1 : 0;
 }
 
 void Device::SetIsOnline(bool state) {

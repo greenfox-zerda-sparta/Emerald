@@ -1,16 +1,16 @@
 #include "SubDevice.h"
 
 SubDevice::SubDevice(IDs _ids, std::string _IP, bool isdeviceworking) : Device(_ids, _IP, isdeviceworking) {
-  mydevicelogfile = new DeviceLogfile;
-  mydevicelogfile->DeviceLogging(
-    toString(int(get_deviceIDHigh())) + " " +
-    toString(int(get_deviceIDLow())) + " " +
-    toString(int(get_groupID())) + " " +
-    toString(int(get_homeID())) + " " +
-    toString(int(get_floorID())) + " " +
-    toString(int(get_roomID())) + " " +
+  myDeviceLogfile = new DeviceLogfile;
+  myDeviceLogfile->DeviceLogging(
+    ToString(int(GetDeviceIDHigh())) + " " +
+    ToString(int(GetDeviceIDLow())) + " " +
+    ToString(int(GetGroupID())) + " " +
+    ToString(int(GetHomeID())) + " " +
+    ToString(int(GetFloorID())) + " " +
+    ToString(int(GetRoomID())) + " " +
     _IP + " " +
-    toString(isdeviceworking));
+    ToString(isdeviceworking));
 }
 
 SubDevice::SubDevice(std::map<std::string, byte>& messageMap, std::string _IP, bool _isdeviceworking) {
@@ -21,19 +21,19 @@ SubDevice::SubDevice(std::map<std::string, byte>& messageMap, std::string _IP, b
   roomID = messageMap["roomID"];
   groupID = messageMap["groupID"];
   IP = _IP;
-  isdeviceworking = _isdeviceworking;
-  /*mydevicelogfile = new DeviceLogfile;
-    mydevicelogfile->DeviceLogging(
-    toString(int(get_deviceIDHigh())) + " " +
-    toString(int(get_deviceIDLow())) + " " +
-    toString(int(get_groupID())) + " " +
-    toString(int(get_homeID())) + " " +
-    toString(int(get_floorID())) + " " +
-    toString(int(get_roomID())) + " " +
+  isDeviceWorking = _isdeviceworking;
+  /*myDeviceLogfile = new DeviceLogfile;
+    myDeviceLogfile->DeviceLogging(
+    ToString(int(GetDeviceIDHigh())) + " " +
+    ToString(int(GetDeviceIDLow())) + " " +
+    ToString(int(GetGroupID())) + " " +
+    ToString(int(GetHomeID())) + " " +
+    ToString(int(GetFloorID())) + " " +
+    ToString(int(GetRoomID())) + " " +
     _IP + " " +
-    toString(isdeviceworking));*/
+    ToString(isDeviceWorking));*/
 }
 
 SubDevice::~SubDevice() {
-  delete mydevicelogfile;
+  delete myDeviceLogfile;
 }

@@ -1,8 +1,10 @@
 ﻿#ifndef UDPSENDER_H
 #define UDPSENDER_H
+
+#include <memory>
+#include <QDebug>
 #include <QObject>
 #include <QtNetwork>
-#include <memory>
 #include "Device.h"
 
 class QTimer;

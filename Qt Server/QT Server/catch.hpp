@@ -1580,8 +1580,8 @@ namespace Catch {
   std::string toString(unsigned char value);
 
 #ifdef CATCH_CONFIG_CPP11_LONG_LONG
-  std::string toString(long long value);
-  std::string toString(unsigned long long value);
+  std::string ToString(long long value);
+  std::string ToString(unsigned long long value);
 #endif
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
@@ -1589,9 +1589,9 @@ namespace Catch {
 #endif
 
 #ifdef __OBJC__
-  std::string toString(NSString const * const& nsstring);
-  std::string toString(NSString * CATCH_ARC_STRONG const& nsstring);
-  std::string toString(NSObject* const& nsObject);
+  std::string ToString(NSString const * const& nsstring);
+  std::string ToString(NSString * CATCH_ARC_STRONG const& nsstring);
+  std::string ToString(NSObject* const& nsObject);
 #endif
 
   namespace Detail {
@@ -1628,7 +1628,7 @@ namespace Catch {
     template<typename T>
     struct EnumStringMaker<T, true> {
       static std::string convert(T const& v) {
-        return ::Catch::toString(
+        return ::Catch::ToString(
           static_cast<typename std::underlying_type<T>::type>(v)
         );
       }
@@ -1710,7 +1710,7 @@ namespace Catch {
 
 #ifdef CATCH_CONFIG_CPP11_TUPLE
 
-  // toString for tuples
+  // ToString for tuples
   namespace TupleDetail {
     template<
       typename Tuple,
@@ -1720,7 +1720,7 @@ namespace Catch {
       struct ElementPrinter {
       static void print(const Tuple& tuple, std::ostream& os) {
         os << (N ? ", " : " ")
-          << Catch::toString(std::get<N>(tuple));
+          << Catch::ToString(std::get<N>(tuple));
         ElementPrinter<Tuple, N + 1>::print(tuple, os);
       }
     };
@@ -2984,8 +2984,8 @@ namespace Catch {
               [str isEqualToString : m_substr];
           }
 
-          virtual std::string toString() const {
-            return "equals string: " + Catch::toString(m_substr);
+          virtual std::string ToString() const {
+            return "equals string: " + Catch::ToString(m_substr);
           }
         };
 
@@ -2997,8 +2997,8 @@ namespace Catch {
               [str rangeOfString : m_substr].location != NSNotFound;
           }
 
-          virtual std::string toString() const {
-            return "contains string: " + Catch::toString(m_substr);
+          virtual std::string ToString() const {
+            return "contains string: " + Catch::ToString(m_substr);
           }
         };
 
@@ -3010,8 +3010,8 @@ namespace Catch {
               [str rangeOfString : m_substr].location == 0;
           }
 
-          virtual std::string toString() const {
-            return "starts with: " + Catch::toString(m_substr);
+          virtual std::string ToString() const {
+            return "starts with: " + Catch::ToString(m_substr);
           }
         };
         struct EndsWith : StringHolder<EndsWith> {
@@ -3022,8 +3022,8 @@ namespace Catch {
               [str rangeOfString : m_substr].location == [str length] - [m_substr length];
           }
 
-          virtual std::string toString() const {
-            return "ends with: " + Catch::toString(m_substr);
+          virtual std::string ToString() const {
+            return "ends with: " + Catch::ToString(m_substr);
           }
         };
 
@@ -3742,7 +3742,7 @@ namespace STITCH_TBC_TEXT_FORMAT_OUTER_NAMESPACE {
       std::string const& last() const { return lines.back(); }
       std::size_t size() const { return lines.size(); }
       std::string const& operator[](std::size_t _index) const { return lines[_index]; }
-      std::string toString() const {
+      std::string ToString() const {
         std::ostringstream oss;
         oss << *this;
         return oss.str();
@@ -4944,7 +4944,7 @@ namespace CLICHE_TBC_TEXT_FORMAT_OUTER_NAMESPACE {
       std::string const& last() const { return lines.back(); }
       std::size_t size() const { return lines.size(); }
       std::string const& operator[](std::size_t _index) const { return lines[_index]; }
-      std::string toString() const {
+      std::string ToString() const {
         std::ostringstream oss;
         oss << *this;
         return oss.str();
@@ -6669,7 +6669,7 @@ namespace Catch {
           return tryTranslators();
         }
         @catch (NSException *exception) {
-          return Catch::toString([exception description]);
+          return Catch::ToString([exception description]);
         }
 #else
         return tryTranslators();
@@ -8011,7 +8011,7 @@ namespace Catch {
     }
   }
 
-  std::string toString(std::string const& value) {
+  std::string ToString(std::string const& value) {
     std::string s = value;
     if (getCurrentContext().getConfig()->showInvisibles()) {
       for (size_t i = 0; i < s.size(); ++i) {
@@ -8029,32 +8029,32 @@ namespace Catch {
     }
     return "\"" + s + "\"";
   }
-  std::string toString(std::wstring const& value) {
+  std::string ToString(std::wstring const& value) {
 
     std::string s;
     s.reserve(value.size());
     for (size_t i = 0; i < value.size(); ++i)
       s += value[i] <= 0xff ? static_cast<char>(value[i]) : '?';
-    return Catch::toString(s);
+    return Catch::ToString(s);
   }
 
-  std::string toString(const char* const value) {
-    return value ? Catch::toString(std::string(value)) : std::string("{null string}");
+  std::string ToString(const char* const value) {
+    return value ? Catch::ToString(std::string(value)) : std::string("{null string}");
   }
 
-  std::string toString(char* const value) {
-    return Catch::toString(static_cast<const char*>(value));
+  std::string ToString(char* const value) {
+    return Catch::ToString(static_cast<const char*>(value));
   }
 
-  std::string toString(const wchar_t* const value) {
-    return value ? Catch::toString(std::wstring(value)) : std::string("{null string}");
+  std::string ToString(const wchar_t* const value) {
+    return value ? Catch::ToString(std::wstring(value)) : std::string("{null string}");
   }
 
-  std::string toString(wchar_t* const value) {
-    return Catch::toString(static_cast<const wchar_t*>(value));
+  std::string ToString(wchar_t* const value) {
+    return Catch::ToString(static_cast<const wchar_t*>(value));
   }
 
-  std::string toString(int value) {
+  std::string ToString(int value) {
     std::ostringstream oss;
     oss << value;
     if (value > Detail::hexThreshold)
@@ -8062,7 +8062,7 @@ namespace Catch {
     return oss.str();
   }
 
-  std::string toString(unsigned long value) {
+  std::string ToString(unsigned long value) {
     std::ostringstream oss;
     oss << value;
     if (value > Detail::hexThreshold)
@@ -8070,8 +8070,8 @@ namespace Catch {
     return oss.str();
   }
 
-  std::string toString(unsigned int value) {
-    return Catch::toString(static_cast<unsigned long>(value));
+  std::string ToString(unsigned int value) {
+    return Catch::ToString(static_cast<unsigned long>(value));
   }
 
   template<typename T>
@@ -8090,40 +8090,40 @@ namespace Catch {
     return d;
   }
 
-  std::string toString(const double value) {
+  std::string ToString(const double value) {
     return fpToString(value, 10);
   }
-  std::string toString(const float value) {
+  std::string ToString(const float value) {
     return fpToString(value, 5) + "f";
   }
 
-  std::string toString(bool value) {
+  std::string ToString(bool value) {
     return value ? "true" : "false";
   }
 
-  std::string toString(char value) {
+  std::string ToString(char value) {
     return value < ' '
-      ? toString(static_cast<unsigned int>(value))
+      ? ToString(static_cast<unsigned int>(value))
       : Detail::makeString(value);
   }
 
-  std::string toString(signed char value) {
-    return toString(static_cast<char>(value));
+  std::string ToString(signed char value) {
+    return ToString(static_cast<char>(value));
   }
 
-  std::string toString(unsigned char value) {
-    return toString(static_cast<char>(value));
+  std::string ToString(unsigned char value) {
+    return ToString(static_cast<char>(value));
   }
 
 #ifdef CATCH_CONFIG_CPP11_LONG_LONG
-  std::string toString(long long value) {
+  std::string ToString(long long value) {
     std::ostringstream oss;
     oss << value;
     if (value > Detail::hexThreshold)
       oss << " (0x" << std::hex << value << ")";
     return oss.str();
   }
-  std::string toString(unsigned long long value) {
+  std::string ToString(unsigned long long value) {
     std::ostringstream oss;
     oss << value;
     if (value > Detail::hexThreshold)
@@ -8133,24 +8133,24 @@ namespace Catch {
 #endif
 
 #ifdef CATCH_CONFIG_CPP11_NULLPTR
-  std::string toString(std::nullptr_t) {
+  std::string ToString(std::nullptr_t) {
     return "nullptr";
   }
 #endif
 
 #ifdef __OBJC__
-  std::string toString(NSString const * const& nsstring) {
+  std::string ToString(NSString const * const& nsstring) {
     if (!nsstring)
       return "nil";
-    return "@" + toString([nsstring UTF8String]);
+    return "@" + ToString([nsstring UTF8String]);
   }
-  std::string toString(NSString * CATCH_ARC_STRONG const& nsstring) {
+  std::string ToString(NSString * CATCH_ARC_STRONG const& nsstring) {
     if (!nsstring)
       return "nil";
-    return "@" + toString([nsstring UTF8String]);
+    return "@" + ToString([nsstring UTF8String]);
   }
-  std::string toString(NSObject* const& nsObject) {
-    return toString([nsObject description]);
+  std::string ToString(NSObject* const& nsObject) {
+    return ToString([nsObject description]);
   }
 #endif
 
@@ -9385,7 +9385,7 @@ namespace Catch {
           xml.writeAttribute("classname", className);
           xml.writeAttribute("name", name);
         }
-        xml.writeAttribute("time", Catch::toString(sectionNode.stats.durationInSeconds));
+        xml.writeAttribute("time", Catch::ToString(sectionNode.stats.durationInSeconds));
 
         writeAssertions(sectionNode);
 
