@@ -111,7 +111,6 @@ void Server::disconnected() {
   } else {
     disconnectMsg = "UI disconnected. ";
     myMessageLogfile->MessageLogging(LogLevel::UILog, disconnectMsg);
-    //  emit StartUdp();
   }
   onlineDevices[client]->SetIsOnline(false);
   onlineDevices.erase(client);

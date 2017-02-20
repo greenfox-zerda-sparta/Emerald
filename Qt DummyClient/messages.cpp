@@ -3,14 +3,14 @@
 Messages::Messages() {
   QByteArray msg;
   msg.append(Utils::qstringToQuint8("255")); //target id high
-  msg.append(Utils::qstringToQuint8("254")); //target id low
+  msg.append(Utils::qstringToQuint8("254")); //target id low /server
   msg.append(Utils::qstringToQuint8("240")); //command code
   msg.append(Utils::qstringToQuint8("255")); //home id
   msg.append(Utils::qstringToQuint8("255")); //floor id
   msg.append(Utils::qstringToQuint8("255")); //room id
   msg.append(Utils::qstringToQuint8("255")); //goup id
   msg.append(Utils::qstringToQuint8("255")); //device id high
-  msg.append(Utils::qstringToQuint8("253")); //device id low
+  msg.append(Utils::qstringToQuint8("253")); //device id low /ui
   error_message = msg;
   msg[2] = Utils::qstringToQuint8("241");
   success_message = msg;

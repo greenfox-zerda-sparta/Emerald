@@ -234,7 +234,7 @@ void DummyClient::changeDev() {
   } else if (deviceId == "lamp") {
     me.deviceIdHigh = Utils::qstringToQuint8("0");
     me.deviceIdLow = Utils::qstringToQuint8("1");
-    me.homeId = Utils::qstringToQuint8("1");
+    me.homeId = Utils::qstringToQuint8("255");
     me.floorId = Utils::qstringToQuint8("1");
     me.roomId = Utils::qstringToQuint8("1");
     me.groupId = Utils::qstringToQuint8("1");

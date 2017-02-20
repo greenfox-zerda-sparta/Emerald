@@ -14,7 +14,8 @@ SOURCES += main.cpp \
     dummyclient.cpp \
     consolereader.cpp \
     broadcastsocket.cpp \
-    messages.cpp
+    messages.cpp \
+    commandparse.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -32,4 +33,5 @@ HEADERS += \
     consolereader.h \
     broadcastsocket.h \
     messages.h \
-    utils.h
+    utils.h \
+    commandparse.h
