@@ -8,7 +8,7 @@
 
 typedef unsigned char byte;
 
-enum LogLevel { UILog, DeviceLog, Warning, Error };
+enum LogLevel { UILog, DeviceLog, Log, Warning, Error };
 
 class MessageLogfile {
 private:

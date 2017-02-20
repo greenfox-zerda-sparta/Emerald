@@ -15,11 +15,10 @@ class UdpSender : public QObject {
     UdpSender(std::vector<Device*>& addedDevices, QObject* parent = Q_NULLPTR);
 
   private slots:
-    void StartUdp();
-    void StopUdp();
     void SendDatagram();
 
   private:
+    void StartUdp();
     QByteArray datagram;
     QUdpSocket* udpSocket;
     QTimer* timer;

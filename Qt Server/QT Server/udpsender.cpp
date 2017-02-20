@@ -14,10 +14,6 @@ void UdpSender::StartUdp() {
   timer->start(1000);
 }
 
-void UdpSender::StopUdp() {
-  timer->stop();
-}
-
 void UdpSender::SendDatagram() {
   for (Device* dev : addedDevices) {
     if(!dev->GetIsOnline() && dev->isworking()) {

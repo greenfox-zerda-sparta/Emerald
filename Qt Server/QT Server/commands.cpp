@@ -25,6 +25,7 @@ Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog)
   cmdMap[3] = ptr_forwardMessage;
   cmdMap[4] = ptr_forwardMessage;
   cmdMap[5] = ptr_forwardMessage;
+  cmdMap[249] = ptr_forwardMessage;
 }
 
 Commands::~Commands() {
@@ -172,7 +173,7 @@ void Commands::removeDevice() {
 }
 
 void Commands::getStatusReport() {
-  if (isSenderUi()) {
+  if (isSenderUi() || (messageMap["senderIDHigh"] == 255 && messageMap["senderIDLow"] == 254)) {
     std::cout << "TO DEVICES/GETTING INFOS FROM DEVICES" << std::endl; //getting reports from devices;
   } else {
     std::cerr << "Invalid command: sender must be the User Interface." << std::endl;

@@ -7,7 +7,7 @@ MessageLogfile::MessageLogfile() {
 
 
 void MessageLogfile::MessageLogging(LogLevel _loglevel, std::string buffer) {
-  const static char* LogLevelStr[] = { "UI", "Device", "Warning", "Error" };
+  const static char* LogLevelStr[] = { "UI", "Device", "Log", "Warning", "Error" };
   logmutex.lock();
   messagelogfile.open(messagelogfilename.c_str(), std::ios::app);
   std::cout << "[" << LogLevelStr[_loglevel] << "] " << LocalTimer->GetTimeFileFormat() << " " << buffer << std::endl;
