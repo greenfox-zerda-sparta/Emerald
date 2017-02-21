@@ -35,9 +35,9 @@ class DummyClient : public QObject {
 //    void writeToConsole(QString);
     void sendMessage(QString);
     void newDataAvailable();
-    void sendFirstMessage();
+    void trackConnectedState();
     void parseInputFromCommandLine(QString text);
-    void echo(QString message);
+    void reactToIncomingMessage(QString message);
 
   private:
     QString deviceId;
@@ -55,11 +55,14 @@ class DummyClient : public QObject {
     void Quit();
     quint32 qstringToQuint32(QString string);
     QString datagramNeeded;
-    bool isEcho;
     Dev me;
     void changeDev();
     Messages messGetter;
     void sendMessage(QByteArray);
+    bool isTcpOn;
+    bool isUdpOn;
+    bool isDevOn;
+    void printHelp();
 };
 
 #endif // DUMMYCLIENT_H

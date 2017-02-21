@@ -12,6 +12,7 @@ struct Dev {
   quint8 floorId;
   quint8 roomId;
   quint8 groupId;
+  quint8 status;
 };
 
 class Utils {
