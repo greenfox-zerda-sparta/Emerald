@@ -34,6 +34,7 @@ class Commands {
     std::map<QTcpSocket*, Device*> deviceMap;
     std::vector<byte> bytes;
     void GenerateNextIDs();
+    std::vector<byte> MakeUiFeedback(byte body1, byte body2);
     std::string GetIPString();
     std::string GetDeviceText(Device* dev);
     bool IsRoomForDevice();
