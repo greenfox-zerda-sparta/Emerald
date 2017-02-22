@@ -46,7 +46,8 @@ DummyClient::DummyClient(QObject* parent) : QObject(parent) {
   addDeviceMessages = {"Enter the Ip separated by space /do not use points/: ",
                        "Enter the floor number: ",
                        "Enter the room number: ",
-                       "Choose the device group id: "};
+                       "Choose the device group id: "
+                      };
   availableDevices = "\n1 - Lamp\n";
   availableDevices += "2 - Heating\n";
   availableDevices += "3 - Cooling\n";
@@ -56,7 +57,6 @@ DummyClient::DummyClient(QObject* parent) : QObject(parent) {
   availableDevices += "7 - Water consumption\n";
   availableDevices += "8 - Current consumption in month\n";
   availableDevices += "9 - Current consumption sum";
-
   availableRooms = "\n1 - garage\n";
   availableRooms += "2 - workshop\n";
   availableRooms += "3 - kitchen\n";
@@ -66,9 +66,7 @@ DummyClient::DummyClient(QObject* parent) : QObject(parent) {
   availableRooms += "7 - south bedroom\n";
   availableRooms += "8 - kidroom\n";
   availableRooms += "9 - bathroom";
-
   newDeviceDescription = "";
-
   availableFloors = "\n1 - basement\n";
   availableFloors += "2 - ground floor\n";
   availableFloors += "3 - first floor";
@@ -106,9 +104,10 @@ void DummyClient::trackConnectedState() {
 }
 
 void DummyClient::reactToIncomingMessage(QString message) {
+  QByteArray msg = messGetter.getNextMessage(message,me);
+  printWhichMessage(msg);
   if (isDevOn) {
-      QByteArray msg = messGetter.getNextMessage(message,me);
-      sendMessage(msg);
+    sendMessage(msg);
   }
 }
 
@@ -150,31 +149,32 @@ void DummyClient::parseInputFromCommandLine(QString text) {
 }
 
 void DummyClient::printHelp() {
-    QString helpMessage ;
-    helpMessage = "Enter a command(/command) or a message(message) to send\n";
-    helpMessage += "   Commands available:\n";
-    helpMessage += "               h                   - print this help\n";
-    helpMessage += "               q                   - quit program\n";
-    helpMessage += "               setip=10.28.2.150   - set server ip\n";
-    helpMessage += "               setport=4321        - set tcp port\n";
-    helpMessage += "               udp                 - toggling modes auto-/manual connection\n";
-    helpMessage += "               tcp                 - toggling tcp connect/disconnect\n";
-    helpMessage += "               dev                 - toggling automatic device simulation/UI\n";
-    helpMessage += "               sst                 - send 'Stop server' command\n";
-    helpMessage += "               srs                 - send 'Restart server' command\n";
-    helpMessage += "               sre                 - send 'Reset server' command\n";
-    helpMessage += "               add                 - send 'add device' command\n";
-    helpMessage += "               rem                 - send 'remove device' command\n";
-    helpMessage += "               ack                 - send 'ack' message\n";
-    helpMessage += "               crc                 - send 'crc error' message\n";
-    helpMessage += "               suc                 - send 'success' message\n";
-    helpMessage += "               err                 - send 'error in work' message\n";
-    emit write(helpMessage);
+  QString helpMessage ;
+  helpMessage = "Enter a command(/command) or a message(message) to send\n";
+  helpMessage += "   Commands available:\n";
+  helpMessage += "               h                   - print this help\n";
+  helpMessage += "               q                   - quit program\n";
+  helpMessage += "               setip=10.28.2.150   - set server ip\n";
+  helpMessage += "               setport=4321        - set tcp port\n";
+  helpMessage += "               udp                 - toggling modes auto-/manual connection\n";
+  helpMessage += "               tcp                 - toggling tcp connect/disconnect\n";
+  helpMessage += "               dev                 - toggling automatic device simulation/UI\n";
+  helpMessage += "               sst                 - send 'Stop server' command\n";
+  helpMessage += "               srs                 - send 'Restart server' command\n";
+  helpMessage += "               sre                 - send 'Reset server' command\n";
+  helpMessage += "               add                 - send 'add device' command\n";
+  helpMessage += "               rem                 - send 'remove device' command\n";
+  helpMessage += "               ack                 - send 'ack' message\n";
+  helpMessage += "               crc                 - send 'crc error' message\n";
+  helpMessage += "               suc                 - send 'success' message\n";
+  helpMessage += "               err                 - send 'error in work' message\n";
+  emit write(helpMessage);
 }
+
 void DummyClient::startCommand(QString text) {
   text = text.toLower();
   if (text == "h") {
-      printHelp();
+    printHelp();
   } else if (text == "q") {
     emit write("   Bye!");
     delete broadcastReceiver;
@@ -187,30 +187,30 @@ void DummyClient::startCommand(QString text) {
     emit write("   server port: " + QString::number(serverPort));
   } else if (text == "udp") {
     isUdpOn = ! isUdpOn;
-      if(isUdpOn) {
-          emit manualStartUDP();
-      } else {
-          emit manualCloseUDP();
-          emit write("   UDP Socket is closed.");
-      }
+    if(isUdpOn) {
+      emit manualStartUDP();
+    } else {
+      emit manualCloseUDP();
+      emit write("   UDP Socket is closed.");
+    }
   } else  if (text == "tcp") {
     isTcpOn = !isTcpOn;
     if (socket->state() == QTcpSocket::ConnectedState) {
       Disconnect();
     }
     if(isTcpOn) {
-        connectToServer();
+      connectToServer();
     }
   } else if (text == "dev") {
-      isDevOn = !isDevOn;
-      QString toDisp = "   Automatic device simulation is ";
-      toDisp += (isDevOn?"on.":"off.");
-      emit write(toDisp);
-      if (!isDevOn) {
-          deviceId = "ui";
-          changeDev();
-          emit write("   Device: " + deviceId);
-      }
+    isDevOn = !isDevOn;
+    QString toDisp = "   Automatic device simulation is ";
+    toDisp += (isDevOn?"on.":"off.");
+    emit write(toDisp);
+    if (!isDevOn) {
+      deviceId = "ui";
+      changeDev();
+      emit write("   Device: " + deviceId);
+    }
   } else if (text == "sst") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
@@ -318,7 +318,6 @@ void DummyClient::addDevice(QString newDevDescription) {
     }
     return;
   }
-
   if(index > 5) {
     if(isError) {
       emit write(availableDevices);
@@ -331,18 +330,17 @@ void DummyClient::addDevice(QString newDevDescription) {
     emit setConsoleReaderCommandMode(0);
     emit write("   ADD DEVICE COMMAND is sent.");
   }
-
 }
 
 void DummyClient::removeDevice(QString id) {
   int index = 0;
   bool isError = false;
-  if(id != ""){
+  if(id != "") {
     id = id.trimmed();
     QStringList list = id.split(' ');
     index = list.size() - 1;
     if((QString::number(Utils::qstringToQuint8(list[list.size() -1])) != list[list.size() -1] && list.last() != "") &&
-       (QString::number(Utils::qstringToQuint8(list[0])) != list[0] && list.last() != "")) {
+        (QString::number(Utils::qstringToQuint8(list[0])) != list[0] && list.last() != "")) {
       isError = true;
     }
   }
@@ -362,4 +360,67 @@ void DummyClient::removeDevice(QString id) {
     emit setConsoleReaderCommandMode(2);
   }
   emit write("Enter Device ID High and Low separated by space: ");
+}
+
+void DummyClient::printWhichMessage(QByteArray msg) {
+  if((qint8)msg[2] == Utils::qstringToQuint8("0")) {
+    emit write("   OFF command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("1")) {
+    emit write("   ON command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("2")) {
+    emit write("   STANDBY command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("3")) {
+    emit write("   SET() command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("4")) {
+    emit write("   SET+() command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("5")) {
+    emit write("   SET-() command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("239")) {
+    emit write("   SET DATA command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("240")) {
+    emit write("   COMMAND REPLY - ERROR message");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("241")) {
+    emit write("   COMMAND REPLY - SUCCESS message");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("242")) {
+    emit write("   STATUS REPORT message");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("246")) {
+    emit write("   GET STATUS REPORT command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("247")) {
+    emit write("   ADD DEVICE command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("248")) {
+    emit write("   REMOVE DEVICE command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("249")) {
+    emit write("   DEVICE DISCONNECTED message");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("250")) {
+    emit write("   NO ANSWER/DEVICE ERROR message");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("251")) {
+    emit write("   CRC ERROR message");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("252")) {
+    emit write("   ACK message");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("253")) {
+    emit write("   RESET SERVER command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("254")) {
+    emit write("   RESTART SERVER command");
+  }
+  if((qint8)msg[2] == Utils::qstringToQuint8("255")) {
+    emit write("   STOP SERVER command");
+  }
 }

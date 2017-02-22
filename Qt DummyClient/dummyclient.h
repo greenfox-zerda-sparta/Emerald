@@ -17,9 +17,6 @@ class DummyClient : public QObject {
     explicit DummyClient(QObject* parent = 0);
     void run();
 
-  protected:
-//   void timerEvent(QTimerEvent*);
-
   signals:
     void incomingMessage(QString);
     void inputFromCommandLine(QString);
@@ -33,7 +30,6 @@ class DummyClient : public QObject {
     void setConsoleReaderCommandMode(int);
 
   public slots:
-//    void writeToConsole(QString);
     void sendMessage(QString);
     void newDataAvailable();
     void trackConnectedState();
@@ -66,6 +62,7 @@ class DummyClient : public QObject {
     bool isUdpOn;
     bool isDevOn;
     void printHelp();
+    void printWhichMessage(QByteArray msg);
     QString getAddDeviceMessage(int index);
     std::vector<QString> addDeviceMessages;
     QString availableDevices;
