@@ -12,6 +12,7 @@ Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog)
   ptr_getStatusReport = &Commands::GetStatusReport;
   ptr_setData = &Commands::SetData;
   ptr_forwardMessage = &Commands::ForwardMessage;
+  ptr_devforwardMessageToUi = &Commands::DevForwardMessageToUi;
   cmdMap[239] = ptr_setData;
   cmdMap[246] = ptr_getStatusReport;
   cmdMap[247] = ptr_addDevice;
@@ -19,13 +20,14 @@ Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog)
   cmdMap[253] = ptr_resetServer;
   cmdMap[254] = ptr_restartServer;
   cmdMap[255] = ptr_stopServer;
+  cmdMap[249] = ptr_devforwardMessageToUi;
   cmdMap[0] = ptr_forwardMessage;
   cmdMap[1] = ptr_forwardMessage;
   cmdMap[2] = ptr_forwardMessage;
   cmdMap[3] = ptr_forwardMessage;
   cmdMap[4] = ptr_forwardMessage;
   cmdMap[5] = ptr_forwardMessage;
-  cmdMap[249] = ptr_forwardMessage;
+  cmdMap[249] = ptr_devforwardMessageToUi;
 }
 
 Commands::~Commands() {
@@ -90,10 +92,15 @@ void Commands::StopServer() {
   if (IsServerCommand()) {
     msgLog = "STOPPING SERVER";
     msgLogger->MessageLogging(Log, msgLog);
+    exit(0);
   } else {
     msgLog = "Invalid command: target must be the server.";
     msgLogger->MessageLogging(Error, msgLog);
   }
+}
+
+std::vector<byte> Commands::MakeUiFeedback(byte body1, byte body2) {
+  return { 255, 253, 249, 255, 255, 255, 254, 255, 254, body1, body2, 0, 0, 0, 0, 0, 0 };
 }
 
 void Commands::GenerateNextIDs() {
@@ -151,14 +158,18 @@ void Commands::AddDevice() {
         addedDevs.push_back(newDevice);
         LogDeviceList();
         msgLog = "ADDING DEVICE: " + GetDeviceText(newDevice);
+        msgLogger->MessageLogging(LogLevel::DeviceLog, msgLog);
+        bytes = MakeUiFeedback((byte)IDHigh, (byte)IDLow);
+        DevForwardMessageToUi();
       } else {
-        msgLog = "Warning: no more devices can be added.\n";    
+        msgLog = "Warning: no more devices can be added.\n";
+        msgLogger->MessageLogging(Warning, msgLog);
       }
     }
   } else {
     msgLog = "Invalid command.\n";
+    msgLogger->MessageLogging(Error, msgLog);
   }
-  msgLogger->MessageLogging(LogLevel::DeviceLog, msgLog);
 }
 
 void Commands::RemoveDevice() {
@@ -180,7 +191,7 @@ void Commands::RemoveDevice() {
 
 void Commands::GetStatusReport() {
 if (IsSenderUi() || (messageMap["senderIDHigh"] == 255 && messageMap["senderIDLow"] == 254)) {
-  msgLog = "TO DEVICES/GETTING INFOS FROM DEVICES";
+  msgLog = "REQUESTING STATUS REPORT FROM CONNECTING DEVICE";
   msgLogger->MessageLogging(DeviceLog, msgLog);
   ForwardMessage();
   } else {
@@ -259,7 +270,17 @@ void Commands::ForwardMessage() {
   // Send
   for (auto socket : targets) {
     socket->write(msgConvert->BytesToQBytes(bytes) + '\n');
-    msgLog = "FORWARDING MESSAGE TO TARGET DEVICE(S)."; //+ msgConvert->ToString(socket);
+    msgLog = "FORWARDING MESSAGE TO TARGET DEVICE(S): " + msgConvert->QStringToString((socket->peerAddress()).toString());
     msgLogger->MessageLogging(Log, msgLog);
+  }
+}
+
+void Commands::DevForwardMessageToUi() {
+  for (auto iter : deviceMap) {
+    if ((iter.second)->GetDeviceIDHigh() == 255 && (iter.second)->GetDeviceIDLow() == 253) {
+      (iter.first)->write(msgConvert->BytesToQBytes(bytes) + '\n');
+      msgLog = "FORWARDING DEVICE MESSAGE TO UI.";
+      msgLogger->MessageLogging(Log, msgLog);
+    }
   }
 }

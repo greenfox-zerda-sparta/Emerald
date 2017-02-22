@@ -5,7 +5,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <QTcpSocket>
+#include <QtNetwork>
 #include "DeviceLogfile.h"
 #include "MessageConverter.h"
 #include "MessageLogfile.h"
@@ -34,6 +34,7 @@ class Commands {
     std::map<QTcpSocket*, Device*> deviceMap;
     std::vector<byte> bytes;
     void GenerateNextIDs();
+    std::vector<byte> MakeUiFeedback(byte body1, byte body2);
     std::string GetIPString();
     std::string GetDeviceText(Device* dev);
     bool IsRoomForDevice();
@@ -50,6 +51,7 @@ class Commands {
     void GetStatusReport();
     void SetData();
     void ForwardMessage();
+    void DevForwardMessageToUi();
     void(Commands::*ptr_resetServer)();
     void(Commands::*ptr_restartServer)();
     void(Commands::*ptr_stopServer)();
@@ -58,6 +60,7 @@ class Commands {
     void(Commands::*ptr_getStatusReport)();
     void(Commands::*ptr_setData)();
     void(Commands::*ptr_forwardMessage)();
+    void(Commands::*ptr_devforwardMessageToUi)();
 };
 
 #endif // COMMANDS_H
