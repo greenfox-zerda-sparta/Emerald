@@ -5,12 +5,12 @@
 #include <map>
 #include <memory>
 #include <vector>
-#include "messages.h"
+#include "Messages.h"
 #include "MessageConverter.h"
 #include "MessageHandler.h"
 #include "MessageLogfile.h"
 #include "SubDevice.h"
-#include "udpsender.h"
+#include "UDPSender.h"
 #include "UI.h"
 
 class Server : public QTcpServer {
@@ -36,10 +36,10 @@ class Server : public QTcpServer {
     MessageHandler* msgHandler;
     UdpSender* udpSender;
     MessageConverter* msgConv;
-    MessageLogfile* myMessageLogfile;
+    MessageLogfile* log;
     DeviceLogfile* myDeviceLogfile;
     QHostAddress uiAddress;
-    std::string messageLogBuffer;
+    std::string logBuffer;
     std::map<QTcpSocket*, Device*> onlineDevices;
     std::vector<Device*> addedDevices;
 };

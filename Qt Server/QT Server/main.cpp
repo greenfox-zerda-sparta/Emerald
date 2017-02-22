@@ -1,5 +1,5 @@
 #include <QtCore/QCoreApplication>
-#include "server.h"
+#include "Server.h"
 
 // #define TEST             // when this line is in comment, main() runs.
 #ifdef TEST

@@ -1,4 +1,4 @@
-﻿#include "udpsender.h"
+﻿#include "UDPSender.h"
 
 UdpSender::UdpSender(std::vector<Device*>& addedDevices, QObject* parent) : addedDevices(addedDevices), QObject(parent) {
   datagram = "turquoise&emerald";
@@ -11,10 +11,6 @@ UdpSender::UdpSender(std::vector<Device*>& addedDevices, QObject* parent) : adde
 
 void UdpSender::StartUdp() {
   timer->start(1000);
-}
-
-void UdpSender::StopUdp() {
-  timer->stop();
 }
 
 void UdpSender::SendDatagram() {

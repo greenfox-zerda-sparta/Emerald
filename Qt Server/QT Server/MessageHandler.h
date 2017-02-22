@@ -1,12 +1,11 @@
-﻿// #pragma once
-#ifndef MESSAGEHANDLER_H
+﻿#ifndef MESSAGEHANDLER_H
 #define MESSAGEHANDLER_H
 
 #include <iostream>
 #include <map>
 #include <vector>
 #include <QTcpSocket>
-#include "commands.h"
+#include "Commands.h"
 #include "MessageLogfile.h"
 #include "MyTime.h"
 

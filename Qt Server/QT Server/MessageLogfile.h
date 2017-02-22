@@ -8,17 +8,16 @@
 
 typedef unsigned char byte;
 
-enum LogLevel { UILog, DeviceLog, Warning, Error };
+enum LogLevel { UILog, DeviceLog, Log, Warning, Error };
 
 class MessageLogfile {
 private:
-  std::string messageLogBuffer;
-  std::string messageLogFilename;
-  std::ofstream messageLogfile;
+  std::string logBuffer;
+  std::string messageLogfilename;
+  std::ofstream messageLog;
   MyTime* localTimer;
   std::mutex logMutex;
   LogLevel logLevel;
-
 public:
   MessageLogfile();
   void MessageLogging(LogLevel _logLevel, std::string buffer);
