@@ -5,7 +5,7 @@
 #include <map>
 #include <string>
 #include <vector>
-#include <QTcpSocket>
+#include <QtNetwork>
 #include "DeviceLogfile.h"
 #include "MessageConverter.h"
 #include "messageLogfile.h"
