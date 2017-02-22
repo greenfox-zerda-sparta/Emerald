@@ -2,6 +2,7 @@
 #define MESSAGES_H
 #include <QtCore>
 #include "utils.h"
+#include <iostream>
 
 using namespace std;
 

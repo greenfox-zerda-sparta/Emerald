@@ -1,5 +1,10 @@
 #include "messages.h"
 
+union Ptr {
+        unsigned char* asByte;
+        uint32_t* asUInt;
+};
+
 Messages::Messages() {
   QByteArray msg;
   msg.append(Utils::qstringToQuint8("255")); //target id high
@@ -56,19 +61,54 @@ QByteArray Messages::get_message(QString mWitch, Dev& device) {
       msg[1] = Utils::qstringToQuint8("253"); // UI
     }
     msg[2] = Utils::qstringToQuint8("241"); // Cmd - Success
+    msg[9] = device.status; //body 1
   }
   if (mWitch == "sta" || mWitch == "242") {
     if(device.groupId != 253) {
       msg[1] = Utils::qstringToQuint8("253"); // UI
     }
     msg[2] = Utils::qstringToQuint8("242"); // Status report
+    if(device.groupId == 7) { // Water consumption
+      unsigned char buffer[4];
+      Ptr memoryArea;
+      memoryArea.asByte = buffer;
+      *memoryArea.asUInt = 3;
+      memoryArea.asByte = buffer;
+      msg[9] = *memoryArea.asByte++;
+      msg[10] = *memoryArea.asByte++;
+      msg[11] = *memoryArea.asByte++;
+      msg[12] = *memoryArea.asByte;
+      msg[13] = 90;
+    }
+    if(device.groupId == 8) { // Current consumption in this month
+      unsigned char buffer[4];
+      Ptr memoryArea;
+      memoryArea.asByte = buffer;
+      *memoryArea.asUInt = 4;
+      memoryArea.asByte = buffer;
+      msg[9] = *memoryArea.asByte++;
+      msg[10] = *memoryArea.asByte++;
+      msg[11] = *memoryArea.asByte++;
+      msg[12] = *memoryArea.asByte;
+      msg[13] = 17;
+   }
+    if(device.groupId == 9) { // Current consumption sum
+      unsigned char buffer[4];
+      Ptr memoryArea;
+      memoryArea.asByte = buffer;
+      *memoryArea.asUInt = 617;
+      memoryArea.asByte = buffer;
+      msg[9] = *memoryArea.asByte++;
+      msg[10] = *memoryArea.asByte++;
+      msg[11] = *memoryArea.asByte++;
+      msg[12] = *memoryArea.asByte;
+    }
   }
   msg[4] = device.floorId;
   msg[5] = device.roomId;
   msg[6] = device.groupId;
   msg[7] = device.deviceIdHigh;
   msg[8] = device.deviceIdLow;
-  msg[9] = device.status; //body 1
   if (mWitch == "cst" || mWitch == "246") {
     msg[0] = Utils::qstringToQuint8("0");// all
     msg[1] = Utils::qstringToQuint8("0");// all
@@ -76,7 +116,6 @@ QByteArray Messages::get_message(QString mWitch, Dev& device) {
     msg[4] = Utils::qstringToQuint8("0");// all;
     msg[5] = Utils::qstringToQuint8("0");// all;
     msg[6] = Utils::qstringToQuint8("0");// all;
-    msg[9] = Utils::qstringToQuint8("0");// no body;
   }
   return msg;
 }
