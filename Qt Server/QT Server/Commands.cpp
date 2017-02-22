@@ -12,6 +12,7 @@ Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog)
   ptr_getStatusReport = &Commands::GetStatusReport;
   ptr_setData = &Commands::SetData;
   ptr_forwardMessage = &Commands::ForwardMessage;
+  ptr_devforwardMessageToUi = &Commands::DevForwardMessageToUi;
   cmdMap[239] = ptr_setData;
   cmdMap[246] = ptr_getStatusReport;
   cmdMap[247] = ptr_addDevice;
@@ -19,13 +20,14 @@ Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog)
   cmdMap[253] = ptr_resetServer;
   cmdMap[254] = ptr_restartServer;
   cmdMap[255] = ptr_stopServer;
+  cmdMap[249] = ptr_devforwardMessageToUi;
   cmdMap[0] = ptr_forwardMessage;
   cmdMap[1] = ptr_forwardMessage;
   cmdMap[2] = ptr_forwardMessage;
   cmdMap[3] = ptr_forwardMessage;
   cmdMap[4] = ptr_forwardMessage;
   cmdMap[5] = ptr_forwardMessage;
-  cmdMap[249] = ptr_forwardMessage;
+  cmdMap[249] = ptr_devforwardMessageToUi;
 }
 
 Commands::~Commands() {
@@ -261,5 +263,15 @@ void Commands::ForwardMessage() {
     socket->write(msgConvert->BytesToQBytes(bytes) + '\n');
     msgLog = "FORWARDING MESSAGE TO TARGET DEVICE(S): " + msgConvert->QStringToString((socket->peerAddress()).toString());
     msgLogger->MessageLogging(Log, msgLog);
+  }
+}
+
+void Commands::DevForwardMessageToUi() {
+  for (auto iter : deviceMap) {
+    if (messageMap["deviceIDHigh"] == (iter.second)->GetDeviceIDHigh() && messageMap["devideIDLow"] == (iter.second)->GetDeviceIDLow()) {
+      (iter.first)->write(msgConvert->BytesToQBytes(bytes) + '\n');
+      msgLog = "FORWARDING DEVICE MESSAGE TO UI.";
+      msgLogger->MessageLogging(Log, msgLog);
+    }
   }
 }

@@ -50,6 +50,7 @@ class Commands {
     void GetStatusReport();
     void SetData();
     void ForwardMessage();
+    void DevForwardMessageToUi();
     void(Commands::*ptr_resetServer)();
     void(Commands::*ptr_restartServer)();
     void(Commands::*ptr_stopServer)();
@@ -58,6 +59,7 @@ class Commands {
     void(Commands::*ptr_getStatusReport)();
     void(Commands::*ptr_setData)();
     void(Commands::*ptr_forwardMessage)();
+    void(Commands::*ptr_devforwardMessageToUi)();
 };
 
 #endif // COMMANDS_H
