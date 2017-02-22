@@ -10,7 +10,7 @@ MessageHandler::MessageHandler() {
 
 void MessageHandler::MakeMessageMap(std::vector<byte> bytes) {
   for (unsigned int i = 0; i < bytes.size(); i++) {
-    if (i < validMsgLength) {
+    if (i < (unsigned int)validMsgLength) {
       messageMap[keys[i]] = bytes[i];
     }
   }

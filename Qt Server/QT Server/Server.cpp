@@ -78,7 +78,7 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
     logBuffer += " from: " + msgConv->QStringToString(client->peerAddress().toString()) + " has joined.";
     log->MessageLogging(DeviceLog, logBuffer);
     Messages Msg;
-    std::vector<byte> msg = Msg.GetMessage(246, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow());
+    std::vector<byte> msg = Msg.GetMessage(246, onlineDevices[client]->GetDeviceIDHigh(), onlineDevices[client]->GetDeviceIDLow(), onlineDevices[client]->GetFloorID(), onlineDevices[client]->GetRoomID(), onlineDevices[client]->GetGroupID());
     msgHandler->MakeCommand(addedDevices, msg, onlineDevices, log);
   } else {
     logBuffer = "Unauthorized connection from ip: " + msgConv->QStringToString((client->peerAddress()).toString()) + " rejected.";

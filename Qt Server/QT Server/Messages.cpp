@@ -24,6 +24,9 @@ std::vector<byte> Messages::GetMessage(byte messageId, byte body1, byte body2, b
     if(int(messageId == 246)) {
       retMessage[0] = body1;
       retMessage[1] = body2;
+      retMessage[4] = body3;
+      retMessage[5] = body4;
+      retMessage[6] = body5;
     } else {
       retMessage[9] = body1;
       retMessage[10] = body2;
