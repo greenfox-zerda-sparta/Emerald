@@ -8,18 +8,12 @@ using namespace std;
 class Messages {
   public:
     Messages();
-    QByteArray get_message(QString mWitch, Dev deviceId);
-
+    QByteArray get_message(QString mWitch, Dev& device);
+    QByteArray getNextMessage(QString message, Dev& device);
+    QByteArray getAddDeviceMessage(Dev& device, QString ip);
+    void setDevice(QString message, Dev& device, int setStatus = 0);
   private:
-//    quint8 qstringToQuint8(QString string);
-    QByteArray ack_message;
-    QByteArray crc_message;
-    QByteArray success_message;
     QByteArray error_message;
-    QByteArray stop_server;
-    QByteArray restart_server;
-    QByteArray reset_server;
-    QByteArray add_device;
 };
 
 #endif // MESSAGES_H

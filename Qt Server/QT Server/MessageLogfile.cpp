@@ -1,12 +1,12 @@
 ﻿#include "MessageLogfile.h"
 
-messageLogfile::messageLogfile() {
+MessageLogfile::MessageLogfile() {
   logBuffer = "";
   messageLogfilename = "Smart_Home_" + localTimer->GetTimeFileFormat() + ".txt";
 }
 
 
-void messageLogfile::MessageLogging(LogLevel _logLevel, std::string buffer) {
+void MessageLogfile::MessageLogging(LogLevel _logLevel, std::string buffer) {
   const static char* LogLevelStr[] = { "UI", "Device", "Log", "Warning", "Error" };
   logMutex.lock();
   messageLog.open(messageLogfilename.c_str(), std::ios::app);

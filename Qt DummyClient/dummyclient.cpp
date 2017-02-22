@@ -18,11 +18,13 @@ DummyClient::DummyClient(QObject* parent) : QObject(parent) {
   consoleThread = new QThread();
   cReader->moveToThread(consoleThread);
   broadcastReceiver = new BroadcastSocket(datagramNeeded);
-  isEcho = false;
+  isTcpOn = false;
+  isUdpOn = false;
+  isDevOn = false;
   connect(socket, SIGNAL(readyRead()), this, SLOT(newDataAvailable()));
-//    connect(socket, SIGNAL(connected()), this, SLOT(sendFirstMessage()));
+  connect(socket, SIGNAL(connected()), this, SLOT(trackConnectedState()));
   connect(this, SIGNAL(incomingMessage(QString)), cReader, SLOT(writeToConsole(QString)), Qt::DirectConnection);
-  connect(this, SIGNAL(incomingMessage(QString)), this, SLOT(echo(QString)));
+  connect(this, SIGNAL(incomingMessage(QString)), this, SLOT(reactToIncomingMessage(QString)));
   connect(this, SIGNAL(write(QString)), cReader, SLOT(writeToConsole(QString)), Qt::DirectConnection);
   connect(cReader, SIGNAL(inputFromCommandLine(QString)), this, SLOT(parseInputFromCommandLine(QString)));
   connect(consoleThread, SIGNAL(finished()), cReader, SLOT(deleteLater()));
@@ -43,13 +45,15 @@ DummyClient::DummyClient(QObject* parent) : QObject(parent) {
 
 void DummyClient::run() {
   consoleThread->start();
+  printHelp();
   emit runConsole();
   QString message;
   message = "   Server Ip: " + serverAddress;
   message += ", Server Port: " + QString::number(serverPort);
   message += ", Device: " + deviceId;
   emit write(message);
-  emit write("   Echo is off.");
+  emit write("   Automatic device simulation is off.");
+  emit write("   UDP Socket is closed.");
 }
 
 void DummyClient::connectToServer() {
@@ -65,14 +69,14 @@ void DummyClient::newDataAvailable() {
   emit incomingMessage(Utils::messageToNumbers(incomingData));
 }
 
-void DummyClient::sendFirstMessage() {
+void DummyClient::trackConnectedState() {
   emit write("   Connected.");
-  sendMessage(deviceId);
 }
 
-void DummyClient::echo(QString message) {
-  if(isEcho) {
-    sendMessage(message);
+void DummyClient::reactToIncomingMessage(QString message) {
+  if (isDevOn) {
+      QByteArray msg = messGetter.getNextMessage(message,me);
+      sendMessage(msg);
   }
 }
 
@@ -96,16 +100,6 @@ void DummyClient::sendMessage(QByteArray message) {
   socket->flush();
 }
 
-/*
-  void DummyClient::timerEvent(QTimerEvent *)
-  {
-    if (socket->state() == QTcpSocket::UnconnectedState) {
-        emit write("   Connecting to host...");
-        connectToServer();
-    }
-  }
-*/
-
 void DummyClient::Disconnect() {
   socket->disconnectFromHost();
   emit write("   TCP connection is closed.");
@@ -125,24 +119,32 @@ void DummyClient::parseInputFromCommandLine(QString text) {
   }
 }
 
+void DummyClient::printHelp() {
+    QString helpMessage ;
+    helpMessage = "Enter a command(/command) or a message(message) to send\n";
+    helpMessage += "   Commands available:\n";
+    helpMessage += "               h                   - print this help\n";
+    helpMessage += "               q                   - quit program\n";
+    helpMessage += "               setip=10.28.2.150   - set server ip\n";
+    helpMessage += "               setport=4321        - set tcp port\n";
+    helpMessage += "               udp                 - toggling modes auto-/manual connection\n";
+    helpMessage += "               tcp                 - toggling tcp connect/disconnect\n";
+    helpMessage += "               dev                 - toggling automatic device simulation/UI\n";
+    helpMessage += "               sst                 - send 'Stop server' command\n";
+    helpMessage += "               srs                 - send 'Restart server' command\n";
+    helpMessage += "               sre                 - send 'Reset server' command\n";
+    helpMessage += "               add                 - send 'add device' command\n";
+    helpMessage += "               ack                 - send 'ack' message\n";
+    helpMessage += "               crc                 - send 'crc error' message\n";
+    helpMessage += "               suc                 - send 'success' message\n";
+    helpMessage += "               err                 - send 'error in work' message\n";
+    emit write(helpMessage);
+}
 void DummyClient::startCommand(QString text) {
   text = text.toLower();
-  if (text == "connect") {
-    if (socket->state() == QTcpSocket::ConnectedState) {
-      Disconnect();
-    }
-    connectToServer();
-  } else if (text == "disconnect") {
-    if (socket->state() == QTcpSocket::ConnectedState) {
-      Disconnect();
-    }
-  } else if (text == "echo") {
-    isEcho = true;
-    emit write("   Echo is on.");
-  } else if (text == "noecho") {
-    isEcho = false;
-    emit write("   Echo is off.");
-  } else if (text == "quit") {
+  if (text == "h") {
+      printHelp();
+  } else if (text == "q") {
     emit write("   Bye!");
     delete broadcastReceiver;
     emit quit();
@@ -152,32 +154,52 @@ void DummyClient::startCommand(QString text) {
   } else if (text.left(8) == "setport=") {
     serverPort = qstringToQuint32(text.mid(8));
     emit write("   server port: " + QString::number(serverPort));
-  } else if (text.left(7) == "setdev=") {
-    deviceId = text.mid(7);
-    changeDev();
-    emit write("   Device: " + deviceId);
-  } else if (text == "udpauto") {
-    emit manualStartUDP();
-//        emit write("   UDP Socket is opened.");
-  } else if (text == "udpstop") {
-    emit manualCloseUDP();
-    emit write("   UDP Socket is in manual mode.");
-  } else if (text == "1") {
+  } else if (text == "udp") {
+    isUdpOn = ! isUdpOn;
+      if(isUdpOn) {
+          emit manualStartUDP();
+      } else {
+          emit manualCloseUDP();
+          emit write("   UDP Socket is closed.");
+      }
+  } else  if (text == "tcp") {
+    isTcpOn = !isTcpOn;
+    if (socket->state() == QTcpSocket::ConnectedState) {
+      Disconnect();
+    }
+    if(isTcpOn) {
+        connectToServer();
+    }
+  } else if (text == "dev") {
+      isDevOn = !isDevOn;
+      QString toDisp = "   Automatic device simulation is ";
+      toDisp += (isDevOn?"on.":"off.");
+      emit write(toDisp);
+      if (!isDevOn) {
+          deviceId = "ui";
+          changeDev();
+          emit write("   Device: " + deviceId);
+      }
+  } else if (text == "sst") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   STOP SERVER command is sent.");
-  } else if (text == "2") {
+  } else if (text == "srs") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   RESTART SERVER command is sent.");
-  } else if (text == "3") {
+  } else if (text == "sre") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   RESET SERVER command is sent.");
+  } else if (text == "add") {
+    QByteArray msg = messGetter.get_message(text, me);
+    sendMessage(msg);
+    emit write("   ADD DEVICE COMMAND is sent.");
   } else if (text == "ack") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
-    emit write("   ACK is sent.");
+    emit write("   ACK message is sent.");
   } else if (text == "crc") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
@@ -190,22 +212,9 @@ void DummyClient::startCommand(QString text) {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   ERROR message is sent.");
-  } else if (text == "add") {
-    QByteArray msg = messGetter.get_message(text, me);
-    sendMessage(msg);
-    emit write("   ADD DEVICE COMMAND is sent.");
   } else {
     emit write("   Invalid command.");
   }
-  /*    qDebug() << "               1                   - Stop server";
-      qDebug() << "               2                   - Restart server";
-      qDebug() << "               3                   - Reset server";
-      qDebug() << "               ack                 - send 'ack' message";
-      qDebug() << "               crc                 - send 'crc error' message";
-      qDebug() << "               suc                 - send 'success' message";
-      qDebug() << "               err                 - send 'error in work' message";
-      qDebug() << "               add                 - send 'add device' message";
-  */
 }
 
 void DummyClient::Quit() {
@@ -231,12 +240,6 @@ void DummyClient::changeDev() {
     me.floorId = Utils::qstringToQuint8("255");
     me.roomId = Utils::qstringToQuint8("255");
     me.groupId = Utils::qstringToQuint8("255");
-  } else if (deviceId == "lamp") {
-    me.deviceIdHigh = Utils::qstringToQuint8("0");
-    me.deviceIdLow = Utils::qstringToQuint8("1");
-    me.homeId = Utils::qstringToQuint8("1");
-    me.floorId = Utils::qstringToQuint8("1");
-    me.roomId = Utils::qstringToQuint8("1");
-    me.groupId = Utils::qstringToQuint8("1");
+    me.status = Utils::qstringToQuint8("100");
   }
 }

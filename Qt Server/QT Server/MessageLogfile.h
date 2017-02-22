@@ -1,5 +1,5 @@
-﻿#ifndef messageLogfile_H
-#define messageLogfile_H
+﻿#ifndef MESSAGELOGFILE_H
+#define MESSAGELOGFILE_H
 
 #include <iostream>
 #include <fstream>
@@ -10,7 +10,7 @@ typedef unsigned char byte;
 
 enum LogLevel { UILog, DeviceLog, Log, Warning, Error };
 
-class messageLogfile {
+class MessageLogfile {
 private:
   std::string logBuffer;
   std::string messageLogfilename;
@@ -18,9 +18,8 @@ private:
   MyTime* localTimer;
   std::mutex logMutex;
   LogLevel logLevel;
-
 public:
-  messageLogfile();
+  MessageLogfile();
   void MessageLogging(LogLevel _logLevel, std::string buffer);
 };
 

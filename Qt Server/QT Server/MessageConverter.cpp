@@ -37,7 +37,7 @@ std::string MessageConverter::ByteToString(byte byteValue) {
 
 std::string MessageConverter::QByteArrayToString(QByteArray byteArr) {
   std::string result = "";
-  for (int i = 0; i < QByteArrayToCharArray(byteArr).size(); i++) {
+  for (unsigned int i = 0; i < QByteArrayToCharArray(byteArr).size(); i++) {
     if (i < QByteArrayToCharArray(byteArr).size() - 1) {
       result += ByteToString(QByteArrayToCharArray(byteArr)[i]) + " ";
     } else {

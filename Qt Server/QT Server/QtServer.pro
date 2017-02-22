@@ -15,34 +15,33 @@ TEMPLATE = app
 HEADERS = \
     MessageHandler.h \
     MyTime.h \
-    server.h \
-    udpsender.h \
     catch.hpp \
     Device.h \
     MessageConverter.h \
     UI.h \
-    messages.h \
-    commands.h \
-    CommandMap.h \
     SubDevice.h \
     DeviceLogfile.h \
-    MessageLogfile.h
+    MessageLogfile.h \
+    Commands.h \
+    Messages.h \
+    Server.h \
+    UDPSender.h
 
 SOURCES = \
     main.cpp \
     MessageHandler.cpp \
     MyTime.cpp \
-    server.cpp \
-    udpsender.cpp \
     Device.cpp \
     MessageConverter.cpp \
     test.cpp \
     UI.cpp \
-    messages.cpp \
-    commands.cpp \
     SubDevice.cpp \
     DeviceLogfile.cpp \
-    MessageLogfile.cpp
+    MessageLogfile.cpp \
+    Commands.cpp \
+    Messages.cpp \
+    Server.cpp \
+    UDPSender.cpp
 
 INCLUDEPATH = \
     $$PWD/.

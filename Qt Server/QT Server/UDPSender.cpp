@@ -1,4 +1,4 @@
-﻿#include "udpsender.h"
+﻿#include "UDPSender.h"
 
 UdpSender::UdpSender(std::vector<Device*>& addedDevices, QObject* parent) : addedDevices(addedDevices), QObject(parent) {
   datagram = "turquoise&emerald";
