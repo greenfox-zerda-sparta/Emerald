@@ -16,15 +16,17 @@ class ConsoleReader : public QObject {
     void inputFromCommandLine(QString);
     void finished();
     void error(QString err);
-
+    void toAddCommand(QString);
+    void toRemoveCommand(QString);
   private:
     void Quit();
+    int isCommandMode;
 
   private slots:
     void readCommand();
     void onRun();
     void writeToConsole(QString message);
-
+    void setCommandMode(int mode);
 };
 
 #endif // CONSOLEREADER_H
