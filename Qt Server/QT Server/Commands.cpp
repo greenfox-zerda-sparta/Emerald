@@ -11,9 +11,13 @@ Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog)
   ptr_removeDevice = &Commands::RemoveDevice;
   ptr_getStatusReport = &Commands::GetStatusReport;
   ptr_setData = &Commands::SetData;
+  ptr_cmdReplyError = &Commands::CommandReplyError;
+  ptr_cmdReplySuccess = &Commands::CommandReplySuccess;
   ptr_forwardMessage = &Commands::ForwardMessage;
   ptr_devforwardMessageToUi = &Commands::DevForwardMessageToUi;
   cmdMap[239] = ptr_setData;
+  cmdMap[240] = ptr_cmdReplyError;
+  cmdMap[241] = ptr_cmdReplySuccess;
   cmdMap[246] = ptr_getStatusReport;
   cmdMap[247] = ptr_addDevice;
   cmdMap[248] = ptr_removeDevice;
@@ -177,7 +181,7 @@ void Commands::RemoveDevice() {
     for (unsigned int i = 0; i < addedDevs.size(); i++) {
       if (addedDevs[i]->GetDeviceIDHigh() == messageMap["body1"] &&
           addedDevs[i]->GetDeviceIDLow() == messageMap["body2"]) {
-        msgLog = "REMOVING DEVICE" + GetDeviceText(addedDevs[i]);
+        msgLog = "REMOVING DEVICE " + GetDeviceText(addedDevs[i]);
         addedDevs.erase(addedDevs.begin() + i);
         msgLogger->MessageLogging(DeviceLog, msgLog);
       }
@@ -208,6 +212,18 @@ void Commands::SetData() {
     msgLog = "Invalid command: sender must be the User Interface.";
     msgLogger->MessageLogging(Error, msgLog);
   }
+}
+
+void Commands::CommandReplyError() {
+  msgLog = "Command ReplyError.";
+  msgLogger->MessageLogging(DeviceLog, msgLog);
+  DevForwardMessageToUi();
+}
+
+void Commands::CommandReplySuccess() {
+  msgLog = "Command Reply Success.";
+  msgLogger->MessageLogging(Error, msgLog);
+  DevForwardMessageToUi();
 }
 
 void Commands::ForwardMessage() {
@@ -262,7 +278,7 @@ void Commands::ForwardMessage() {
   } else {
     for (auto iter : deviceMap) {
       // To one device
-      if (messageMap["deviceIDHigh"] == (iter.second)->GetDeviceIDHigh() && messageMap["devideIDLow"] == (iter.second)->GetDeviceIDLow()) {
+      if ((iter.second)->GetDeviceIDHigh() == messageMap["targetIDHigh"] && (iter.second)->GetDeviceIDLow() == messageMap["targetIDLow"]) {
         targets.push_back(iter.first);
       }
     }
