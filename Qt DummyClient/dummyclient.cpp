@@ -143,6 +143,8 @@ void DummyClient::closeSocket() {
 void DummyClient::parseInputFromCommandLine(QString text) {
   if(text.left(1) == "/") {
     startCommand(text.mid(1));
+  } else if(text == datagramNeeded) {
+    startCommand("tcp");
   } else {
     sendMessage(text);
   }
