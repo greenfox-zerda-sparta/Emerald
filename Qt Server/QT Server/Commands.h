@@ -52,6 +52,8 @@ class Commands {
     void SetData();
     void ForwardMessage();
     void DevForwardMessageToUi();
+    void CommandReplyError();
+    void CommandReplySuccess();
     void(Commands::*ptr_resetServer)();
     void(Commands::*ptr_restartServer)();
     void(Commands::*ptr_stopServer)();
@@ -61,6 +63,8 @@ class Commands {
     void(Commands::*ptr_setData)();
     void(Commands::*ptr_forwardMessage)();
     void(Commands::*ptr_devforwardMessageToUi)();
+    void(Commands::*ptr_cmdReplyError)();
+    void(Commands::*ptr_cmdReplySuccess)();
 };
 
 #endif // COMMANDS_H
