@@ -11,8 +11,8 @@ DummyClient::DummyClient(QObject* parent) : QObject(parent) {
   deviceId = "ui";
   changeDev();
   serverPort = 1234;
-  serverAddress = "localhost";
-//    serverAddress = "10.27.6.64";
+//  serverAddress = "localhost";
+  serverAddress = "10.27.6.206";
   datagramNeeded = "turquoise&emerald";
   cReader = new ConsoleReader();
   consoleThread = new QThread();
@@ -29,6 +29,7 @@ DummyClient::DummyClient(QObject* parent) : QObject(parent) {
   connect(this, SIGNAL(setConsoleReaderCommandMode(int)), cReader, SLOT(setCommandMode(int)), Qt::DirectConnection);
   connect(cReader, SIGNAL(toAddCommand(QString)), this, SLOT(addDevice(QString)), Qt::DirectConnection);
   connect(cReader, SIGNAL(toRemoveCommand(QString)), this, SLOT(removeDevice(QString)), Qt::DirectConnection);
+  connect(cReader, SIGNAL(toSetCommand(QString)), this, SLOT(setDevice(QString)), Qt::DirectConnection);
   connect(cReader, SIGNAL(inputFromCommandLine(QString)), this, SLOT(parseInputFromCommandLine(QString)));
   connect(consoleThread, SIGNAL(finished()), cReader, SLOT(deleteLater()));
   connect(consoleThread, SIGNAL(finished()), consoleThread, SLOT(deleteLater()));
@@ -96,6 +97,8 @@ void DummyClient::connectToServer() {
 void DummyClient::newDataAvailable() {
   QByteArray incomingData = (socket->readAll()).trimmed();
 //    QString str(QString::fromUtf8(incomingData));
+  emit write("   Incoming message:");
+  printWhichMessage(incomingData);
   emit incomingMessage(Utils::messageToNumbers(incomingData));
 }
 
@@ -104,9 +107,11 @@ void DummyClient::trackConnectedState() {
 }
 
 void DummyClient::reactToIncomingMessage(QString message) {
-  QByteArray msg = messGetter.getNextMessage(message,me);
-  printWhichMessage(msg);
   if (isDevOn) {
+    QByteArray msg = messGetter.getNextMessage(message,me);
+    emit write("   Auto-reply:");
+    printWhichMessage(msg);
+    emit write(Utils::messageToNumbers(msg));
     sendMessage(msg);
   }
 }
@@ -164,8 +169,10 @@ void DummyClient::printHelp() {
   helpMessage += "               sst                 - send 'Stop server' command\n";
   helpMessage += "               srs                 - send 'Restart server' command\n";
   helpMessage += "               sre                 - send 'Reset server' command\n";
+  helpMessage += "               cst                 - send 'get status report' command\n";
   helpMessage += "               add                 - send 'add device' command\n";
   helpMessage += "               rem                 - send 'remove device' command\n";
+  helpMessage += "               set                 - send 'set device' command\n";
   helpMessage += "               ack                 - send 'ack' message\n";
   helpMessage += "               crc                 - send 'crc error' message\n";
   helpMessage += "               suc                 - send 'success' message\n";
@@ -188,7 +195,7 @@ void DummyClient::startCommand(QString text) {
     serverPort = qstringToQuint32(text.mid(8));
     emit write("   server port: " + QString::number(serverPort));
   } else if (text == "udp") {
-    isUdpOn = ! isUdpOn;
+    isUdpOn = !isUdpOn;
     if(isUdpOn) {
       emit manualStartUDP();
     } else {
@@ -217,34 +224,48 @@ void DummyClient::startCommand(QString text) {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   STOP SERVER command is sent.");
+    emit write(Utils::messageToNumbers(msg));
   } else if (text == "srs") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   RESTART SERVER command is sent.");
+    emit write(Utils::messageToNumbers(msg));
   } else if (text == "sre") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   RESET SERVER command is sent.");
+    emit write(Utils::messageToNumbers(msg));
+  } else if (text == "cst") {
+    QByteArray msg = messGetter.get_message(text, me);
+    sendMessage(msg);
+    emit write("   GET STATUS REPORT command is sent.");
+    emit write(Utils::messageToNumbers(msg));
   } else if (text == "add") {
     addDevice();
   } else if (text == "rem") {
     removeDevice();
+  } else if (text == "set") {
+    setDevice();
   } else if (text == "ack") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   ACK message is sent.");
+    emit write(Utils::messageToNumbers(msg));
   } else if (text == "crc") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   CRC error message is sent.");
+    emit write(Utils::messageToNumbers(msg));
   } else if (text == "suc") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   SUCCESS message is sent.");
+    emit write(Utils::messageToNumbers(msg));
   } else if (text == "err") {
     QByteArray msg = messGetter.get_message(text, me);
     sendMessage(msg);
     emit write("   ERROR message is sent.");
+    emit write(Utils::messageToNumbers(msg));
   } else {
     emit write("   Invalid command.");
   }
@@ -331,6 +352,7 @@ void DummyClient::addDevice(QString newDevDescription) {
     sendMessage(msg);
     emit setConsoleReaderCommandMode(0);
     emit write("   ADD DEVICE COMMAND is sent.");
+    emit write(Utils::messageToNumbers(msg));
   }
 }
 
@@ -355,6 +377,7 @@ void DummyClient::removeDevice(QString id) {
       sendMessage(msg);
       emit setConsoleReaderCommandMode(0);
       emit write("   REMOVE DEVICE COMMAND is sent.");
+      emit write(Utils::messageToNumbers(msg));
       return;
     }
   }
@@ -364,65 +387,88 @@ void DummyClient::removeDevice(QString id) {
   emit write("Enter Device ID High and Low separated by space: ");
 }
 
+void DummyClient::setDevice(QString which) {
+  emit setConsoleReaderCommandMode(3);
+  int index = 0;
+  newDeviceDescription = newDeviceDescription + " ";
+  which = (newDeviceDescription + which).trimmed();
+  if(which != "") {
+    QStringList list = which.split(' ');
+    index = list.size();
+  }
+  if (index < 3) {
+    emit write("Enter Device ID High, Low and the new value separated by space /floor, room, group optional/: ");
+  } else {
+      QByteArray msg = messGetter.getSetDeviceMessage(me, which);
+      sendMessage(msg);
+      emit setConsoleReaderCommandMode(0);
+      QString toConsole = "   SET DEVICE COMMAND is sent with value: ";
+      toConsole += QString::number(msg[9]);
+      emit write(toConsole);
+      emit write(Utils::messageToNumbers(msg));
+      return;
+  }
+}
+
 void DummyClient::printWhichMessage(QByteArray msg) {
-  if((qint8)msg[2] == Utils::qstringToQuint8("0")) {
+  if(msg[2] == Utils::qstringToQuint8("0")) {
     emit write("   OFF command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("1")) {
+  if(msg[2] == Utils::qstringToQuint8("1")) {
     emit write("   ON command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("2")) {
+  if(msg[2] == Utils::qstringToQuint8("2")) {
     emit write("   STANDBY command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("3")) {
+  if(msg[2] == Utils::qstringToQuint8("3")) {
     emit write("   SET() command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("4")) {
+  if(msg[2] == Utils::qstringToQuint8("4")) {
     emit write("   SET+() command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("5")) {
+  if(msg[2] == Utils::qstringToQuint8("5")) {
     emit write("   SET-() command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("239")) {
+  if(msg[2] == Utils::qstringToQuint8("239")) {
     emit write("   SET DATA command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("240")) {
+  if(msg[2] == Utils::qstringToQuint8("240")) {
     emit write("   COMMAND REPLY - ERROR message");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("241")) {
+  if(msg[2] == Utils::qstringToQuint8("241")) {
     emit write("   COMMAND REPLY - SUCCESS message");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("242")) {
+  if(msg[2] == Utils::qstringToQuint8("242")) {
     emit write("   STATUS REPORT message");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("246")) {
+  if(msg[2] == Utils::qstringToQuint8("246")) {
     emit write("   GET STATUS REPORT command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("247")) {
+  if(msg[2] == Utils::qstringToQuint8("247")) {
     emit write("   ADD DEVICE command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("248")) {
+  if(msg[2] == Utils::qstringToQuint8("248")) {
     emit write("   REMOVE DEVICE command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("249")) {
+  if(msg[2] == Utils::qstringToQuint8("249")) {
     emit write("   DEVICE DISCONNECTED message");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("250")) {
+  if(msg[2] == Utils::qstringToQuint8("250")) {
     emit write("   NO ANSWER/DEVICE ERROR message");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("251")) {
+  if(msg[2] == Utils::qstringToQuint8("251")) {
     emit write("   CRC ERROR message");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("252")) {
+  if(msg[2] == Utils::qstringToQuint8("252")) {
     emit write("   ACK message");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("253")) {
+  if(msg[2] == Utils::qstringToQuint8("253")) {
     emit write("   RESET SERVER command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("254")) {
+  if(msg[2] == Utils::qstringToQuint8("254")) {
     emit write("   RESTART SERVER command");
   }
-  if((qint8)msg[2] == Utils::qstringToQuint8("255")) {
+  if(msg[2] == Utils::qstringToQuint8("255")) {
     emit write("   STOP SERVER command");
   }
 }

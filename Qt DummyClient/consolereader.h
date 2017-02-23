@@ -18,6 +18,7 @@ class ConsoleReader : public QObject {
     void error(QString err);
     void toAddCommand(QString);
     void toRemoveCommand(QString);
+    void toSetCommand(QString);
 
   private:
     void Quit();

@@ -1,10 +1,5 @@
 #include "messages.h"
 
-union Ptr {
-        unsigned char* asByte;
-        uint32_t* asUInt;
-};
-
 Messages::Messages() {
   QByteArray msg;
   msg.append(Utils::qstringToQuint8("255")); //target id high
@@ -29,13 +24,13 @@ Messages::Messages() {
 
 QByteArray Messages::get_message(QString mWitch, Dev& device) {
   QByteArray msg = error_message; // Cmd - Error :: NTD
-  if (mWitch == "1" || mWitch == "255") {
+  if (mWitch == "sst" || mWitch == "255") {
     msg[2] = Utils::qstringToQuint8("255"); // Stop server
   }
-  if (mWitch == "2" || mWitch == "254") {
+  if (mWitch == "srs" || mWitch == "254") {
     msg[2] = Utils::qstringToQuint8("254"); // Restart server
   }
-  if (mWitch == "3" || mWitch == "253") {
+  if (mWitch == "sre" || mWitch == "253") {
     msg[2] = Utils::qstringToQuint8("253"); // Reset server
   }
   if (mWitch == "add" || mWitch == "247") {
@@ -43,6 +38,9 @@ QByteArray Messages::get_message(QString mWitch, Dev& device) {
   }
   if (mWitch == "rem" || mWitch == "248") {
     msg[2] = Utils::qstringToQuint8("248");// Cmd - Remove device
+  }
+  if (mWitch == "set" || mWitch == "3") {
+    msg[2] = Utils::qstringToQuint8("3");// Cmd - Set device
   }
   if (mWitch == "ack" || mWitch == "252") {
     if(device.groupId != 253) {
@@ -66,42 +64,31 @@ QByteArray Messages::get_message(QString mWitch, Dev& device) {
   if (mWitch == "sta" || mWitch == "242") {
     if(device.groupId != 253) {
       msg[1] = Utils::qstringToQuint8("253"); // UI
+      msg[9] = device.status;
     }
     msg[2] = Utils::qstringToQuint8("242"); // Status report
     if(device.groupId == 7) { // Water consumption
-      unsigned char buffer[4];
-      Ptr memoryArea;
-      memoryArea.asByte = buffer;
-      *memoryArea.asUInt = 3;
-      memoryArea.asByte = buffer;
-      msg[9] = *memoryArea.asByte++;
-      msg[10] = *memoryArea.asByte++;
-      msg[11] = *memoryArea.asByte++;
-      msg[12] = *memoryArea.asByte;
+      QByteArray ba = Utils::qint32ToQByteArray(3);
+      msg[9] = ba[0];
+      msg[10] = ba[1];
+      msg[11] = ba[2];
+      msg[12] = ba[3];
       msg[13] = 90;
     }
     if(device.groupId == 8) { // Current consumption in this month
-      unsigned char buffer[4];
-      Ptr memoryArea;
-      memoryArea.asByte = buffer;
-      *memoryArea.asUInt = 4;
-      memoryArea.asByte = buffer;
-      msg[9] = *memoryArea.asByte++;
-      msg[10] = *memoryArea.asByte++;
-      msg[11] = *memoryArea.asByte++;
-      msg[12] = *memoryArea.asByte;
+      QByteArray ba = Utils::qint32ToQByteArray(4);
+      msg[9] = ba[0];
+      msg[10] = ba[1];
+      msg[11] = ba[2];
+      msg[12] = ba[3];
       msg[13] = 17;
-   }
+    }
     if(device.groupId == 9) { // Current consumption sum
-      unsigned char buffer[4];
-      Ptr memoryArea;
-      memoryArea.asByte = buffer;
-      *memoryArea.asUInt = 617;
-      memoryArea.asByte = buffer;
-      msg[9] = *memoryArea.asByte++;
-      msg[10] = *memoryArea.asByte++;
-      msg[11] = *memoryArea.asByte++;
-      msg[12] = *memoryArea.asByte;
+      QByteArray ba = Utils::qint32ToQByteArray(617);
+      msg[9] = ba[0];
+      msg[10] = ba[1];
+      msg[11] = ba[2];
+      msg[12] = ba[3];
     }
   }
   msg[4] = device.floorId;
@@ -109,7 +96,7 @@ QByteArray Messages::get_message(QString mWitch, Dev& device) {
   msg[6] = device.groupId;
   msg[7] = device.deviceIdHigh;
   msg[8] = device.deviceIdLow;
-  if (mWitch == "cst" || mWitch == "246") {
+  if (mWitch == "cst" || mWitch == "246") { // Cmd - Get status report
     msg[0] = Utils::qstringToQuint8("0");// all
     msg[1] = Utils::qstringToQuint8("0");// all
     msg[2] = Utils::qstringToQuint8("246"); // Command - get status report
@@ -122,14 +109,24 @@ QByteArray Messages::get_message(QString mWitch, Dev& device) {
 
 void Messages::setDevice(QString message, Dev& device, int setStatus) {
   QByteArray messArray = Utils::qstringnumbersToQByteArray(message);
-  device.deviceIdHigh = messArray[0];
-  device.deviceIdLow = messArray[1];
-  device.homeId = messArray[3];
-  device.floorId = messArray[4];
-  device.roomId = messArray[5];
-  device.groupId = messArray[6];
+  if(messArray[0] != 0 || messArray[1] != 0) {
+    device.deviceIdHigh = messArray[0];
+    device.deviceIdLow = messArray[1];
+  }
+  if(messArray[3] != 0) {
+    device.homeId = messArray[3];
+  }
+  if(messArray[4] != 0) {
+    device.floorId = messArray[4];
+  }
+  if(messArray[5] != 0) {
+    device.roomId = messArray[5];
+  }
+  if(messArray[6] != 0) {
+    device.groupId = messArray[6];
+  }
   if(setStatus == 1) { //Set to value
-    device.status = messArray[9];
+    device.status = messArray[9];;
   } else if(setStatus == 2) {  //Add value
     int newStatus = (int)device.status + (int)messArray[9];
     device.status = (newStatus > 100?(quint8)100:(quint8)newStatus);
@@ -197,5 +194,30 @@ QByteArray Messages::getRemoveDeviceMessage(Dev& device, QString id) {
     msg[9] = Utils::qstringToQuint8("0"); //body1 - deviceIdHigh
     msg[10] = Utils::qstringToQuint8("1"); //body2 - deviceIdLow
     return msg;
+  }
+}
+
+QByteArray Messages::getSetDeviceMessage(Dev& device, QString description) {
+  QByteArray msg = get_message("3", device);
+  try {
+    QByteArray dev = Utils::qstringnumbersToQByteArray(description);
+    msg[0] = dev[0]; //target Id - deviceIdHigh
+    msg[1] = dev[1]; //target Id -deviceIdLow
+    msg[4] = 0; //floor
+    msg[5] = 0; //room
+    msg[6] = 0; //group
+    msg[9] = dev[2]; //body1 - new value
+    if(dev.size() > 3) {
+      msg[4] = dev[3]; //floor
+    }
+    if(dev.size() > 4) {
+      msg[5] = dev[4]; //room
+    }
+    if(dev.size() > 5) {
+      msg[6] = dev[5]; //group
+    }
+    return msg;
+  } catch(...) {
+    return error_message;
   }
 }

@@ -37,6 +37,7 @@ class DummyClient : public QObject {
     void reactToIncomingMessage(QString message);
     void addDevice(QString newDevDescription = "");
     void removeDevice(QString id = "");
+    void setDevice(QString which = "");
 
   private:
     QString deviceId;

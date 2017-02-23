@@ -27,6 +27,9 @@ void ConsoleReader::readCommand() {
   } else if(isCommandMode == 2) {
     emit toRemoveCommand(QString::fromStdString(line));
     emit run();
+  } else if(isCommandMode == 3) {
+    emit toSetCommand(QString::fromStdString(line));
+    emit run();
   }
 }
 
