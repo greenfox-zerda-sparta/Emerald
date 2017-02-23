@@ -9,16 +9,13 @@
 #include "consolereader.h"
 #include "broadcastsocket.h"
 #include "messages.h"
-#include "utils.h"
+#include <vector>
 
 class DummyClient : public QObject {
     Q_OBJECT
   public:
     explicit DummyClient(QObject* parent = 0);
     void run();
-
-  protected:
-//   void timerEvent(QTimerEvent*);
 
   signals:
     void incomingMessage(QString);
@@ -30,14 +27,16 @@ class DummyClient : public QObject {
     void openUdpSocket();
     void manualCloseUDP();
     void manualStartUDP();
+    void setConsoleReaderCommandMode(int);
 
   public slots:
-//    void writeToConsole(QString);
     void sendMessage(QString);
     void newDataAvailable();
     void trackConnectedState();
     void parseInputFromCommandLine(QString text);
     void reactToIncomingMessage(QString message);
+    void addDevice(QString newDevDescription = "");
+    void removeDevice(QString id = "");
 
   private:
     QString deviceId;
@@ -63,6 +62,13 @@ class DummyClient : public QObject {
     bool isUdpOn;
     bool isDevOn;
     void printHelp();
+    void printWhichMessage(QByteArray msg);
+    QString getAddDeviceMessage(int index);
+    std::vector<QString> addDeviceMessages;
+    QString availableDevices;
+    QString availableRooms;
+    QString availableFloors;
+    QString newDeviceDescription;
 };
 
 #endif // DUMMYCLIENT_H
