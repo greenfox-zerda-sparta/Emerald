@@ -109,20 +109,20 @@ QByteArray Messages::get_message(QString mWitch, Dev& device) {
 
 void Messages::setDevice(QString message, Dev& device, int setStatus) {
   QByteArray messArray = Utils::qstringnumbersToQByteArray(message);
-  if(messArray[0] != 0 || messArray[1] != 0) {
+  if(messArray[0] != (char)0 || messArray[1] != (char)0) {
     device.deviceIdHigh = messArray[0];
     device.deviceIdLow = messArray[1];
   }
-  if(messArray[3] != 0) {
+  if(messArray[3] != (char)0) {
     device.homeId = messArray[3];
   }
-  if(messArray[4] != 0) {
+  if(messArray[4] != (char)0) {
     device.floorId = messArray[4];
   }
-  if(messArray[5] != 0) {
+  if(messArray[5] != (char)0) {
     device.roomId = messArray[5];
   }
-  if(messArray[6] != 0) {
+  if(messArray[6] != (char)0) {
     device.groupId = messArray[6];
   }
   if(setStatus == 1) { //Set to value

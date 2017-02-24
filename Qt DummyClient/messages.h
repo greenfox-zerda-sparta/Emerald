@@ -5,6 +5,7 @@
 #include <iostream>
 
 using namespace std;
+typedef unsigned char uchar;
 
 class Messages {
   public:

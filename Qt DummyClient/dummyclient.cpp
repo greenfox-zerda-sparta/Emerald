@@ -411,64 +411,64 @@ void DummyClient::setDevice(QString which) {
 }
 
 void DummyClient::printWhichMessage(QByteArray msg) {
-  if(msg[2] == Utils::qstringToQuint8("0")) {
+  if(msg[2] == (char)0) {
     emit write("   OFF command");
   }
-  if(msg[2] == Utils::qstringToQuint8("1")) {
+  if(msg[2] == (char)1) {
     emit write("   ON command");
   }
-  if(msg[2] == Utils::qstringToQuint8("2")) {
+  if(msg[2] == (char)2) {
     emit write("   STANDBY command");
   }
-  if(msg[2] == Utils::qstringToQuint8("3")) {
+  if(msg[2] == (char)3) {
     emit write("   SET() command");
   }
-  if(msg[2] == Utils::qstringToQuint8("4")) {
+  if(msg[2] == (char)4) {
     emit write("   SET+() command");
   }
-  if(msg[2] == Utils::qstringToQuint8("5")) {
+  if(msg[2] == (char)5) {
     emit write("   SET-() command");
   }
-  if(msg[2] == Utils::qstringToQuint8("239")) {
+  if(msg[2] == (char)239) {
     emit write("   SET DATA command");
   }
-  if(msg[2] == Utils::qstringToQuint8("240")) {
+  if(msg[2] == (char)240) {
     emit write("   COMMAND REPLY - ERROR message");
   }
-  if(msg[2] == Utils::qstringToQuint8("241")) {
+  if(msg[2] == (char)241) {
     emit write("   COMMAND REPLY - SUCCESS message");
   }
-  if(msg[2] == Utils::qstringToQuint8("242")) {
+  if(msg[2] == (char)242) {
     emit write("   STATUS REPORT message");
   }
-  if(msg[2] == Utils::qstringToQuint8("246")) {
+  if(msg[2] == (char)246) {
     emit write("   GET STATUS REPORT command");
   }
-  if(msg[2] == Utils::qstringToQuint8("247")) {
+  if(msg[2] == (char)247) {
     emit write("   ADD DEVICE command");
   }
-  if(msg[2] == Utils::qstringToQuint8("248")) {
+  if(msg[2] == (char)248) {
     emit write("   REMOVE DEVICE command");
   }
-  if(msg[2] == Utils::qstringToQuint8("249")) {
+  if(msg[2] == (char)249) {
     emit write("   DEVICE DISCONNECTED message");
   }
-  if(msg[2] == Utils::qstringToQuint8("250")) {
+  if(msg[2] == (char)250) {
     emit write("   NO ANSWER/DEVICE ERROR message");
   }
-  if(msg[2] == Utils::qstringToQuint8("251")) {
+  if(msg[2] == (char)251) {
     emit write("   CRC ERROR message");
   }
-  if(msg[2] == Utils::qstringToQuint8("252")) {
+  if(msg[2] == (char)252) {
     emit write("   ACK message");
   }
-  if(msg[2] == Utils::qstringToQuint8("253")) {
+  if(msg[2] == (char)253) {
     emit write("   RESET SERVER command");
   }
-  if(msg[2] == Utils::qstringToQuint8("254")) {
+  if(msg[2] == (char)254) {
     emit write("   RESTART SERVER command");
   }
-  if(msg[2] == Utils::qstringToQuint8("255")) {
+  if(msg[2] == (char)255) {
     emit write("   STOP SERVER command");
   }
 }

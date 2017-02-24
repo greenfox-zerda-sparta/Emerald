@@ -19,6 +19,7 @@ class DeviceLogfile {
     void DeviceLogging(std::string devicelogbuffer);
     std::vector<Device*> GetDevicesVector();
     Device* GetDevice(std::string);
+    void ClearLogfile();
 };
 
 #endif
