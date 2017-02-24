@@ -13,19 +13,35 @@ CONFIG += console
 TEMPLATE = app
 
 HEADERS = \
-   $$PWD/Logfile.h \
-   $$PWD/MessageHandler.h \
-   $$PWD/MyTime.h \
-   $$PWD/server.h \
-   $$PWD/udpsender.h
+    MessageHandler.h \
+    MyTime.h \
+    catch.hpp \
+    Device.h \
+    MessageConverter.h \
+    UI.h \
+    SubDevice.h \
+    DeviceLogfile.h \
+    MessageLogfile.h \
+    Commands.h \
+    Messages.h \
+    Server.h \
+    UDPSender.h
 
 SOURCES = \
-   $$PWD/Logfile.cpp \
-   $$PWD/main.cpp \
-   $$PWD/MessageHandler.cpp \
-   $$PWD/MyTime.cpp \
-   $$PWD/server.cpp \
-   $$PWD/udpsender.cpp
+    main.cpp \
+    MessageHandler.cpp \
+    MyTime.cpp \
+    Device.cpp \
+    MessageConverter.cpp \
+    test.cpp \
+    UI.cpp \
+    SubDevice.cpp \
+    DeviceLogfile.cpp \
+    MessageLogfile.cpp \
+    Commands.cpp \
+    Messages.cpp \
+    Server.cpp \
+    UDPSender.cpp
 
 INCLUDEPATH = \
     $$PWD/.

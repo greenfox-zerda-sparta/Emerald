@@ -1,11 +1,18 @@
 #include "UI.h"
 
-UI::UI(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP)
-: Device(_deviceIDHigh, _deviceIDLow, _homeID, _floorID, _roomID, _cmdID, _IP){
-  deviceIDHigh = 255;
-  deviceIDLow = 253;
-  groupID = 254;
-  homeID = 255;
-  floorID = 255;
-  roomID = 255;
+UI::UI(IDs _ids, std::string _IP, bool isDeviceWorking) : Device(_ids, _IP, isDeviceWorking) {
+  myDeviceLogfile = new DeviceLogfile;
+  myDeviceLogfile->DeviceLogging(
+    ToString(int(GetDeviceIDHigh())) + " " +
+    ToString(int(GetDeviceIDLow())) + " " +
+    ToString(int(GetGroupID())) + " " +
+    ToString(int(GetHomeID())) + " " +
+    ToString(int(GetFloorID())) + " " +
+    ToString(int(GetRoomID())) + " " +
+    _IP + " " +
+    ToString(isDeviceWorking));
+}
+
+UI::~UI() {
+  delete myDeviceLogfile;
 }

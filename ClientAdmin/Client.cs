@@ -10,7 +10,7 @@ namespace Chatclient {
     private Socket sender;
     private byte[] bytes;
     private bool connected;
-    private string serverIP = "10.27.6.158";
+    private string serverIP = "10.27.6.127";
 
     public Client() {
       bytes = new byte[1024];
@@ -23,7 +23,7 @@ namespace Chatclient {
         try {
           IPHostEntry ipHostInfo = Dns.Resolve(serverIP);
           IPAddress ipAddress = ipHostInfo.AddressList[0];
-          IPEndPoint remoteEP = new IPEndPoint(ipAddress, 1234);
+          IPEndPoint remoteEP = new IPEndPoint(ipAddress, 6666);
 
           sender = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 

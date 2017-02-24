@@ -2,27 +2,22 @@
 #define MESSAGES_H
 #include <QtCore>
 #include "utils.h"
-#include<vector>
+#include <iostream>
+
 using namespace std;
 typedef unsigned char uchar;
 
-class Messages
-{
-public:
+class Messages {
+  public:
     Messages();
-    QByteArray get_message(QString mWitch, Dev deviceId);
-    uchar* get_m(std::string mWitch);
-
-private:
-//    quint8 qstringToQuint8(QString string);
-    QByteArray ack_message;
-    QByteArray crc_message;
-    QByteArray success_message;
+    QByteArray get_message(QString mWitch, Dev& device);
+    QByteArray getNextMessage(QString message, Dev& device);
+    QByteArray getAddDeviceMessage(Dev& device, QString newDevDescription);
+    QByteArray getRemoveDeviceMessage(Dev& device, QString id);
+    QByteArray getSetDeviceMessage(Dev& device, QString description);
+    void setDevice(QString message, Dev& device, int setStatus = 0);
+  private:
     QByteArray error_message;
-    QByteArray stop_server;
-    QByteArray restart_server;
-    QByteArray reset_server;
-    vector<uchar> ack;
 };
 
 #endif // MESSAGES_H

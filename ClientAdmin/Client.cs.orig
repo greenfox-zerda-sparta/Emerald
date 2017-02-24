@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Linq;
 
 namespace Chatclient {
   class Client {
@@ -9,7 +10,11 @@ namespace Chatclient {
     private Socket sender;
     private byte[] bytes;
     private bool connected;
+<<<<<<< origin/master
     private string serverIP = "127.0.0.1";
+=======
+    private string serverIP = "10.27.6.21";
+>>>>>>> local
 
     public Client() {
       bytes = new byte[1024];
@@ -57,20 +62,20 @@ namespace Chatclient {
     }
 
     private void Send(string message) {
-      if (message != "00000000") {
-        message += "\n";
-        try {
-          byte[] msg = Encoding.GetEncoding("UTF-8").GetBytes(message);
-          int bytesSent = sender.Send(msg);
-        } catch (ArgumentNullException ane) {
-          Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
-        } catch (SocketException se) {
-          Console.WriteLine("SocketException : {0}", se.ToString());
-        } catch (Exception e) {
-          Console.WriteLine("Unexpected exception : {0}", e.ToString());
+      message += ",10";
+      try {
+        string[] msg = message.Split(',');
+        byte[] intBytes = new byte[msg.Length];
+        for (int i = 0; i < msg.Length; i++) {
+          intBytes[i] = (byte)Int32.Parse(msg[i]);
         }
-      } else {
-        Console.WriteLine("Admin message is not allowed for devices.");
+        int bytesSent = sender.Send(intBytes);
+      } catch (ArgumentNullException ane) {
+        Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+      } catch (SocketException se) {
+        Console.WriteLine("SocketException : {0}", se.ToString());
+      } catch (Exception e) {
+        Console.WriteLine("Unexpected exception : {0}", e.ToString());
       }
     }
 
@@ -78,7 +83,6 @@ namespace Chatclient {
       try {
         while (sender.Available > 0) {
           int bytesRec = sender.Receive(bytes);
-          Send(Encoding.ASCII.GetString(bytes, 0, bytesRec));   // echoes back
           Console.Write(Encoding.ASCII.GetString(bytes, 0, bytesRec) + '\n');
         }
       } catch (ArgumentNullException ane) {

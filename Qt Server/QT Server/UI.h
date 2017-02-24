@@ -2,13 +2,17 @@
 #define UI_H
 
 #include "Device.h"
+#include "DeviceLogfile.h"
+#include "MessageConverter.h"
 
 class UI : public Device {
-private:
-
-public:
-  UI(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP);
+  private:
+    DeviceLogfile* myDeviceLogfile;
+    std::string deviceLogBuffer;
+    bool isDeviceWorking;
+  public:
+    UI(IDs _ids, std::string _IP, bool _isDeviceWorking);
+    ~UI();
 };
-
 
 #endif

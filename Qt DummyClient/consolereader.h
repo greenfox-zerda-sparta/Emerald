@@ -5,27 +5,30 @@
 #include <iostream>
 
 
-class ConsoleReader : public QObject
-{
+class ConsoleReader : public QObject {
     Q_OBJECT
 
-public:
-    ConsoleReader(QObject *parent = 0);
+  public:
+    ConsoleReader(QObject* parent = 0);
 
-signals:
+  signals:
     void run();
     void inputFromCommandLine(QString);
     void finished();
     void error(QString err);
+    void toAddCommand(QString);
+    void toRemoveCommand(QString);
+    void toSetCommand(QString);
 
-private:
+  private:
     void Quit();
+    int isCommandMode;
 
-private slots:
+  private slots:
     void readCommand();
     void onRun();
     void writeToConsole(QString message);
-
+    void setCommandMode(int mode);
 };
 
 #endif // CONSOLEREADER_H

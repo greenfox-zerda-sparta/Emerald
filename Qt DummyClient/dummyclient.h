@@ -9,19 +9,15 @@
 #include "consolereader.h"
 #include "broadcastsocket.h"
 #include "messages.h"
-#include "utils.h"
+#include <vector>
 
-class DummyClient : public QObject
-{
+class DummyClient : public QObject {
     Q_OBJECT
-public:
-    explicit DummyClient(QObject *parent = 0);
+  public:
+    explicit DummyClient(QObject* parent = 0);
     void run();
 
-protected:
- //   void timerEvent(QTimerEvent*);
-
-signals:
+  signals:
     void incomingMessage(QString);
     void inputFromCommandLine(QString);
     void quit();
@@ -31,24 +27,27 @@ signals:
     void openUdpSocket();
     void manualCloseUDP();
     void manualStartUDP();
+    void setConsoleReaderCommandMode(int);
 
-public slots:
-//    void writeToConsole(QString);
+  public slots:
     void sendMessage(QString);
     void newDataAvailable();
-    void sendFirstMessage();
+    void trackConnectedState();
     void parseInputFromCommandLine(QString text);
-    void echo(QString message);
+    void reactToIncomingMessage(QString message);
+    void addDevice(QString newDevDescription = "");
+    void removeDevice(QString id = "");
+    void setDevice(QString which = "");
 
-private:
+  private:
     QString deviceId;
     quint16 serverPort;
     QString serverAddress;
     QString userName;
-    QTcpSocket *socket;
-    BroadcastSocket *broadcastReceiver;
-    ConsoleReader *cReader;
-    QThread *consoleThread;
+    QTcpSocket* socket;
+    BroadcastSocket* broadcastReceiver;
+    ConsoleReader* cReader;
+    QThread* consoleThread;
     void connectToServer();
     void closeSocket();
     void Disconnect();
@@ -56,11 +55,21 @@ private:
     void Quit();
     quint32 qstringToQuint32(QString string);
     QString datagramNeeded;
-    bool isEcho;
     Dev me;
     void changeDev();
     Messages messGetter;
     void sendMessage(QByteArray);
+    bool isTcpOn;
+    bool isUdpOn;
+    bool isDevOn;
+    void printHelp();
+    void printWhichMessage(QByteArray msg);
+    QString getAddDeviceMessage(int index);
+    std::vector<QString> addDeviceMessages;
+    QString availableDevices;
+    QString availableRooms;
+    QString availableFloors;
+    QString newDeviceDescription;
 };
 
 #endif // DUMMYCLIENT_H

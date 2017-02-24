@@ -1,72 +1,65 @@
 #include "Device.h"
 
+Device::Device() {}
 
-Device::Device(byte _deviceIDHigh, byte _deviceIDLow, byte _homeID, byte _floorID, byte _roomID, byte _cmdID, std::string _IP) {
-  deviceIDHigh = _deviceIDHigh;
-  deviceIDLow = _deviceIDLow;
-  homeID = _homeID;
-  floorID = _floorID;
-  roomID = _roomID;
-  cmdID = _cmdID;
+Device::Device(IDs _ids, std::string _IP, bool _isdeviceworking) {
+  deviceIDHigh = _ids.deviceIDHigh;
+  deviceIDLow = _ids.deviceIDLow;
+  homeID = _ids.homeID;
+  floorID = _ids.floorID;
+  roomID = _ids.roomID;
+  groupID = _ids.groupID;
   IP = _IP;
+  isDeviceWorking = _isdeviceworking;
 }
 
-byte Device::get_deviceIDHigh() {
+Device::Device(std::map<std::string, byte> messageMap, std::string _IP, bool _isdeviceworking) {
+  deviceIDHigh = messageMap["deviceIDHigh"];
+  deviceIDLow = messageMap["deviceIDLow"];
+  groupID = messageMap["groupID"];
+  homeID = messageMap["homeID"];
+  floorID = messageMap["floorID"];
+  roomID = messageMap["roomID"];
+  IP = _IP;
+  isDeviceWorking = _isdeviceworking;
+}
+
+byte Device::GetDeviceIDHigh() {
   return deviceIDHigh;
 }
 
-byte Device::get_deviceIDLow() {
+byte Device::GetDeviceIDLow() {
   return deviceIDLow;
 }
 
-byte Device::get_groupID() {
+byte Device::GetGroupID() {
   return groupID;
 }
 
-byte Device::get_homeID() {
+byte Device::GetHomeID() {
   return homeID;
 }
 
-byte Device::get_floorID() {
+byte Device::GetFloorID() {
   return floorID;
 }
 
-byte Device::get_roomID() {
+byte Device::GetRoomID() {
   return roomID;
 }
 
-byte Device::get_cmdID() {
-  return cmdID;
-}
-
-std::string Device::get_IP() {
+std::string Device::GetIP() {
   return IP;
 }
 
-void Device::connect_Device() {
+byte Device::IsWorking() {
+  return isDeviceWorking ? 1 : 0;
 }
 
-void Device::disconnect_Device() {
+void Device::SetIsOnline(bool state) {
+  isOnline = state;
 }
 
-//
-//void Device::run_Main_Function(byte mainFunctionCommand)
-//{
-//  std::string deviceMainStatus;
-//
-//  if (mainFunctionCommand == 0)
-//  {
-//    deviceMainStatus = "OFF";
-//  } else
-//  {
-//    deviceMainStatus = "ON";
-//  }
-//
-//  send_Device_Main_Status_Message(deviceMainStatus);
-//
-//}
-//
-//std::string Device::send_Device_Main_Status_Message(std::string device_Main_Status)
-//{
-//  return device_Main_Status;
-//}
+bool Device::GetIsOnline() {
+  return isOnline;
+}

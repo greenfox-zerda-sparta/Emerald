@@ -1,5 +1,4 @@
-﻿#include <time.h>
-#include "MyTime.h"
+﻿#include "MyTime.h"
 
 #define _CRT_SECURE_NO_WARNINGS
 
