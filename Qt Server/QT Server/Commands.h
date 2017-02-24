@@ -34,7 +34,7 @@ class Commands {
     std::map<QTcpSocket*, Device*> deviceMap;
     std::vector<byte> bytes;
     void GenerateNextIDs();
-    std::vector<byte> MakeUiFeedback(byte body1, byte body2);
+    std::vector<byte> MakeUiFeedback(byte cmd, byte body1, byte body2);
     std::string GetIPString();
     std::string GetDeviceText(Device* dev);
     bool IsRoomForDevice();
@@ -49,6 +49,7 @@ class Commands {
     void AddDevice();
     void RemoveDevice();
     void GetStatusReport();
+    void StatusReport();
     void SetData();
     void ForwardMessage();
     void DevForwardMessageToUi();
@@ -60,6 +61,7 @@ class Commands {
     void(Commands::*ptr_addDevice)();
     void(Commands::*ptr_removeDevice)();
     void(Commands::*ptr_getStatusReport)();
+    void(Commands::*ptr_statusReport)();
     void(Commands::*ptr_setData)();
     void(Commands::*ptr_forwardMessage)();
     void(Commands::*ptr_devforwardMessageToUi)();

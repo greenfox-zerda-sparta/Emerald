@@ -98,7 +98,7 @@ void Server::readyRead() {
       logBuffer += "\nError: command too short.";
       log->MessageLogging(Error, logBuffer);
     } else {
-      std::vector<unsigned char> msgBytes = msgConv->QByteArrayToCharArray(qMsgBytes);
+      std::vector<unsigned char> msgBytes = msgConv->QByteArrayToCharArray(qMsgBytes); 
       msgHandler->MakeCommand(addedDevices, msgBytes, onlineDevices, log);
     }
   }
