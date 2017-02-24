@@ -76,13 +76,6 @@ void Commands::ResetServer() {
   if (IsServerCommand()) {
     msgLog = "RESETTING SERVER";
     msgLogger->MessageLogging(Log, msgLog);
-    for (auto item : deviceMap) {
-      item.first->close();
-      delete item.first;
-      delete item.second;
-    }
-    deviceMap.clear();
-    addedDevs.clear();
   } else {
     CommandReplyError();
   }
@@ -291,22 +284,24 @@ void Commands::ForwardMessage() {
       }
     }
   }
+
   if (targets.empty()) {
     CommandReplyError();
-  }
-  // Send
-  for (auto socket : targets) {
-    //if (messageMap["cmdID"] == 246 || messageMap["cmdID"] == 1 || messageMap["cmdID"] == 2 || messageMap["cmdID"] == 3 ||
-    //  messageMap["cmdID"] == 4 || messageMap["cmdID"] == 5) {
-    //  if (messageMap["targetIDHigh"] == 255 && messageMap["targetIDLow"] == 253) { continue; }
-    //}
-    socket->write(msgConvert->BytesToQBytes(bytes) + '\n');
-    msgLog = "Forwarding message to: " + msgConvert->QStringToString((socket->peerAddress()).toString()) + ". ";
-    msgLog += "Sent: ";
-    for (auto i : bytes) {
-      msgLog += msgConvert->ByteToString(i) + " ";
+  } else {
+    // Send
+    for (auto socket : targets) {
+      //if (messageMap["cmdID"] == 246 || messageMap["cmdID"] == 1 || messageMap["cmdID"] == 2 || messageMap["cmdID"] == 3 ||
+      //  messageMap["cmdID"] == 4 || messageMap["cmdID"] == 5) {
+      //  if (messageMap["targetIDHigh"] == 255 && messageMap["targetIDLow"] == 253) { continue; }
+      //}
+      socket->write(msgConvert->BytesToQBytes(bytes) + '\n');
+      msgLog = "Forwarding message to: " + msgConvert->QStringToString((socket->peerAddress()).toString()) + ". ";
+      msgLog += "Sent: ";
+      for (auto i : bytes) {
+        msgLog += msgConvert->ByteToString(i) + " ";
+      }
+      msgLogger->MessageLogging(Log, msgLog);
     }
-    msgLogger->MessageLogging(Log, msgLog);
   }
 }
 
