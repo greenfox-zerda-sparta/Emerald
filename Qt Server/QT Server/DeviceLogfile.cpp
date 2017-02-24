@@ -54,3 +54,9 @@ std::vector<Device*> DeviceLogfile::GetDevicesVector() {
   deviceLogfile.close();
   return devices;
 }
+
+void DeviceLogfile::ClearLogfile() {
+  std::ofstream ofs;
+  ofs.open(deviceLogFilename, std::ofstream::out | std::ofstream::trunc);
+  ofs.close();
+}
