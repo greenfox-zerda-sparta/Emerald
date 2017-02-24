@@ -158,9 +158,8 @@ void Commands::AddDevice() {
         Device* newDevice = new Device(messageMap, IP);
         addedDevs.push_back(newDevice);
         LogDeviceList();
-        msgLog = "Adding Device: " + GetDeviceText(newDevice);
+        msgLog = "Command Success. Adding Device: " + GetDeviceText(newDevice);
         msgLogger->MessageLogging(LogLevel::DeviceLog, msgLog);
-        CommandReplySuccess();
         bytes = MakeUiFeedback(241, (byte)IDHigh, (byte)IDLow);
         DevForwardMessageToUi();
       } else { // no more devices can be added
@@ -288,7 +287,11 @@ void Commands::ForwardMessage() {
   // Send
   for (auto socket : targets) {
     socket->write(msgConvert->BytesToQBytes(bytes) + '\n');
-    msgLog = "Forwarding message to Device(s): " + msgConvert->QStringToString((socket->peerAddress()).toString());
+    msgLog = "Forwarding message to: " + msgConvert->QStringToString((socket->peerAddress()).toString()) + ". ";
+    msgLog += "Sent: ";
+    for (auto i : bytes) {
+      msgLog += msgConvert->ByteToString(i) + " ";
+    }
     msgLogger->MessageLogging(Log, msgLog);
   }
 }
@@ -297,7 +300,11 @@ void Commands::DevForwardMessageToUi() {
   for (auto iter : deviceMap) {
     if ((iter.second)->GetDeviceIDHigh() == 255 && (iter.second)->GetDeviceIDLow() == 253) {
       (iter.first)->write(msgConvert->BytesToQBytes(bytes) + '\n');
-      msgLog = "Forwarding message to Ui.";
+      msgLog = "Forwarding message to Ui. ";
+      msgLog += "Sent: ";
+      for (auto i : bytes) {
+        msgLog += msgConvert->ByteToString(i) + " ";
+      }
       msgLogger->MessageLogging(Log, msgLog);
     }
   }
