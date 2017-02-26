@@ -1,6 +1,7 @@
 #include "Commands.h"
+#include "Server.h"
 
-Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog) : addedDevs(_addedDevices), msgLogger(_msgLog) {
+Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog, Server* server) : addedDevs(_addedDevices), msgLogger(_msgLog) {
   deviceLog = new DeviceLogfile;
   msgConvert = new MessageConverter;
 
@@ -33,6 +34,7 @@ Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog)
   cmdMap[3] = ptr_forwardMessage;
   cmdMap[4] = ptr_forwardMessage;
   cmdMap[5] = ptr_forwardMessage;
+  this->server = server;
 }
 
 Commands::~Commands() {
@@ -76,6 +78,7 @@ void Commands::ResetServer() {
   if (IsServerCommand()) {
     msgLog = "RESETTING SERVER";
     msgLogger->MessageLogging(Log, msgLog);
+    server->ResetServer();
   } else {
     CommandReplyError();
   }
@@ -85,6 +88,7 @@ void Commands::RestartServer() {
   if (IsServerCommand()) {
     msgLog = "RESTARTING SERVER";
     msgLogger->MessageLogging(Log, msgLog);
+    server->RestartServer();
   } else {
     CommandReplyError();
   }
@@ -94,7 +98,7 @@ void Commands::StopServer() {
   if (IsServerCommand()) {
     msgLog = "STOPPING SERVER";
     msgLogger->MessageLogging(Log, msgLog);
-    exit(0);
+    server->StopServer();
   } else {
     CommandReplyError();
   }

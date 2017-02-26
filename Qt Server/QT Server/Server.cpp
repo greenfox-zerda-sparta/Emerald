@@ -1,9 +1,10 @@
 #include "Server.h"
+#include "MessageHandler.h"
 
 Server::Server(QObject* parent) : QTcpServer(parent) {
   log = new MessageLogfile;
   myDeviceLogfile = new DeviceLogfile;
-  msgHandler = new MessageHandler;
+  msgHandler = new MessageHandler(this);
   msgConv = new MessageConverter;
   addedDevices = myDeviceLogfile->GetDevicesVector();
 }
@@ -21,6 +22,8 @@ Server::~Server() {
   }
   for (auto iter : onlineDevices) {
     if (iter.first) {
+      iter.first->disconnect();
+      iter.first->abort();
       delete iter.first;
     }
     if (iter.second) {
@@ -120,4 +123,17 @@ void Server::disconnected() {
   }
   onlineDevices[client]->SetIsOnline(false);
   onlineDevices.erase(client);
+}
+
+void Server::ResetServer() {
+  std::cout << "Resetting server in Server.cpp" << std::endl;
+}
+
+void Server::StopServer() {
+  std::cout << "Stopping server in Server.cpp" << std::endl;
+  emit Quit();
+}
+
+void Server::RestartServer() {
+  std::cout << "Restarting server in Server.cpp" << std::endl;
 }

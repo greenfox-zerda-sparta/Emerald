@@ -11,14 +11,16 @@
 
 typedef unsigned char byte;
 
+class Server;
 class MessageHandler {
   private:
     std::vector<std::string> keys;
     std::map<std::string, byte> messageMap;
     std::vector<byte> msgToSend;
     int validMsgLength;
+    Server* server;
   public:
-    MessageHandler();
+    MessageHandler(Server* server = nullptr);
     void MakeMessageMap(std::vector<byte> bytes);
     void MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap, MessageLogfile* msgLog);
     std::map<std::string, byte> GetMessageMap();

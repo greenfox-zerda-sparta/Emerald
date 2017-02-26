@@ -12,6 +12,7 @@ int main(int argc, char** argv) {
   QCoreApplication app(argc, argv);
   Server server;
   server.RunServer();
+  QObject::connect(&server, SIGNAL(Quit()), &app, SLOT(quit()));
   return app.exec();
 }
 #endif

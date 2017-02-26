@@ -13,9 +13,10 @@
 
 typedef unsigned char byte;
 
+class Server;
 class Commands {
   public:
-    Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog);
+    Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog, Server* server = nullptr);
     ~Commands();
     void SetMessageMap(std::map<std::string, byte>& _messageMap);
     void SetAddedDevices(std::vector<Device*>& _addedDevices);
@@ -67,6 +68,7 @@ class Commands {
     void(Commands::*ptr_devforwardMessageToUi)();
     void(Commands::*ptr_cmdReplyError)();
     void(Commands::*ptr_cmdReplySuccess)();
+    Server* server;
 };
 
 #endif // COMMANDS_H
