@@ -18,7 +18,6 @@ DummyClient::DummyClient(QObject* parent) : QObject(parent) {
   consoleThread = new QThread();
   cReader->moveToThread(consoleThread);
   broadcastReceiver = new BroadcastSocket(datagramNeeded);
-  isTcpOn = false;
   isUdpOn = false;
   isDevOn = false;
   connect(socket, SIGNAL(readyRead()), this, SLOT(newDataAvailable()));
@@ -197,17 +196,16 @@ void DummyClient::startCommand(QString text) {
   } else if (text == "udp") {
     isUdpOn = !isUdpOn;
     if(isUdpOn) {
+      emit write("   Autodetection is switched on.");
       emit manualStartUDP();
     } else {
+      emit write("   Autodetection is switched off.");
       emit manualCloseUDP();
-      emit write("   UDP Socket is closed.");
     }
   } else  if (text == "tcp") {
-    isTcpOn = !isTcpOn;
     if (socket->state() == QTcpSocket::ConnectedState) {
       Disconnect();
-    }
-    if(isTcpOn) {
+    } else {
       connectToServer();
     }
   } else if (text == "dev") {

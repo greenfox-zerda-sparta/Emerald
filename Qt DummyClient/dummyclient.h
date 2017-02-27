@@ -59,7 +59,6 @@ class DummyClient : public QObject {
     void changeDev();
     Messages messGetter;
     void sendMessage(QByteArray);
-    bool isTcpOn;
     bool isUdpOn;
     bool isDevOn;
     void printHelp();
