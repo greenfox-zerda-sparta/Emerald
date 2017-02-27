@@ -1,4 +1,5 @@
 #include "DeviceLogfile.h"
+#include <iostream>
 
 DeviceLogfile::DeviceLogfile() {
   deviceLogFilename = "Smart_Home_Device_Log.txt";
@@ -6,13 +7,13 @@ DeviceLogfile::DeviceLogfile() {
 
 void DeviceLogfile::DeviceLogging(std::string devicelogbuffer) {
   logMutex.lock();
-  deviceLogfile.open(deviceLogFilename.c_str(), std::ios::trunc);
+  deviceLogfile.open(deviceLogFilename, std::ios::trunc);
   deviceLogfile << devicelogbuffer << std::endl;
   deviceLogfile.close();
   logMutex.unlock();
 }
 
-Device* DeviceLogfile::GetDevice(std::string buffer) {
+std::shared_ptr<Device> DeviceLogfile::GetDevice(std::string buffer) {
   std::vector<std::string> deviceStuff;
   bool isDeviceWorking;
   size_t position = buffer.find(" ");
@@ -37,21 +38,21 @@ Device* DeviceLogfile::GetDevice(std::string buffer) {
   } else {
     isDeviceWorking = false;
   }
-  Device* returnDevice = new Device(IDs{deviceIDHigh, deviceIDLow, groupID, homeID, floorID, roomID}, IP, isDeviceWorking);
+  std::shared_ptr<Device> returnDevice = std::shared_ptr<Device>(new Device(IDs{deviceIDHigh, deviceIDLow, groupID, homeID, floorID, roomID}, IP, isDeviceWorking));
   return returnDevice;
 }
 
-std::vector<Device*> DeviceLogfile::GetDevicesVector() {
-  std::vector<Device*> devices;
-  std::ifstream deviceLogfile(deviceLogFilename.c_str());
+std::vector<std::shared_ptr<Device> > DeviceLogfile::GetDevicesVector() {
+  std::vector<std::shared_ptr<Device>> devices;
+  deviceLog.open(deviceLogFilename);
   std::string buffer;
-  while (getline(deviceLogfile, buffer)) {
+  while (getline(deviceLog, buffer)) {
     if (buffer.length() < 3) {
       continue;
     }
     devices.push_back(GetDevice(buffer));
   }
-  deviceLogfile.close();
+  deviceLog.close();
   return devices;
 }
 

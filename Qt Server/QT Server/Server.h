@@ -38,15 +38,16 @@ class Server : public QTcpServer {
   private:
     void incomingConnection(qintptr SocketDescriptor);
     MyTime* localTimer;
-    MessageHandler* msgHandler;
-    UdpSender* udpSender;
-    MessageConverter* msgConv;
-    MessageLogfile* log;
-    DeviceLogfile* myDeviceLogfile;
+    std::unique_ptr<MessageHandler> msgHandler;
+    std::unique_ptr<UdpSender> udpSender;
+    std::unique_ptr<MessageConverter> msgConv;
+    std::shared_ptr<MessageLogfile> log;
+    std::unique_ptr<DeviceLogfile> myDeviceLogfile;
     QHostAddress uiAddress;
     std::string logBuffer;
-    std::map<QTcpSocket*, Device*> onlineDevices;
-    std::vector<Device*> addedDevices;
+    std::map<QTcpSocket*, std::shared_ptr<Device>> onlineDevices;
+    std::vector<std::shared_ptr<Device>> addedDevices;
+    void deleteAllObjects();
 };
 
 #endif

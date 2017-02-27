@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 #include <QtNetwork>
@@ -16,28 +17,28 @@ typedef unsigned char byte;
 class Server;
 class Commands {
   public:
-    Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog, Server* server = nullptr);
+    Commands(std::vector<std::shared_ptr<Device>>& _addedDevices, std::shared_ptr<MessageLogfile> msgLog, Server* server = nullptr);
     ~Commands();
     void SetMessageMap(std::map<std::string, byte>& _messageMap);
-    void SetAddedDevices(std::vector<Device*>& _addedDevices);
-    void SetDeviceMap(std::map<QTcpSocket*, Device*>& _deviceMap);
+    void SetAddedDevices(std::vector<std::shared_ptr<Device>>& _addedDevices);
+    void SetDeviceMap(std::map<QTcpSocket*, std::shared_ptr<Device>>& _deviceMap);
     void SetBytes(std::vector<byte>& _bytes);
     void RunCommand();
   private:
     DeviceLogfile* deviceLog;
-    MessageLogfile* msgLogger;
+    std::shared_ptr<MessageLogfile> msgLogger;
     std::string deviceLogBuffer;
     std::string msgLog;
     MessageConverter* msgConvert;
-    std::vector<Device*>& addedDevs;
+    std::vector<std::shared_ptr<Device>>& addedDevs;
     std::map<std::string, byte> messageMap;
     std::map<byte, void(Commands::*)()> cmdMap;
-    std::map<QTcpSocket*, Device*> deviceMap;
+    std::map<QTcpSocket*, std::shared_ptr<Device>> deviceMap;
     std::vector<byte> bytes;
     void GenerateNextIDs();
     std::vector<byte> MakeUiFeedback(byte cmd, byte body1, byte body2);
     std::string GetIPString();
-    std::string GetDeviceText(Device* dev);
+    std::string GetDeviceText(std::shared_ptr<Device> dev);
     bool IsRoomForDevice();
     void LogDeviceList();
     int IDLow;

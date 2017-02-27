@@ -22,7 +22,7 @@ std::map<std::string, byte> MessageHandler::GetMessageMap() {
   return messageMap;
 }
 
-void MessageHandler::MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap, MessageLogfile* msgLog) {
+void MessageHandler::MakeCommand(std::vector<std::shared_ptr<Device>>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, std::shared_ptr<Device> >& deviceMap, std::shared_ptr<MessageLogfile> msgLog) {
   MakeMessageMap(bytes);
   Commands* cmd = new Commands(addedDevices, msgLog, server);
   cmd->SetMessageMap(messageMap);

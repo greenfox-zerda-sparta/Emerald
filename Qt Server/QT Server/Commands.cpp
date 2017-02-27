@@ -1,7 +1,8 @@
 #include "Commands.h"
 #include "Server.h"
 
-Commands::Commands(std::vector<Device*>& _addedDevices, MessageLogfile* _msgLog, Server* server) : addedDevs(_addedDevices), msgLogger(_msgLog) {
+Commands::Commands(std::vector<std::shared_ptr<Device>>& _addedDevices, std::shared_ptr<MessageLogfile> msgLog, Server* server)
+  : addedDevs(_addedDevices), msgLogger(msgLog) {
   deviceLog = new DeviceLogfile;
   msgConvert = new MessageConverter;
 
@@ -46,11 +47,11 @@ void Commands::SetMessageMap(std::map<std::string, byte>& _messageMap) {
   this->messageMap = _messageMap;
 }
 
-void Commands::SetAddedDevices(std::vector<Device*>& _addedDevices) {
+void Commands::SetAddedDevices(std::vector<std::shared_ptr<Device>>& _addedDevices) {
   this->addedDevs = _addedDevices;
 }
 
-void Commands::SetDeviceMap(std::map<QTcpSocket*, Device*>& _deviceMap) {
+void Commands::SetDeviceMap(std::map<QTcpSocket*, std::shared_ptr<Device> >& _deviceMap) {
   this->deviceMap = _deviceMap;
 }
 
@@ -129,7 +130,7 @@ std::string Commands::GetIPString() {
          msgConvert->ByteToString(messageMap["body4"]);
 }
 
-std::string Commands::GetDeviceText(Device* dev) {
+std::string Commands::GetDeviceText(std::shared_ptr<Device> dev) {
   return msgConvert->ByteToString(dev->GetDeviceIDHigh()) + " " +
          msgConvert->ByteToString(dev->GetDeviceIDLow()) + " " +
          msgConvert->ByteToString(dev->GetGroupID()) + " " +
@@ -145,7 +146,7 @@ bool Commands::IsRoomForDevice() {
 }
 
 void Commands::LogDeviceList() {
-  for (Device* device : addedDevs) {
+  for (std::shared_ptr<Device> device : addedDevs) {
     deviceLogBuffer += GetDeviceText(device) + "\n";
   }
   deviceLog->DeviceLogging(deviceLogBuffer);
@@ -159,7 +160,7 @@ void Commands::AddDevice() {
         messageMap["deviceIDHigh"] = (byte)IDHigh;
         messageMap["deviceIDLow"] = (byte)IDLow;
         std::string IP = GetIPString();
-        Device* newDevice = new Device(messageMap, IP);
+        std::shared_ptr<Device> newDevice = std::shared_ptr<Device>(new Device(messageMap, IP));
         addedDevs.push_back(newDevice);
         LogDeviceList();
         msgLog = "Command Success. Adding Device: " + GetDeviceText(newDevice);

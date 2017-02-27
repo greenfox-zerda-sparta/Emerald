@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <map>
+#include <memory>
 #include <vector>
 #include <QTcpSocket>
 #include "Commands.h"
@@ -22,7 +23,7 @@ class MessageHandler {
   public:
     MessageHandler(Server* server = nullptr);
     void MakeMessageMap(std::vector<byte> bytes);
-    void MakeCommand(std::vector<Device*>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, Device*>& deviceMap, MessageLogfile* msgLog);
+    void MakeCommand(std::vector<std::shared_ptr<Device>>& addedDevices, std::vector<byte> bytes, std::map<QTcpSocket*, std::shared_ptr<Device>>& deviceMap, std::shared_ptr<MessageLogfile> msgLog);
     std::map<std::string, byte> GetMessageMap();
 };
 

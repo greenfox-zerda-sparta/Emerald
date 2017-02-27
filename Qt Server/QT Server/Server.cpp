@@ -2,37 +2,30 @@
 #include "MessageHandler.h"
 
 Server::Server(QObject* parent) : QTcpServer(parent) {
-  log = new MessageLogfile;
-  myDeviceLogfile = new DeviceLogfile;
-  msgHandler = new MessageHandler(this);
-  msgConv = new MessageConverter;
-  addedDevices = myDeviceLogfile->GetDevicesVector();
+  msgHandler = std::unique_ptr<MessageHandler>(new MessageHandler(this));
 }
 
 Server::~Server() {
-  delete log;
-  delete myDeviceLogfile;
-  delete msgHandler;
-  delete msgConv;
-  delete udpSender;
-  for (Device* device : addedDevices) {
-    if (device) {
-      delete device;
-    }
-  }
+  deleteAllObjects();
+}
+
+void Server::deleteAllObjects() {
   for (auto iter : onlineDevices) {
     if (iter.first) {
       iter.first->disconnect();
       iter.first->abort();
       delete iter.first;
     }
-    if (iter.second) {
-      delete iter.second;
-    }
   }
+  onlineDevices.clear();
+  this->close();
 }
 
 void Server::InitServer() {
+  myDeviceLogfile = std::unique_ptr<DeviceLogfile>(new DeviceLogfile);
+  log = std::shared_ptr<MessageLogfile>(new MessageLogfile);
+  msgConv = std::unique_ptr<MessageConverter>(new MessageConverter);
+  addedDevices = myDeviceLogfile->GetDevicesVector();
   if (addedDevices.size() == 0) {
     std::cout << "Please enter IP address of UI:" << std::endl;
     std::string input;
@@ -40,9 +33,9 @@ void Server::InitServer() {
     logBuffer = "UI IP address from input: " + input;
     log->MessageLogging(Log, logBuffer);
     uiAddress = msgConv->StringToQString(input);
-    addedDevices.push_back(new UI(IDs{ 255, 253, 254, 255, 255, 255 }, input, 1));
+    addedDevices.push_back(std::shared_ptr<Device>(new UI(IDs{ 255, 253, 254, 255, 255, 255 }, input, 1)));
   }
-  udpSender = new UdpSender(addedDevices);
+  udpSender = std::unique_ptr<UdpSender>(new UdpSender(addedDevices));
   logBuffer = "UDP messaging available for devices added but not connected.";
   log->MessageLogging(Log, logBuffer);
 }
@@ -61,10 +54,10 @@ void Server::RunServer() {
 void Server::incomingConnection(qintptr SocketDescriptor) {
   QTcpSocket* client = new QTcpSocket(this);
   client->setSocketDescriptor(SocketDescriptor);
-  Device* newDevice;
+  std::shared_ptr<Device> newDevice;
   bool isExistingDevice = false;
   int index = 0;
-  for (auto i : addedDevices) {
+  for (auto &i : addedDevices) {
     if (i->GetIP() == msgConv->QStringToString((client->peerAddress()).toString())) {
       newDevice = i;
       i->SetIsOnline(true);
@@ -89,7 +82,6 @@ void Server::incomingConnection(qintptr SocketDescriptor) {
     logBuffer = "Unauthorized connection from ip: " + msgConv->QStringToString((client->peerAddress()).toString()) + " rejected.";
     log->MessageLogging(Warning, logBuffer);
     client->close();
-    delete newDevice;
   }
 }
 
@@ -126,14 +118,19 @@ void Server::disconnected() {
 }
 
 void Server::ResetServer() {
-  std::cout << "Resetting server in Server.cpp" << std::endl;
+  myDeviceLogfile->ClearLogfile();
+  deleteAllObjects();
+  std::cout << std::endl << "                               ..." << std::endl << std::endl;
+  RunServer();
 }
 
 void Server::StopServer() {
-  std::cout << "Stopping server in Server.cpp" << std::endl;
+  std::cout << std::endl << "                               ..." << std::endl << std::endl;
   emit Quit();
 }
 
 void Server::RestartServer() {
-  std::cout << "Restarting server in Server.cpp" << std::endl;
+  deleteAllObjects();
+  std::cout << std::endl << "                               ..." << std::endl << std::endl;
+  RunServer();
 }

@@ -14,7 +14,7 @@ class UdpSender : public QObject {
     Q_OBJECT
 
   public:
-    UdpSender(std::vector<Device*>& addedDevices, QObject* parent = Q_NULLPTR);
+    UdpSender(std::vector<std::shared_ptr<Device>>& addedDevices, QObject* parent = Q_NULLPTR);
 
   private slots:
     void SendDatagram();
@@ -26,7 +26,7 @@ class UdpSender : public QObject {
     QTimer* timer;
     int messageNo;
     int udpPort;
-    std::vector<Device*>& addedDevices;
+    std::vector<std::shared_ptr<Device>>& addedDevices;
 };
 
 #endif
